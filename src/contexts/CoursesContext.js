@@ -15,7 +15,6 @@ export function CoursesProvider ({children}){
 
     //Fetch courses from API
     const {loading: loadingCourses, value: courses, error: getCoursesError, execute: getCourses} = useAsyncFn(() => getAllCourses())
-    const {loading: loadingMyCourses, value: myCourses, error: getMyCoursesError, execute: getOwnedCourses} = useAsyncFn(() => getMyCourses())
     const {loading: loadingCourse, value: Course, error: getCourseError, execute: getCourseView} = useAsyncFn((Id) => getCourse(Id))
     const {loading: loadingAddCourse, value: addCourseResult, error: getAddCourseError, execute: addCourse} = useAsyncFn((b) => addCourseRequest(b))
     const {loading: loadingEditCourse, value: editCourseResult, error: getEditCourseError, execute: editCourse} = useAsyncFn((b) => editCourseRequest(b))
@@ -36,11 +35,6 @@ export function CoursesProvider ({children}){
             courses,
             getCoursesError,
             getCourses, 
-
-            loadingMyCourses,
-            myCourses,
-            getMyCoursesError,
-            getOwnedCourses,
 
             loadingCourse,
             getCourseError,

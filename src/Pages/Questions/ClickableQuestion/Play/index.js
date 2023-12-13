@@ -11,6 +11,7 @@ import { ClickableChartComponent } from "./ClickableChartComponent";
 import { useInterpretedTrees } from "../../../../contexts/InterpretedTreesContext";
 import { ViewSolutionComponent } from "../../../../Components/ViewSolutionComponent";
 import { NextButton } from "../../../../Components/NextButton";
+import { ErrorComponent } from "../../../../Components/ErrorComponent";
 
 export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements, showSolution, nextAction, mapKey}){
     const {
@@ -46,7 +47,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
     
     const [startTime, setStartTime] = useState(0)
 
-    useEffect(() => {
+    const loadData = () => {
         if(!deadLoad) getClickableQuestionPlay(Id);
         getAllInterpretedValues()
 
@@ -63,6 +64,10 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
         setShowCorrectSolution(false)
         setShowScore(false)
         setFinalScore('')
+    }
+
+    useEffect(() => {
+        loadData()
     }, [Id])
 
     useEffect(() => {
@@ -78,14 +83,6 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
      }, [clickableQuestionPlay])
 
     useEffect(() => {
-       if(errorGetClickableQuestionPlay){
-            messageApi.destroy()
-            messageApi.error(errorGetClickableQuestionPlay)
-       }
-    }, [errorGetClickableQuestionPlay])
-
-
-    useEffect(() => {
         if(showPlayChart){
             setSliderValues([190,0,-190])
         }
@@ -96,7 +93,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
 
         const {ClickImages, ClickCharts} = Question
 
-        if(elementAnswers.length !== (ClickCharts.length + ClickImages.length)){
+        if(elementAnswers.filter(a => a).length !== (ClickCharts.length + ClickImages.length)){
             messageApi.destroy()
             message.warning('Please add all answers!')
 
@@ -143,9 +140,9 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
 
     const renderCorrectSolution = () => {
         const {Question} = clickableQuestionPlay
-        const {Code, BackgroundImageURL, BackgroundImageHeight, BackgroundImageWidth, ClickImages, ClickCharts} = Question
+        const {Code, ImageURL, ImageHeight, ImageWidth, ClickImages, ClickCharts} = Question
         const imageWidth = window.innerWidth * 0.45
-        const imageHeight = (BackgroundImageHeight/BackgroundImageWidth) * imageWidth
+        const imageHeight = (ImageHeight/ImageWidth) * imageWidth
 
         const backgroundImageStyle = ({
             backgroundPosition:'center',
@@ -170,13 +167,13 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                     width:imageWidth,
                 }} 
 
-                src = {BackgroundImageURL}
+                src = {ImageURL}
                 alt={Code}
                 />
                 {ClickImages.map((p) => {
                     const {Answer} = p
 
-                    const itemPositionStyle = getItemPositionStyle(imageWidth, BackgroundImageWidth, p)
+                    const itemPositionStyle = getItemPositionStyle(imageWidth, ImageWidth, p)
 
                     return (
                         <span 
@@ -194,7 +191,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                             
                             <img 
                                 style={itemPositionStyle}
-                                src={Answer.URL}
+                                src={Answer.ImageURL}
                                 alt="answer"
                             />
                         </span>
@@ -204,7 +201,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                 {ClickCharts.map((p) => {
                     const {Answer} = p 
 
-                    const itemPositionStyle = getItemPositionStyle(imageWidth, BackgroundImageWidth, p)
+                    const itemPositionStyle = getItemPositionStyle(imageWidth, ImageWidth, p)
 
                     return (
                         <span 
@@ -224,7 +221,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                             
                             <img 
                                 style={itemPositionStyle}
-                                src={Answer.URL}
+                                src={Answer.ImageURL}
                                 alt="answer"
                             />
                         </span>
@@ -327,9 +324,9 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
 
     const renderQuestionPlaySection = () => {
         const {Question} = clickableQuestionPlay
-        const {Code, BackgroundImageURL, BackgroundImageHeight, BackgroundImageWidth, ClickImages, ClickCharts} = Question
+        const {Code, ImageURL, ImageHeight, ImageWidth, ClickImages, ClickCharts} = Question
         const imageWidth = window.innerWidth * 0.45
-        const imageHeight = (BackgroundImageHeight/BackgroundImageWidth) * imageWidth
+        const imageHeight = (ImageHeight/ImageWidth) * imageWidth
 
         const backgroundImageStyle = ({
             backgroundPosition:'center',
@@ -362,13 +359,13 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                     width:imageWidth,
                 }} 
 
-                src = {BackgroundImageURL}
+                src = {ImageURL}
                 alt={Code}
                 />
                 {ClickImages.map((p, pi) => {
                     const answer = elementAnswers[pi]
 
-                    const itemPositionStyle = getItemPositionStyle(imageWidth, BackgroundImageWidth, p)
+                    const itemPositionStyle = getItemPositionStyle(imageWidth, ImageWidth, p)
 
                     return (
                         <div 
@@ -388,7 +385,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                             {answer && 
                             <img 
                                 style={itemPositionStyle}
-                                src={answer.URL}
+                                src={answer.ImageURL}
                                 alt="answer"
                             />}
 
@@ -407,7 +404,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                 {ClickCharts.map((p, pi) => {
                     const answer = elementAnswers[pi + ClickImages.length]
 
-                    const itemPositionStyle = getItemPositionStyle(imageWidth, BackgroundImageWidth, p)
+                    const itemPositionStyle = getItemPositionStyle(imageWidth, ImageWidth, p)
 
                     return (
                         <div 
@@ -427,7 +424,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                             {answer && 
                             <img 
                                 style={itemPositionStyle}
-                                src={answer.URL}
+                                src={answer.ImageURL}
                                 alt="answer"
                             />}
                             {showScore &&  
@@ -454,8 +451,18 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
     }
 
     const renderPickSolutionClick = () => {
-        const {AnswerGroup} = selectedNode
-        let {Images} = AnswerGroup
+        
+        const {ClickTrees} = clickableQuestionPlay
+
+        var specificTree = ClickTrees.find(a => {
+
+            const groupId = selectedNode.Answer.GroupId || selectedNode.Answer.Root.GroupId
+
+            return (a.Id === groupId)
+        })
+
+
+        let {Images} = specificTree
         if(selectedImageLeafs.length) Images = selectedImageLeafs;
 
         return(
@@ -463,7 +470,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
                 dataSource={Images}
                 renderItem={(img) => (
                     <img 
-                        src={img.URL}  
+                        src={img.ImageURL}  
                         className="clickable-question-pick-img"
                         alt="pick_answer"
                         onClick={() => {
@@ -553,14 +560,21 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
         const JumpId = JumpInterpretationValue.Id        
         
         //Get Image
-        const {AnswerGroup} = selectedNode 
-        const {Images} = AnswerGroup 
+        const {ChartTrees} = clickableQuestionPlay
+
+        var specificTree = ChartTrees.find(a => {
+            const groupId = selectedNode.Answer.GroupId 
+
+            return (a.Id === groupId)
+        })
+
+        const {Images} = specificTree 
 
         const image = Images
-        .filter(i => (i.LeftId === LeftId 
+        .find(i => (i.LeftId === LeftId 
                         && i.RightId === RightId 
                         && i.JumpId === JumpId 
-                        && i.RationOfGradientsId === RatioId))[0]
+                        && i.RationOfGradientsId === RatioId))
 
         if(image){
             let _elementAnswers = [...elementAnswers]
@@ -587,9 +601,7 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
 
                     slidersValues={sliderValues}
                     onUpdateSliderValue={(values) => {
-
                         setSliderValues(values)
-                        console.log(values, sliderValues)
                     }}
                 />
                 
@@ -614,6 +626,14 @@ export function ClickableQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements,
             className="clickable-question-play-container"
         >
             {contextHolder}
+
+            {errorGetClickableQuestionPlay && !isLoadingClickableQuestionPlay && 
+                <ErrorComponent 
+                    error={errorGetClickableQuestionPlay}
+                    onReload={() => loadData()}
+                />
+            }
+
             {isLoadingClickableQuestionPlay && <Skeleton />}
             {!isLoadingClickableQuestionPlay && clickableQuestionPlay && renderQuestion()}
         </div>

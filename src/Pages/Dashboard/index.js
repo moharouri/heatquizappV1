@@ -19,7 +19,7 @@ export function Dashboard(){
     const navigate = useNavigate()
 
     const loadRecentlyVisitedMaps = () => {
-        const mapIds = getMapVisit_LS()
+        const mapIds = getMapVisit_LS() || []
 
         const data = new FormData()
 
@@ -27,12 +27,17 @@ export function Dashboard(){
             data.append('Ids', Id)
         }
 
+
         getRecentlyVistedMaps(data)
     }
 
     useEffect(() => {
         loadRecentlyVisitedMaps()
     }, [])
+
+    console.log(loadingRecentlyVistedMaps)
+    console.log(recentlyVistedMaps)
+    console.log(getRecentlyVistedMapsError)
 
     const renderRecentlyVisitedMaps = () => {
 

@@ -8,7 +8,8 @@ import Dragger from "antd/es/upload/Dragger";
 import { useInterpretedTrees } from "../../contexts/InterpretedTreesContext";
 
 export function EditImagePicture({open, onClose, node, reloadData}){
-    console.log(node)
+    if(!open) return <div/>;
+
     const {loadingEditImagePicture, editImagePicture} = useInterpretedTrees()
     
     const [messageApi, contextHolder] = message.useMessage();
@@ -81,10 +82,10 @@ export function EditImagePicture({open, onClose, node, reloadData}){
                        
                         let data = new FormData()
                         data.append('Picture', newImage)
-                        data.append('ImageId', node.Id)
+                        data.append('Id', node.Id)
 
                         editImagePicture(data)
-                        .then((r) => handleResponse(r, messageApi, 'Added successfully', 1, () => {
+                        .then((r) => handleResponse(r, messageApi, 'Updated successfully', 1, () => {
                             reloadData()
                             onClose()
                        }))

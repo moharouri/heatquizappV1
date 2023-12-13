@@ -70,7 +70,7 @@ export function SeriesEditViewPage(){
 
     useEffect(() => {
         if(Series){
-            getSeriesStatistics(Series.Id)
+            getSeriesStatistics(Series)
         }
     }, [Series])
 
@@ -83,7 +83,7 @@ export function SeriesEditViewPage(){
             return(
                 <ErrorComponent 
                     error={errorGetSeriesStatistics}
-                    onReload={() => getSeriesStatistics(Series.Id)}
+                    onReload={() => getSeriesStatistics(Series)}
                 />
             )
         }
@@ -142,7 +142,11 @@ export function SeriesEditViewPage(){
         label: 'Remove from series',
         icon: <DeleteOutlined /> ,
         onClick: () => {
-            deselectQuestionFromSeries(e)
+            const VM = ({
+                ElementId: e.Id
+            })
+
+            deselectQuestionFromSeries(VM)
             .then(
                 (r) => 
                 handleResponse(r, api, 'Question removed successfully', 1, () => {
@@ -186,7 +190,7 @@ export function SeriesEditViewPage(){
     const renderElement = (e, ei) => {
         const {Question, PoolNumber} = e
 
-        const {Code, Base_ImageURL, Type, LevelOfDifficulty, Subtopic} = Question
+        const {Code, ImageURL, Type, LevelOfDifficulty, Subtopic} = Question
 
         const elementStat = seriesElementStats && seriesElementStats[e.Id]
 
@@ -224,7 +228,7 @@ export function SeriesEditViewPage(){
 
                         <img
                             alt={Code}
-                            src={Base_ImageURL}
+                            src={ImageURL}
                             className="series-edit-view-element-img"
                         />
                         {elementStat &&

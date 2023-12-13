@@ -65,7 +65,7 @@ export function MultipleChoiceQuestion({Id, deadLoad, onUpdateSeriesPlayElements
     }
 
     const renderQuestion = () => {
-        const {Base_ImageURL, Code, Latex, PDFURL} = multipleChoiceQuestionPlay
+        const {ImageURL, Code, Latex, PDFURL} = multipleChoiceQuestionPlay
         return(
             <div>
                 {contextHolder}
@@ -73,11 +73,11 @@ export function MultipleChoiceQuestion({Id, deadLoad, onUpdateSeriesPlayElements
                 className="multiple-choice-question-play-info-row"
                 size={'large'}>
                     <ImageModal
-                        URL={Base_ImageURL}
+                        URL={ImageURL}
                     >
                         <img 
                             alt={Code}
-                            src={Base_ImageURL}
+                            src={ImageURL}
                             className="multiple-choice-question-play-img"
                         />
                     </ImageModal>

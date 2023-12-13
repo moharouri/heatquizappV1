@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { AddDataPoolRequest, EditDataPoolAccessRequest, EditDataPoolRequest, getCurrentDatapool, getDatapools, getDatapoolsAdmin, getUserNotificationSubscriptionsRequest, registerFeedbackSeenRequest, setCurrentDatapool, subscribeQuestionFeedbackRequest, unsubscribeQuestionFeedbackRequest } from "../services/Datapools"
+import { AddDataPoolRequest, EditDataPoolAccessRequest, EditDataPoolRequest, HideUnhideDatapoolRequest, getCurrentDatapool, getDatapools, getDatapoolsAdmin, getUserNotificationSubscriptionsRequest, registerFeedbackSeenRequest, setCurrentDatapool, subscribeQuestionFeedbackRequest, unsubscribeQuestionFeedbackRequest } from "../services/Datapools"
 import { useAsyncFn } from "../hooks/useAsync"
 
 const Context = React.createContext()
@@ -16,6 +16,7 @@ export function DatapoolsProvider ({children}){
     const {value: AddDataPoolResult, errorAddDataPool, loading:isLoadingAddDataPool, execute: AddDataPool} = useAsyncFn((b) => AddDataPoolRequest(b))
 
     const {value: EditDataPoolResult, errorEditDataPool, loading:isLoadingEditDataPool, execute: EditDataPool} = useAsyncFn((b) => EditDataPoolRequest(b))
+    const {value: hideUnhideDatapoolResult, errorHideUnhideDatapool, loading:isLoadingHideUnhideDatapool, execute: HideUnhideDatapool} = useAsyncFn((b) => HideUnhideDatapoolRequest(b))
 
     const {value: EditDataPoolAccessResult, errorEditDataPoolAccess, loading:isLoadingEditDataPoolAccess, execute: EditDataPoolAccess} = useAsyncFn((b) => EditDataPoolAccessRequest(b))
 
@@ -65,7 +66,9 @@ export function DatapoolsProvider ({children}){
         <Context.Provider value = {{
             datapools,
             errorGetDatapools, 
-            isLoadingDatapools, 
+            isLoadingDatapools,
+            getAllDatapools,
+
             selectedDatapool,
             changeDatapool,
 
@@ -73,6 +76,9 @@ export function DatapoolsProvider ({children}){
             errorGetDatapoolsAdmin, 
             isLoadingDatapoolsAdmin, 
             getAllDatapoolsAdmin,
+
+           
+            
 
             errorAddDataPool,
             isLoadingAddDataPool,
@@ -83,6 +89,11 @@ export function DatapoolsProvider ({children}){
             isLoadingEditDataPool,
             EditDataPoolResult,
             EditDataPool,
+
+            hideUnhideDatapoolResult,
+            errorHideUnhideDatapool,
+            isLoadingHideUnhideDatapool,
+            HideUnhideDatapool,
 
             errorEditDataPoolAccess,
             isLoadingEditDataPoolAccess,

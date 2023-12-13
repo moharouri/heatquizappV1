@@ -9,7 +9,7 @@ import { QUESTION_TYPES_SEARCH_NAMES } from "../List/constants";
 
 export function CompactQuestionComponent({q, qi, firstIndex, selectedQuestions, onRenderCode}){
 
-    const {MedianPlayTime, TotalGames, TotalCorrectGames, Code, Base_ImageURL, AddedByName, DateCreated , Type, Subtopic, LevelOfDifficulty} = q  
+    const {MedianPlayTime, TotalGames, TotalCorrectGames, Code, ImageURL, AddedByName, DateCreated , Type, Subtopic, LevelOfDifficulty} = q  
 
     const correctPlayPerc = (TotalGames ? (100 *  (TotalCorrectGames/(TotalGames || 1))).toFixed(0) + '%' : '')
 
@@ -36,7 +36,7 @@ export function CompactQuestionComponent({q, qi, firstIndex, selectedQuestions, 
 
                             <img
                                 alt={Code}
-                                src={Base_ImageURL}
+                                src={ImageURL}
                                 className="series-edit-view-element-img"
                             />
                             <div className="series-edit-view-element-other-info">

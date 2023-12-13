@@ -260,7 +260,7 @@ export function ClickTrees(){
                                         
                                         <small className="default-gray">{ img.ClickImages.length ? img.ClickImages.length + ' usage times' : ''} </small>
                                         <img 
-                                            src={img.URL}
+                                            src={img.ImageURL}
                                             className="click-tree-head-img"
                                             alt={img.Name}
                                         />
@@ -280,7 +280,7 @@ export function ClickTrees(){
                                                     </Dropdown>
                                                     <small className="default-gray">{ l.ClickImages.length ? l.ClickImages.length + ' usage times' : 'not used'} </small>
                                                     <img 
-                                                        src={l.URL}
+                                                        src={l.ImageURL}
                                                         className="click-tree-leaf-img"
                                                         alt={l.Name}
                                                     />

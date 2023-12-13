@@ -15,13 +15,11 @@ const { RangePicker } = DatePicker;
 
 
 export function StudentFeedback(){
-    const [showViewFeedbackListModal, setShowViewFeedbackListModal] = useState(false)
     const [selectedQuestion, setSelectedQuestion] = useState({})
 
-    const [debugCode, setDebugCode] = useState('')
-    const [showDebugCodeList, setShowDebugCodeList] = useState(false)
-
     const [showPlayQuestionModal, setShowPlayQuestionModal] = useState(false)
+
+    const [showViewFeedbackListModal, setShowViewFeedbackListModal] = useState(false)
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -32,11 +30,7 @@ export function StudentFeedback(){
         studentFeedback,
         getStudentFeedbackError,
         getStudentFeedback,
-        
-        loadingDebugCodeDecryption,
-        debugCodeDecryption,
-        decryptDebugCodeError,
-        decryptDebugCode
+      
     } = useStudentFeedback()
 
     const [fromData, setFromData] = useState(null)
@@ -59,30 +53,6 @@ export function StudentFeedback(){
         getStudentFeedback(VM)
     }
 
-    function QRSearchLine(){
-        return(
-            <Space align="start" className="qr-search-line">
-                 <div className="qr-code-input">
-                    <small className="default-gray">Debug code</small>
-                    <Input 
-                        value={debugCode}
-                        onChange={(v) => setDebugCode(v.target.value)}
-                        placeholder="Debug code sent by student"
-                    />
-                    <Button 
-                        className="search-btn"
-                        onClick={() => {
-                            setShowDebugCodeList(true)
-                            decryptDebugCode(debugCode)
-                        }}
-                    >
-                        Search 
-                    </Button>
-                 </div>
-            </Space>
-        )
-    }
-
     function FeedbackSearchLine(){
         return(
                 <div className="feedback-search-input">
@@ -100,7 +70,6 @@ export function StudentFeedback(){
                         <Button 
                             className="search-btn"
                             onClick={() => {
-                                setShowDebugCodeList(false)    
                                 searchFeedback()
                             }}
                         >
@@ -139,7 +108,6 @@ export function StudentFeedback(){
             </Divider>
             <Space align="start">
                 {FeedbackSearchLine()}
-                {QRSearchLine()}
             </Space>
 
             <Divider/>
@@ -149,27 +117,16 @@ export function StudentFeedback(){
                 <ErrorComponent 
                     error={getStudentFeedbackError}
                     onReload={() => {
-                        setShowDebugCodeList(false)    
                         searchFeedback()
                     }}
                 />}
 
-            {decryptDebugCodeError && !loadingDebugCodeDecryption && 
-                <ErrorComponent 
-                    error={decryptDebugCodeError}
-                    onReload={() => {
-                        setShowDebugCodeList(true)
-                        decryptDebugCode(debugCode)
-                    }}
-                />}
-
-
-            {!(loadingStudentFeedback || getStudentFeedbackError) && studentFeedback && !showDebugCodeList &&
+            {!(loadingStudentFeedback || getStudentFeedbackError) && studentFeedback  &&
             <Row>
                 {studentFeedback.map((f) => {
                 const {data, feedback} = f
 
-                const {Code, Base_ImageURL} = data
+                const {Code, ImageURL} = data
 
                 return(
                         <Col xs={6}> 
@@ -185,7 +142,7 @@ export function StudentFeedback(){
                                             <p className="hoverable hoverable-plus">{Code}</p>
                                         </Dropdown>
                                         <img
-                                            src = {Base_ImageURL}
+                                            src = {ImageURL}
                                             alt="question"
                                             className="question-feedback-image"
                                         />
@@ -215,11 +172,7 @@ export function StudentFeedback(){
             })}
             </Row>}
 
-            {loadingDebugCodeDecryption && <Spin tip="loading..."/>}
 
-            {!(loadingDebugCodeDecryption || decryptDebugCodeError) && debugCodeDecryption && showDebugCodeList &&
-            'debugCodeDecryption'}           
-          
             <ViewFeedbackList 
                 open={showViewFeedbackListModal}
                 onClose={()=> setShowViewFeedbackListModal(false)}

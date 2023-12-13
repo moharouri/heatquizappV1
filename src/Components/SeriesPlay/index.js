@@ -384,17 +384,17 @@ export function SeriesPlay({Code, onExitSeries, onFinishPlaySeries, mapKey, mapN
         const element = playedElements[index]
 
         const {Question, Answers} = element
-        const {Code, Base_ImageURL, Choices, Latex} = Question
+        const {Code, ImageURL, Choices, Latex} = Question
 
         return(
             <Space 
                 size={'large'}
             >
                 <ImageModal
-                    URL={Base_ImageURL}
+                    URL={ImageURL}
                 >
                     <img 
-                        src={Base_ImageURL}
+                        src={ImageURL}
                         alt={Code}
                         className="series-play-final-page-item-img"
                     />
@@ -459,7 +459,7 @@ export function SeriesPlay({Code, onExitSeries, onFinishPlaySeries, mapKey, mapN
         const element = playedElements[index]
 
         const {Question, Answers} = element
-        const {Code, Base_ImageURL, Latex, Answers: correctAnswers} = Question
+        const {Code, ImageURL, Latex, Answers: correctAnswers} = Question
 
         const reducedLatex = Answers[0].List.reduce((a,b) => a += ' ' + (b.code === '*' ? '\\cdot': b.code), '') || '-'
 
@@ -468,10 +468,10 @@ export function SeriesPlay({Code, onExitSeries, onFinishPlaySeries, mapKey, mapN
                 size={'large'}
             >
                 <ImageModal
-                    URL={Base_ImageURL}
+                    URL={ImageURL}
                 >
                     <img 
-                        src={Base_ImageURL}
+                        src={ImageURL}
                         alt={Code}
                         className="series-play-final-page-item-img"
                     />

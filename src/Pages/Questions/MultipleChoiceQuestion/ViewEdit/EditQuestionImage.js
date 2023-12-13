@@ -18,7 +18,7 @@ export function EditQuestionImage({open, onClose, question, reloadQuestion}){
     const [newImageURL, setNewImageURL] = useState(null);
 
     const [api, contextHolder] = message.useMessage()
-    const { isLoadingEditMultipleChoiceQuestionImage, editMultipleChoiceQuestionImage} = useQuestions()
+    const { isLoadingEditQuestionImage, editQuestionImage} = useQuestions()
     
     const handleChange = (info) => {
         if (info.file.status === 'uploading') {
@@ -52,7 +52,7 @@ export function EditQuestionImage({open, onClose, question, reloadQuestion}){
                 <Space size={'large'} align="start">
                     <div>
                         <img
-                            src = {question.Base_ImageURL}
+                            src = {question.ImageURL}
                             alt="question"
                             className="question-feedback-image"
                             
@@ -105,14 +105,14 @@ export function EditQuestionImage({open, onClose, question, reloadQuestion}){
                 data.append("QuestionId", question.Id)
                 data.append("Picture", newImage)
 
-                editMultipleChoiceQuestionImage(data)
+                editQuestionImage(data)
                 .then(r => handleResponse(r, api, 'Image updated successfully', 1, () => {
                     onClose()
                     reloadQuestion()
                 }))
             }}
 
-            loading={isLoadingEditMultipleChoiceQuestionImage}
+            loading={isLoadingEditQuestionImage}
         >
             Update
         </Button>

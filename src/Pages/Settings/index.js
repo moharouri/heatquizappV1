@@ -9,7 +9,7 @@ import './index.css'
 import { handleResponse } from "../../services/Auxillary";
 
 export function Settings(){
-    const {datapoolsAdmin, errorGetDatapoolsAdmin, isLoadingDatapoolsAdmin, getAllDatapoolsAdmin,
+    const {datapools, errorGetDatapools, isLoadingDatapools, getAllDatapools,
         getUserNotificationSubscriptionsResult: subscriptions, errorGetUserNotificationSubscriptions, isLoadingGetUserNotificationSubscriptions, getUserNotificationSubscriptions,
 
         subscribeQuestionFeedback, unsubscribeQuestionFeedback,
@@ -18,7 +18,7 @@ export function Settings(){
     const [api, contextHolder] = message.useMessage()
 
     const loadData = () => {
-        getAllDatapoolsAdmin()
+        getAllDatapools()
         getUserNotificationSubscriptions()
     }
 
@@ -47,40 +47,39 @@ export function Settings(){
     }]
 
     const renderNotificationSubscription = () => {
-        const isLoading = (isLoadingDatapoolsAdmin || isLoadingGetUserNotificationSubscriptions)
-        const error = (errorGetUserNotificationSubscriptions || errorGetDatapoolsAdmin)
+        const isLoading = (isLoadingDatapools || isLoadingGetUserNotificationSubscriptions)
+        const error = (errorGetUserNotificationSubscriptions || errorGetDatapools)
 
         return(
             <Col xs={24}>
-                <Space>
                     <div>
                         <small className="default-gray">Notifications subscription</small>
 
                         <br/>
                         <br/>
 
-                        {(isLoadingDatapoolsAdmin || isLoadingGetUserNotificationSubscriptions) && <Spin />}
+                        {(isLoadingDatapools || isLoadingGetUserNotificationSubscriptions) && <Spin />}
 
-                        {errorGetDatapoolsAdmin && !isLoadingDatapoolsAdmin && 
+                        {errorGetDatapools && !isLoadingDatapools && 
                             <ErrorComponent 
-                                error={errorGetDatapoolsAdmin}
-                                onReload={() => getAllDatapoolsAdmin()}
+                                error={errorGetDatapools}
+                                onReload={() => getAllDatapools()}
                             />
                         }
 
                         {errorGetUserNotificationSubscriptions && !isLoadingGetUserNotificationSubscriptions && 
                             <ErrorComponent 
                                 error={errorGetUserNotificationSubscriptions}
-                                onReload={() => getAllDatapoolsAdmin()}
+                                onReload={() => getAllDatapools()}
                             />
                         }
 
-                        {!isLoading && !error && subscriptions && datapoolsAdmin &&
+                        {!isLoading && !error && subscriptions && datapools &&
                             <Row
                                 className="hq-full-width"
                                 gutter={[4,4]}
                             >
-                                {datapoolsAdmin.map((d, di) => {
+                                {datapools.map((d, di) => {
                                     const {Id, NickName} = d
 
                                     const isSubscribed = subscriptions.filter(a => a.DatapoolId === d.Id).length
@@ -109,7 +108,6 @@ export function Settings(){
                                     })}
                             </Row>}
                     </div>
-                </Space>
             </Col>
         )
     }

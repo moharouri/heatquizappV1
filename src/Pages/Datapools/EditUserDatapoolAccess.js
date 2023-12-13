@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useUsers } from "../../contexts/UsersContext";
 import { useState } from "react";
 import { useDatapools } from "../../contexts/DatapoolsContext";
+import { handleResponse } from "../../services/Auxillary";
 
 export function EditUserDatapoolAccess({open, onClose, DP}){
 
@@ -64,8 +65,12 @@ export function EditUserDatapoolAccess({open, onClose, DP}){
                         })
         
                         EditDataPoolAccess(VM)
-                        .then(() => {
-                            getAllDatapoolsAdmin()
+                        .then(r => {
+                            console.log(r)
+                            handleResponse(r, api, "Updated", 1, () => {
+                                getAllDatapoolsAdmin()
+                                onClose()
+                            })
                         })
                     }}
                     loading = {isLoadingEditDataPoolAccess}
@@ -85,7 +90,7 @@ export function EditUserDatapoolAccess({open, onClose, DP}){
         >
             {contextHolder}
             <Transfer
-                dataSource={users.map((a) => ({
+                dataSource={users.filter(a => a.Name.toLowerCase() !== "admin").map((a) => ({
                     key: a.Name,
                     title: a.Name,
                 }))}

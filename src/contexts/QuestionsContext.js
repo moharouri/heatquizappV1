@@ -1,7 +1,7 @@
 import React, { useContext} from "react"
 
 import { useAsyncFn } from "../hooks/useAsync"
-import { GetQuestionStatisticsRequest, addClickableQuestionPartsRequest, addClickableQuestionRequest, addKeyboardQuestionAnswerRequest, addKeyboardQuestionRequest, addMultipleChoiceQuestionChoiceRequest, addMultipleChoiceQuestionRequest, addQuestionPDFStatisticRequest, addQuestionSolutionRequest, addQuestionStatisticRequest, copyQuestionRequest, deleteClickableQuestionPartRequest, editClickableQuestionAnswerRequest, editClickableQuestionImageRequest, editKeyboardQuestionImageRequest, editKeyboardQuestionLatexRequest, editMultipleChoiceQuestionAdditionalInfoRequest, editMultipleChoiceQuestionChoiceRequest, editMultipleChoiceQuestionImageRequest, editMultipleChoiceQuestionLatexRequest, editQuestionBasicInfoRequest, getClickableQuestionPlayRequest, getKeyboardQuestionPlayRequest, getKeyboardQuestionWrongAnswersRequest, getMultipleChoiceQuestionPlayRequest, getQuestionMedianTimeRequest, getQuestionRelationsRequest, removeKeyboardQuestionAnswerRequest, removeMultipleChoiceQuestionChoiceImageRequest, removeMultipleChoiceQuestionChoiceLatexRequest, removeMultipleChoiceQuestionChoiceRequest, removeQuestionSolutionRequest, searchQuestionsByIdsRequest, searchQuestionsRequest } from "../services/Questions"
+import { GetQuestionStatisticsRequest, addClickableQuestionPartsRequest, addClickableQuestionRequest, addKeyboardQuestionAnswerRequest, addKeyboardQuestionRequest, addMultipleChoiceQuestionChoiceRequest, addMultipleChoiceQuestionRequest, addQuestionPDFStatisticRequest, addQuestionSolutionRequest, addQuestionStatisticRequest, copyQuestionRequest, deleteClickableQuestionPartRequest, editClickableQuestionAnswerRequest, editKeyboardQuestionImageRequest, editKeyboardQuestionLatexRequest, editMultipleChoiceQuestionChoiceRequest, editQuestionBasicInfoRequest, editQuestionImageRequest, editQuestionLatexRequest, getClickableQuestionPlayRequest, getClickableQuestionViewEditRequest, getKeyboardQuestionPlayRequest, getKeyboardQuestionWrongAnswersRequest, getMultipleChoiceQuestionPlayRequest, getMultipleChoiceQuestionViewEditRequest, getQuestionMedianTimeRequest, getQuestionRelationsRequest, removeKeyboardQuestionAnswerRequest, removeMultipleChoiceQuestionChoiceImageRequest, removeMultipleChoiceQuestionChoiceLatexRequest, removeMultipleChoiceQuestionChoiceRequest, removeQuestionSolutionRequest, searchQuestionsByIdsRequest, searchQuestionsRequest } from "../services/Questions"
 
 const Context = React.createContext()
 
@@ -22,38 +22,39 @@ export function QuestionsProvider ({children}){
 
     //Clickable question
     const {value: clickableQuestionPlay, error: errorGetClickableQuestionPlay, loading:isLoadingClickableQuestionPlay, execute:getClickableQuestionPlay} = useAsyncFn((Id) => getClickableQuestionPlayRequest(Id)) 
+    const {value: clickableQuestionViewEdit, error: errorGetClickableQuestionViewEdit, loading:isLoadingClickableQuestionViewEdit, execute:getClickableQuestionViewEdit} = useAsyncFn((b) => getClickableQuestionViewEditRequest(b)) 
     
     //Multiple choice question
     const {value: multipleChoiceQuestionPlay, error:errorGetMultipleChoiceQuestionPlay, loading:isLoadingMultipleChoiceQuestionPlay, execute:getMultipleChoiceQuestionPlay} = useAsyncFn((Id) => getMultipleChoiceQuestionPlayRequest(Id)) 
+    const {value: multipleChoiceQuestionViewEdit, error:errorGetMultipleChoiceQuestionViewEdit, loading:isLoadingMultipleChoiceQuestionViewEdit, execute: getMultipleChoiceQuestionViewEdit} = useAsyncFn((b) => getMultipleChoiceQuestionViewEditRequest(b)) 
     
     //Keyboard question 
     const {value: keyboardQuestionPlay, error:errorGetKeyboardQuestionPlay, loading:isLoadingKeyboardQuestionPlay, execute:getKeyboardQuestionPlay} = useAsyncFn((Id) => getKeyboardQuestionPlayRequest(Id)) 
 
     //Question relations 
-    const {value: questionRelations, error:errorGetQuestionRelations, loading:isLoadingGetQuestionRelations, execute:getQuestionRelations} = useAsyncFn((Id) => getQuestionRelationsRequest(Id)) 
+    const {value: questionRelations, error:errorGetQuestionRelations, loading:isLoadingGetQuestionRelations, execute:getQuestionRelations} = useAsyncFn((b) => getQuestionRelationsRequest(b)) 
     
     //Question statistics 
-    const {value: questionStatistics, error:errorGetQuestionStatistics, loading:isLoadingGetQuestionStatistics, execute:getQuestionStatistics} = useAsyncFn((Id) => GetQuestionStatisticsRequest(Id)) 
+    const {value: questionStatistics, error:errorGetQuestionStatistics, loading:isLoadingGetQuestionStatistics, execute:getQuestionStatistics} = useAsyncFn((b) => GetQuestionStatisticsRequest(b)) 
 
     //Add statistic
     const {value: addQuestionStatisticResult, error:errorAddQuestionStatistic, loading:isLoadingAddQuestionStatistic, execute:postQuestionStatistic} = useAsyncFn((Id) => addQuestionStatisticRequest(Id)) 
     const {value: addQuestionPDFStatisticResult, error:errorAddQuestionPDFStatistic, loading:isLoadingAddQuestionPDFStatistic, execute:postQuestionPDFStatistic} = useAsyncFn((b) => addQuestionPDFStatisticRequest(b)) 
     
+    //Shared
     //Copy question
     const {value: copyQuestionResult, error:errorCopyQuestion, loading:isLoadingCopyQuestion, execute:copyQuestion} = useAsyncFn((b) => copyQuestionRequest(b)) 
-    
     //Edit basic info
     const {value: editQuestionBasicInfoResult, error:errorEditQuestionBasicInfo, loading:isLoadingEditQuestionBasicInfo, execute:editQuestionBasicInfo} = useAsyncFn((b) => editQuestionBasicInfoRequest(b)) 
-    
     //Edit solution
     const {value: editQuestionSolutionResult, error:errorEditQuestionSolution, loading:isLoadingEditQuestionSolution, execute:editQuestionSolution} = useAsyncFn((b) => addQuestionSolutionRequest(b)) 
     const {value: removeQuestionSolutionResult, error:errorRemoveQuestionSolution, loading:isLoadingRemoveQuestionSolution, execute:removeQuestionSolution} = useAsyncFn((b) => removeQuestionSolutionRequest(b)) 
-
+    //Edit image
+    const {value: editQuestionImageResult, error:errorEditQuestionImage, loading:isLoadingEditQuestionImage, execute:editQuestionImage} = useAsyncFn((b) => editQuestionImageRequest(b)) 
+    const {value: editQuestionLatexResult, error:errorEditQuestionLatex, loading:isLoadingEditQuestionLatex, execute:editQuestionLatex} = useAsyncFn((b) => editQuestionLatexRequest(b)) 
+    //Edit LaTeX
 
     //Multiple choice edit question actions
-    const {value: editMultipleChoiceQuestionLatexResult, error:errorEditMultipleChoiceQuestionLatex, loading:isLoadingEditMultipleChoiceQuestionLatex, execute:editMultipleChoiceQuestionLatex} = useAsyncFn((b) => editMultipleChoiceQuestionLatexRequest(b)) 
-    const {value: editMultipleChoiceQuestionAdditionalInfoResult, error:errorEditMultipleChoiceQuestionAdditionalInfo, loading:isLoadingEditMultipleChoiceQuestionAdditionalInfo, execute:editMultipleChoiceQuestionAdditionalInfo} = useAsyncFn((b) => editMultipleChoiceQuestionAdditionalInfoRequest(b)) 
-    const {value: editMultipleChoiceQuestionImageResult, error:errorEditMultipleChoiceQuestionImage, loading:isLoadingEditMultipleChoiceQuestionImage, execute:editMultipleChoiceQuestionImage} = useAsyncFn((b) => editMultipleChoiceQuestionImageRequest(b)) 
 
     const {value: addMultipleChoiceQuestionChoiceResult, error:errorAddMultipleChoiceQuestionChoice, loading:isLoadingAddMultipleChoiceQuestionChoice, execute:addMultipleChoiceQuestionChoice} = useAsyncFn((b) => addMultipleChoiceQuestionChoiceRequest(b)) 
     const {value: editMultipleChoiceQuestionChoiceResult, error:errorEditMultipleChoiceQuestionChoice, loading:isLoadingEditMultipleChoiceQuestionChoice, execute:editMultipleChoiceQuestionChoice} = useAsyncFn((b) => editMultipleChoiceQuestionChoiceRequest(b)) 
@@ -79,10 +80,9 @@ export function QuestionsProvider ({children}){
     const {value: editClickableQuestionAnswerResult, error:errorEditClickableQuestionAnswer, loading:isLoadingEditClickableQuestionAnswer, execute:editClickableQuestionAnswer} = useAsyncFn((b) => editClickableQuestionAnswerRequest(b)) 
     const {value: deleteClickableQuestionPartResult, error:errorDeleteClickableQuestionPart, loading:isLoadingDeleteClickableQuestionPart, execute:deleteClickableQuestionPart} = useAsyncFn((b) => deleteClickableQuestionPartRequest(b)) 
     const {value: addClickableQuestionPartsResult, error:errorAddClickableQuestionParts, loading:isLoadingAddClickableQuestionParts, execute:addClickableQuestionParts} = useAsyncFn((b) => addClickableQuestionPartsRequest(b)) 
-    const {value: editClickableQuestionImageResult, error:errorEditClickableQuestionImage, loading:isLoadingEditClickableQuestionImage, execute:editClickableQuestionImage} = useAsyncFn((b) => editClickableQuestionImageRequest(b)) 
     
     //Question median time statistics
-    const {value: getQuestionMedianTimeResult, error:errorGetQuestionMedianTime, loading:isLoadingGetQuestionMedianTime, execute:getQuestionMedianTime} = useAsyncFn((Id) => getQuestionMedianTimeRequest(Id)) 
+    const {value: getQuestionMedianTimeResult, error:errorGetQuestionMedianTime, loading:isLoadingGetQuestionMedianTime, execute:getQuestionMedianTime} = useAsyncFn((b) => getQuestionMedianTimeRequest(b)) 
 
     return(
         <Context.Provider value = {{
@@ -96,10 +96,20 @@ export function QuestionsProvider ({children}){
             isLoadingClickableQuestionPlay,
             getClickableQuestionPlay,
 
+            clickableQuestionViewEdit,
+            errorGetClickableQuestionViewEdit,
+            isLoadingClickableQuestionViewEdit,
+            getClickableQuestionViewEdit,
+
             multipleChoiceQuestionPlay,
             errorGetMultipleChoiceQuestionPlay,
             isLoadingMultipleChoiceQuestionPlay,
             getMultipleChoiceQuestionPlay,
+
+            multipleChoiceQuestionViewEdit,
+            errorGetMultipleChoiceQuestionViewEdit,
+            isLoadingMultipleChoiceQuestionViewEdit,
+            getMultipleChoiceQuestionViewEdit,
 
             keyboardQuestionPlay,
             errorGetKeyboardQuestionPlay,
@@ -151,21 +161,6 @@ export function QuestionsProvider ({children}){
             errorAddMultipleChoiceQuestion,
             isLoadingAddMultipleChoiceQuestion,
             addMultipleChoiceQuestion,
-            
-            editMultipleChoiceQuestionLatexResult, 
-            errorEditMultipleChoiceQuestionLatex,
-            isLoadingEditMultipleChoiceQuestionLatex,
-            editMultipleChoiceQuestionLatex,
-
-            editMultipleChoiceQuestionAdditionalInfoResult, 
-            errorEditMultipleChoiceQuestionAdditionalInfo,
-            isLoadingEditMultipleChoiceQuestionAdditionalInfo,
-            editMultipleChoiceQuestionAdditionalInfo,
-
-            editMultipleChoiceQuestionImageResult,
-            errorEditMultipleChoiceQuestionImage,
-            isLoadingEditMultipleChoiceQuestionImage,
-            editMultipleChoiceQuestionImage,
 
             editMultipleChoiceQuestionChoiceResult,
             errorEditMultipleChoiceQuestionChoice,
@@ -245,15 +240,21 @@ export function QuestionsProvider ({children}){
             errorAddClickableQuestionParts,
             addClickableQuestionParts,
 
-            isLoadingEditClickableQuestionImage,
-            errorEditClickableQuestionImage,
-            editClickableQuestionImageResult,
-            editClickableQuestionImage,
-
             isLoadingGetQuestionMedianTime,
             getQuestionMedianTimeResult,
             errorGetQuestionMedianTime,
-            getQuestionMedianTime
+            getQuestionMedianTime,
+
+            //Shared functions
+            isLoadingEditQuestionImage,
+            errorEditQuestionImage,
+            editQuestionImageResult,
+            editQuestionImage,
+
+            isLoadingEditQuestionLatex,
+            errorEditQuestionLatex,
+            editQuestionLatexResult,
+            editQuestionLatex,
         }}>
             {children}
         </Context.Provider>

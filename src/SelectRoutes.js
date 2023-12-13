@@ -43,8 +43,6 @@ import { AddClickableQuestion } from "./Pages/Questions/ClickableQuestion/Add";
 export function SelectRoutes(){
     const {roles, isStudent,} = useAuth()
 
-    console.log(roles)
-
     const isAdmin = roles.includes('admin')
     const isNormalUser = roles.includes('course_editor')
 
@@ -138,6 +136,7 @@ export function SelectRoutes(){
 
     return(
         <Routes>
+            <Route path="/Login" exact element={<Login />}/>
             <Route path="*" exact element={<NotFoundPage />}/>
         </Routes>
     )

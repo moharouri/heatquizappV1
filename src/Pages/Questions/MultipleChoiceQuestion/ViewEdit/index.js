@@ -9,7 +9,6 @@ import { EditChoiceLatex } from "./EditChoiceLatex";
 import { useState } from "react";
 import { EditChoiceImage } from "./EditChoiceImage";
 import { EditQuestionLatex } from "./EditQuestionLatex";
-import { EditQuestionAdditionalInformation } from "./EditQuestionAdditionalInformation";
 import { AddChoice } from "./AddChoice";
 import { EditQuestionImage } from "./EditQuestionImage";
 import { handleResponse } from "../../../../services/Auxillary";
@@ -19,7 +18,6 @@ export function MultipleChoiceQuestionEditView({reloadQuestion}){
     const [showAddChoice, setShowAddChoice] = useState(false)
 
     const [showEditLatex, setShowEditLatex] = useState(false)
-    const [showEditAdditionalInfo, setShowEditAdditionalInfo] = useState(false)
     const [showEditImage, setShowEditImage] = useState(false)
 
     const [showEditChoiceLatex, setShowEditChoiceLatex] = useState(false)
@@ -28,13 +26,13 @@ export function MultipleChoiceQuestionEditView({reloadQuestion}){
 
     const [api, contextHolder] = message.useMessage()
 
-    const {multipleChoiceQuestionPlay: question, isLoadingEditMultipleChoiceQuestionChoice, editMultipleChoiceQuestionChoice,
+    const {multipleChoiceQuestionViewEdit: question, isLoadingEditMultipleChoiceQuestionChoice, editMultipleChoiceQuestionChoice,
         isLoadingRemoveMultipleChoiceQuestionChoice, removeMultipleChoiceQuestionChoice,
         isLoadingRemoveMultipleChoiceQuestionChoiceLatex, removeMultipleChoiceQuestionChoiceLatex,
         isLoadingRemoveMultipleChoiceQuestionChoiceImage, removeMultipleChoiceQuestionChoiceImage
     } = useQuestions()
 
-    const {Base_ImageURL, Code, Latex, AdditionalInfo, Choices} = question
+    const {ImageURL, Code, Latex, Choices} = question
 
     const flipCorrect = (c) => {
         
@@ -51,7 +49,7 @@ export function MultipleChoiceQuestionEditView({reloadQuestion}){
     const removeChoice = (c) => {
         
         const VM = ({
-            Id: question.Id,
+            QuestionId: question.Id,
             AnswerId: c.Id
         })
         
@@ -89,7 +87,7 @@ export function MultipleChoiceQuestionEditView({reloadQuestion}){
                     xs={4}
                 >
                     <img 
-                        src={Base_ImageURL}
+                        src={ImageURL}
                         alt={Code}
                         className="multiple-choice-question-edit-view-img"
                     />
@@ -110,10 +108,7 @@ export function MultipleChoiceQuestionEditView({reloadQuestion}){
                             />
                         </Space>
 
-                        <Space align="start" size={'large'}>
-                            <p className="default-gray">Additional info</p>
-                            <p>*{AdditionalInfo}</p>
-                        </Space>
+                       
 
                         <Space align="start" size={'large'}>
                             <p className="default-gray">Choices</p>
@@ -297,21 +292,7 @@ export function MultipleChoiceQuestionEditView({reloadQuestion}){
                             >
                                 <AlignLeftOutlined />
                             </Button>
-                        </Tooltip>
-
-                        <Tooltip
-                            color="white"
-                            title={<p>Update additional info</p>}
-                            placement="left"
-                        >
-                            <Button
-                                onClick={() => setShowEditAdditionalInfo(true)}
-                            >
-                                <AlignLeftOutlined />
-                            </Button>
-                        </Tooltip>
-
-                       
+                        </Tooltip>                       
                     </Space>           
                 </Col>
                 
@@ -327,13 +308,6 @@ export function MultipleChoiceQuestionEditView({reloadQuestion}){
             <EditQuestionLatex 
                 open={showEditLatex}
                 onClose={() => setShowEditLatex(false)}
-                question={question}
-                reloadQuestion = {reloadQuestion}
-            />
-
-            <EditQuestionAdditionalInformation 
-                open={showEditAdditionalInfo}
-                onClose={() => setShowEditAdditionalInfo(false)}
                 question={question}
                 reloadQuestion = {reloadQuestion}
             />

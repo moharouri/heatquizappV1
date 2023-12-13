@@ -37,7 +37,6 @@ export function AddMutlipleChoiceQuestion(){
     const [selectedDefaultImage, setSelectedDefaultImage] = useState(null)
 
     const [newLatex, setNewLatex] = useState('-question-text-')
-    const [additionalInfo, setAdditionalInfo] = useState('')
 
     const [choices, setChoices] = useState([])
 
@@ -169,15 +168,7 @@ export function AddMutlipleChoiceQuestion(){
 
                         <LatexRenderer latex={newLatex} />
 
-                        <br/>
-
-                        <p>Additional info</p>
-                        <Input 
-                            type="text"
-                            placeholder="...."
-                            value={additionalInfo}
-                            onChange={(v) => setAdditionalInfo(v.target.value)}
-                        />
+                       
                     </Col>
                 </Row>
 
@@ -317,13 +308,8 @@ export function AddMutlipleChoiceQuestion(){
         data.append('SubtopicId',  questionInfo.selectedSubtopic.Id)
         data.append('LODId', questionInfo.selectedLOD.Id)
 
-        data.append('Public', false)
-        data.append('Attributes', "")
-
         data.append('AnswerForLatex', newLatex)
-        data.append('AdditionalInfo', additionalInfo)
 
-        data.append('ChoicesPerRow', 1)
         data.append('AnswersString', JSON.stringify(
             choices.map((a) =>(
                 {

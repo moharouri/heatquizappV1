@@ -80,7 +80,7 @@ export function EditElementAnswer({open, onClose, element, type, reloadQuestion}
                         dataSource={selectedTree.Images}
 
                         renderItem={(img) => {
-                            const {Id, URL, Name, Leafs} = img
+                            const {Id, ImageURL, Name, Leafs} = img
 
                             const isSelected = selectedNode && selectedNode.Id === img.Id
 
@@ -99,7 +99,7 @@ export function EditElementAnswer({open, onClose, element, type, reloadQuestion}
                                 >
                                     <img 
                                         alt="node"
-                                        src={URL}
+                                        src={ImageURL}
                                         className="hq-img-size-1"
                                     />
                                     <small className="default-gray">{Name}</small>
@@ -114,7 +114,7 @@ export function EditElementAnswer({open, onClose, element, type, reloadQuestion}
                         dataSource={selectedNode.Leafs}
 
                         renderItem={(img) => {
-                            const {Id, URL, Name} = img
+                            const {Id, ImageURL, Name} = img
                             const isSelected = selectedNodeSecond && selectedNodeSecond.Id === img.Id
 
                             return(
@@ -127,7 +127,7 @@ export function EditElementAnswer({open, onClose, element, type, reloadQuestion}
                                 >
                                     <img 
                                         alt="node"
-                                        src={URL}
+                                        src={ImageURL}
                                         className="hq-img-size-1"
                                     />
                                     <small className="default-gray">{Name}</small>
@@ -181,7 +181,7 @@ export function EditElementAnswer({open, onClose, element, type, reloadQuestion}
                         dataSource={selectedTree.Images}
 
                         renderItem={(img) => {
-                            const {Id, URL, Name} = img
+                            const {Id, ImageURL, Name} = img
                             const isSelected = selectedNode && selectedNode.Id === img.Id
 
                             return(
@@ -195,7 +195,7 @@ export function EditElementAnswer({open, onClose, element, type, reloadQuestion}
                                 >
                                     <img 
                                         alt="node"
-                                        src={URL}
+                                        src={ImageURL}
                                         className="hq-img-size-1"
                                     />
                                     <small className="default-gray">{Name}</small>

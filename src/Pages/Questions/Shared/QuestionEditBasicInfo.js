@@ -72,7 +72,7 @@ export function QuestionEditBasicInfo({open, onClose, question, reloadQuestion})
           <Space size={'large'} align="start">
               <div>
                   <img
-                      src = {question.Base_ImageURL}
+                      src = {question.ImageURL}
                       alt="question"
                       className="question-feedback-image"
                       

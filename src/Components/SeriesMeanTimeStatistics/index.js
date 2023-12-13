@@ -27,7 +27,7 @@ export function SeriesMeanTimeStatistics({series, children, style}){
 
     useEffect(() => {
         if(showModal){
-            getSeriesMedianTimeSpectrum(series.Id)
+            getSeriesMedianTimeSpectrum(series)
         }
     }, [showModal])
 
@@ -564,6 +564,9 @@ export function SeriesMeanTimeStatistics({series, children, style}){
         if(!(ctx && spectrum)) return;
 
         const {TotalPlay, TotalPlayMobile} = spectrum
+
+        if(!TotalPlay) return;
+
         const {width, height} = style
         
         const onMobilePerc = (100*(TotalPlayMobile/TotalPlay)).toFixed(0) + "%"

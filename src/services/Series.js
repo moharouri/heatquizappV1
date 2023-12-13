@@ -1,67 +1,68 @@
 import {ADD_REQUEST_BODY_API, ADD_REQUEST_FILE_API, EDIT_REQUEST_BODY_API, GET_REQUEST_API, GET_REQUEST_BODY_API } from "./APIRequests";
 
 
-export function getSeriesRequest(Code){
-    return GET_REQUEST_API('QuestionSeries/GetSeries', Code)
-}
 
 export function getSeriesViewEditRequest(Code){
-    return GET_REQUEST_API('QuestionSeries/GetSeries_EXTENDED', Code)
+    return GET_REQUEST_BODY_API('QuestionSeries/GetSeriesExtended', {Code}, true, true)
 }
 
-export function getSeriesMedianTimeSpectrumRequest(Id){
-    return GET_REQUEST_API('Statistics/GetSeriesStatisticDetailed', Id)
+export function getSeriesMedianTimeSpectrumRequest(b){
+    return GET_REQUEST_BODY_API('Statistics/GetSeriesMedianTimeSpectrum', b, true, true)
 }
 
-export function getSeriesStatisticsRequest(Id){
-    return GET_REQUEST_API('QuestionSeries/GetSeriesElementStatistics_EXTENDED', Id)
+export function getSeriesStatisticsRequest(b){
+    return GET_REQUEST_BODY_API('Statistics/GetSeriesStatistics', b, true, true)
 }
 
 export function getSeriesAddersRequest(){
-    return GET_REQUEST_API('QuestionSeries/GetSeriesAdders', null, true)
+    return GET_REQUEST_BODY_API('QuestionSeries/GetSeriesAdders', {}, true, true)
 }
 
 export function searchSeriesRequest(b){
-    return GET_REQUEST_BODY_API('QuestionSeries/SearchSeries_ADVANCED', b, true)
+    return GET_REQUEST_BODY_API('SearchEngine/SearchSeries', b, true, true)
 }
 
 export function searchSeriesByIdsRequest(b){
-    return GET_REQUEST_BODY_API('QuestionSeries/SearchSeriesByIds_ADVANCED', b, true)
-}
-
-
-export function addSeriesStatisticRequest(b){
-    return ADD_REQUEST_FILE_API('QuestionSeries/AddStatistic', b)
+    return GET_REQUEST_BODY_API('SearchEngine/SearchSeriesByIds', b, true, true)
 }
 
 export function addSeriesRequest(b){
-    return ADD_REQUEST_BODY_API('QuestionSeries/AddSeries', b, true)
+    return ADD_REQUEST_BODY_API('QuestionSeries/AddSeries', b, true, true)
 }
 
 export function addQuestionsToSeriesRequest(b){
-    return ADD_REQUEST_BODY_API('QuestionSeries/AddSeriesElements', b, true)
+    return ADD_REQUEST_BODY_API('QuestionSeries/AddSeriesElements', b, true, true)
 }
 
 export function editQuestionsInfoRequest(b){
-    return EDIT_REQUEST_BODY_API('QuestionSeries/EditSeriesCode', b, true)
+    return EDIT_REQUEST_BODY_API('QuestionSeries/EditSeriesInfo', b, true, true)
 }
 
 export function assignQuestionsToPoolRequest(b){
-    return EDIT_REQUEST_BODY_API('QuestionSeries/AssignElementsToPool', b, true)
+    return EDIT_REQUEST_BODY_API('QuestionSeries/AssignElementsToPool', b, true, true)
 }
 
 export function deselectQuestionFromSeriesRequest(b){
-    return EDIT_REQUEST_BODY_API('QuestionSeries/DeselectElementSeries', b, true)
+    return EDIT_REQUEST_BODY_API('QuestionSeries/DeselectElementSeries', b, true, true)
 }
 
 export function decreasePoolsNumberSeriesRequest(b){
-    return EDIT_REQUEST_BODY_API('QuestionSeries/DecreasePoolsNumber', b, true)
+    return EDIT_REQUEST_BODY_API('QuestionSeries/DecreasePoolsNumber', b, true, true)
 }
 
 export function increasePoolsNumberSeriesRequest(b){
-    return EDIT_REQUEST_BODY_API('QuestionSeries/IncreasePoolsNumber', b, true)
+    return EDIT_REQUEST_BODY_API('QuestionSeries/IncreasePoolsNumber', b, true, true)
 }
 
 export function rearrangeSeriesRequest(b){
-    return EDIT_REQUEST_BODY_API('QuestionSeries/RearrangeSeries', b, true)
+    return EDIT_REQUEST_BODY_API('QuestionSeries/RearrangeSeries', b, true, true)
+}
+
+//Students
+export function getSeriesRequest(Code){
+    return GET_REQUEST_API('Students/GetSeriesPlayByCode', Code)
+}
+
+export function addSeriesStatisticRequest(b){
+    return ADD_REQUEST_FILE_API('Students/AddSeriesStatistic', b)
 }

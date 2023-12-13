@@ -18,12 +18,13 @@ export function ViewSolutionComponent({question, correct}){
 
     useEffect(() => {
        if(showModal){
-            const data = new FormData()
-            data.append('QuestionId', question.Id)
-            data.append('Player', currentPlayerKey)
-            data.append('Correct', correct)
+            const VM = ({
+                QuestionId: question.Id,
+                Player: currentPlayerKey,
+                Correct: correct
+            })
 
-            postQuestionPDFStatistic(data)
+            postQuestionPDFStatistic(VM)
        }
 
     }, [showModal])

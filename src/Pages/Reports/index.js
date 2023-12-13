@@ -87,7 +87,7 @@ export function Reports(){
 
         const VM = ({
             Code:searchKey,
-            datapool_id:selectedDatapool.value,
+            SearchDatapoolId:selectedDatapool.value,
             From:fromTimeData,
             To:toTimeData
         })
@@ -102,7 +102,7 @@ export function Reports(){
 
         const VM = ({
             Code:searchKey,
-            datapool_id:selectedDatapool.value,
+            SearchDatapoolId:selectedDatapool.value,
             From:fromTimeData.substring(0, 10) + " 00:00:00",
             To:toTimeData.substring(0, 10) + " 00:00:00"
         })
@@ -117,7 +117,7 @@ export function Reports(){
             Code: player,
             From: numericStats.From,
             To: numericStats.To,
-            datapool_id: numericStats.DataPool.Id
+            datapool_id: numericStats.DataPoolId
         })
 
         setShowPlyerTimeline(true)

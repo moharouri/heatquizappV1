@@ -16,7 +16,7 @@ export const handleResponse = (r, api, successMessage, delay, postSuccess, postE
 
     api.destroy()
 
-    if(error){
+    if(![null, undefined].includes(error)){
       api.error(error)
 
       if(postError) postError();

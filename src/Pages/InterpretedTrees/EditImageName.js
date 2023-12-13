@@ -45,7 +45,7 @@ export function EditImageName({open, onClose, node, reloadData}){
                     onClick={() => {
                         let data = new FormData()
                         data.append('Code',  newName)
-                        data.append('ImageId', node.Id)
+                        data.append('Id', node.Id)
 
                         editImageName(data)
                         .then((r) => handleResponse(r, messageApi, 'Updated successfully', 1, () => {

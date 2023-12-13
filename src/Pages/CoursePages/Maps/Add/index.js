@@ -124,7 +124,7 @@ export function AddMap(){
                             <img
                                 className="map-meta-course-img"
                                 alt={selectedCourse.Code}
-                                src={selectedCourse.URL}
+                                src={selectedCourse.ImageURL}
                             />}
                         </div>}
                         

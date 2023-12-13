@@ -22,7 +22,7 @@ export function ViewQuestionRelations({open, onClose, question}){
 
     useEffect(() => {
         if(open){
-            getQuestionRelations(question.Id)
+            getQuestionRelations(question)
         }
     }, [open])
 

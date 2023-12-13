@@ -168,8 +168,8 @@ export function AddQuestionsToSeries({open, onClose, Series, reloadSeries, selec
                             loading={isLoadingAddQuestionsToSeries}
                             onClick={() => {
                                 const VM = ({
-                                    ...Series,
-                                    Elements: selectedQuestions.map((q, i) => ({
+                                    SeriesId: Series.Id,
+                                    Questions: selectedQuestions.map((q, i) => ({
                                         Order: i + 1,
                                         QuestionId: q.Id
                                     }))

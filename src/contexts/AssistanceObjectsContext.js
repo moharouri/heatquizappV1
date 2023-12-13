@@ -2,7 +2,7 @@ import React, { useContext} from "react"
 
 import { useAsyncFn } from "../hooks/useAsync"
 import {} from "../services/Topics"
-import {addMapClickImageListRequest, addQuestionInformationRequest, assignQuestionsInformationRequest, editMapClickImageListImageRequest, editMapClickImageListNameRequest, editQuestionInformationDocumentRequest, editQuestionInformationLatexRequest, editQuestionInformationNameRequest, getAllMapClickImageListsRequest, getAllQuestionInformationRequest, getAllQuestionsAssignedInformationRequest, removeQuestionInformationDocumentRequest, unassignQuestionsInformationRequest } from "../services/AssistanceObjects"
+import {addMapClickImageListRequest, addQuestionInformationRequest, assignQuestionsInformationRequest, deleteMapClickImageListRequest, editMapClickImageListImageRequest, editMapClickImageListNameRequest, editQuestionInformationDocumentRequest, editQuestionInformationLatexRequest, editQuestionInformationNameRequest, getAllMapClickImageListsRequest, getAllQuestionInformationRequest, getAllQuestionsAssignedInformationRequest, removeQuestionInformationDocumentRequest, removeQuestionInformationRequest, unassignQuestionsInformationRequest } from "../services/AssistanceObjects"
 
 const Context = React.createContext()
 
@@ -15,12 +15,14 @@ export function AssistanceObjectsProvider ({children}){
     const {value: mapClickImageLists, errorGetMapClickImageLists, loading:isLoadingMapClickImageLists, execute: getAllMapClickImageLists} = useAsyncFn(() => getAllMapClickImageListsRequest())
     
     const {value: addMapClickImageListResult, errorAddMapClickImageList, loading:isLoadingAddMapClickImageList, execute: addMapClickImageList} = useAsyncFn((b) => addMapClickImageListRequest(b))
+    const {value: deleteMapClickImageListResult, errorDeleteMapClickImageList, loading:isLoadingDeleteMapClickImageList, execute: deleteMapClickImageList} = useAsyncFn((b) => deleteMapClickImageListRequest(b))
     const {value: editMapClickImageListNameResult, errorEditMapClickImageListName, loading:isLoadingEditMapClickImageListName, execute: editMapClickImageListName} = useAsyncFn((b) => editMapClickImageListNameRequest(b))
     const {value: editMapClickImageListImageResult, errorEditMapClickImageListImage, loading:isLoadingEditMapClickImageListImage, execute: editMapClickImageListImage} = useAsyncFn((b) => editMapClickImageListImageRequest(b))
 
     const {value: informationList, errorGetAllQuestionInformation, loading:isLoadinginformationList, execute: getAllQuestionInformation} = useAsyncFn(() => getAllQuestionInformationRequest())
    
     const {value: addQuestionInformationResult, errorAddQuestionInformation, loading:isLoadingAddQuestionInformation, execute: addQuestionInformation} = useAsyncFn((b) => addQuestionInformationRequest(b))
+    const {value: removeQuestionInformationResult, errorRemoveQuestionInformation, loading:isLoadingRemoveQuestionInformation, execute: removeQuestionInformation} = useAsyncFn((b) => removeQuestionInformationRequest(b))
     const {value: editQuestionInformationNameResult, errorEditQuestionInformationName, loading:isLoadingEditQuestionInformationName, execute: editQuestionInformationName} = useAsyncFn((b) => editQuestionInformationNameRequest(b))
     
     const {value: editQuestionInformationLatexResult, errorEditQuestionInformationLatex, loading:isLoadingEditQuestionInformationLatex, execute: editQuestionInformationLatex} = useAsyncFn((b) => editQuestionInformationLatexRequest(b))
@@ -45,6 +47,11 @@ export function AssistanceObjectsProvider ({children}){
             isLoadingAddMapClickImageList,
             addMapClickImageList,
 
+            deleteMapClickImageListResult,
+            errorDeleteMapClickImageList,
+            isLoadingDeleteMapClickImageList,
+            deleteMapClickImageList,
+
             editMapClickImageListNameResult,
             errorEditMapClickImageListName,
             isLoadingEditMapClickImageListName,
@@ -64,6 +71,11 @@ export function AssistanceObjectsProvider ({children}){
             errorAddQuestionInformation,
             isLoadingAddQuestionInformation,
             addQuestionInformation,
+
+            removeQuestionInformationResult,
+            errorRemoveQuestionInformation,
+            isLoadingRemoveQuestionInformation,
+            removeQuestionInformation,
 
             editQuestionInformationNameResult,
             errorEditQuestionInformationName,

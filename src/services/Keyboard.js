@@ -1,31 +1,31 @@
 import { ADD_REQUEST_BODY_API, EDIT_REQUEST_BODY_API, EDIT_REQUEST_FILE_API, GET_REQUEST_API, GET_REQUEST_BODY_API } from "./APIRequests";
 
-export function getKeyboardRequest(Id){
-    return GET_REQUEST_API('Keyboard/GetKeyboard_PORTAL_VIEW_EDIT', Id)
-}
-
 export function getAllKeyListsRequest(){
-    return GET_REQUEST_API('KeysList/GetAllKeyLists', null, true)
+    return GET_REQUEST_BODY_API('KeyList/GetAllKeyLists', {}, true, true)
 }
 
 export function getKeyListAssignedKeysRequest(b){
-    return GET_REQUEST_BODY_API('KeysList/GetListAssignedKeys', b)
+    return GET_REQUEST_BODY_API('KeyList/GetListAssignedKeys', b, true, true)
 }
 
 export function addKeyListRequest(b){
-    return ADD_REQUEST_BODY_API('KeysList/AddList', b, true)
+    return ADD_REQUEST_BODY_API('KeyList/AddList', b, true, true)
 }
 
 export function removeKeyListRequest(b){
-    return EDIT_REQUEST_BODY_API('KeysList/RemoveKeyList', b)
+    return EDIT_REQUEST_BODY_API('KeyList/RemoveKeyList', b, true, true)
 }
 
 export function reassignKeysToListRequest(b){
-    return EDIT_REQUEST_BODY_API('KeysList/ReassignKeys', b)
+    return EDIT_REQUEST_BODY_API('KeyList/ReassignKeys', b, true, true)
 }
 
 export function editKeyListCodeRequest(b){
-    return EDIT_REQUEST_FILE_API('KeysList/UpdateCode', b, true)
+    return EDIT_REQUEST_FILE_API('KeyList/UpdateCode', b, true, true)
+}
+
+export function getKeyboardRequest(Id){
+    return GET_REQUEST_API('Keyboard/GetKeyboard_PORTAL_VIEW_EDIT', Id)
 }
 
 export function searchKeyboardsRequest(b){

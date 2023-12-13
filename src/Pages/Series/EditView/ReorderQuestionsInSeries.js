@@ -114,7 +114,7 @@ export function ReorderQuestionsInSeries({open, onClose, Series, reloadSeries}){
                     type='primary'
                     onClick={() => {
                         const VM = ({
-                            ...Series,
+                            SeriesId: Series.Id,
                             Elements: selectedQuestions
                         })
 

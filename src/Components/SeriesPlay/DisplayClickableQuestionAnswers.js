@@ -40,10 +40,10 @@ export function DisplayClickableQuestionAnswers({Question, Answers}){
        
     })
 
-    const {Code, BackgroundImageURL, BackgroundImageHeight, BackgroundImageWidth, ClickImages, ClickCharts} = Question
+    const {Code, ImageURL, ImageHeight, ImageWidth, ClickImages, ClickCharts} = Question
 
     const imageWidth = window.innerWidth*0.20
-    const imageHeight = (BackgroundImageHeight/BackgroundImageWidth) * imageWidth
+    const imageHeight = (ImageHeight/ImageWidth) * imageWidth
 
     return(
         <div>
@@ -55,7 +55,7 @@ export function DisplayClickableQuestionAnswers({Question, Answers}){
                     width:imageWidth,
                 }} 
 
-                src = {BackgroundImageURL}
+                src = {ImageURL}
                 alt={Code}
             />
 
@@ -70,7 +70,7 @@ export function DisplayClickableQuestionAnswers({Question, Answers}){
                             answer = Answer
                         }
 
-                        const itemPositionStyle = getItemPositionStyle(imageWidth, BackgroundImageWidth, p, 0, topOffset)
+                        const itemPositionStyle = getItemPositionStyle(imageWidth, ImageWidth, p, 0, topOffset)
 
                         return (
                             <span 
@@ -88,7 +88,7 @@ export function DisplayClickableQuestionAnswers({Question, Answers}){
                                 
                                 <img 
                                     style={itemPositionStyle}
-                                    src={answer.URL}
+                                    src={answer.ImageURL}
                                     alt="answer"
                                 />
                             </span>
@@ -106,7 +106,7 @@ export function DisplayClickableQuestionAnswers({Question, Answers}){
                             answer = Answer
                         }
 
-                        const itemPositionStyle = getItemPositionStyle(imageWidth, BackgroundImageWidth, p, 0, topOffset)
+                        const itemPositionStyle = getItemPositionStyle(imageWidth, ImageWidth, p, 0, topOffset)
 
                         return (
                             <span 
@@ -126,7 +126,7 @@ export function DisplayClickableQuestionAnswers({Question, Answers}){
                                 
                                 <img 
                                     style={itemPositionStyle}
-                                    src={answer.URL}
+                                    src={answer.ImageURL}
                                     alt="answer"
                                 />
                             </span>

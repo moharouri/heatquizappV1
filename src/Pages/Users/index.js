@@ -59,11 +59,6 @@ export function UsersList(){
               
             },
             {
-                title:'Roles',
-                width: '25%',
-                render: (u) => <Row  gutter={4}>{u.Roles.map((a, ai) => <Col key={ai}><p  className="highlighted">{a}</p></Col>)}</Row>
-            },
-            {
               width: '12.5%',
 
               render: (u) => u.ProfilePicture ? 

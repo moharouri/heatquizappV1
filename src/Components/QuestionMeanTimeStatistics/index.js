@@ -34,7 +34,7 @@ export function QuestionMeanTimeStatistics({question, children, style}){
 
     useEffect(() => {
         if(showModal){
-            getQuestionMedianTime(question.Id)
+            getQuestionMedianTime(question)
         }
     }, [showModal])
 
@@ -935,7 +935,7 @@ export function QuestionMeanTimeStatistics({question, children, style}){
         ctx.clearRect(0,0,width,height*1.1)
 
         const {TotalPlay, TotalPlaySuccess} = spectrum
-
+        if(!TotalPlay) return;
 
         const successRate = TotalPlay ? ((100*(TotalPlaySuccess/TotalPlay)).toFixed(2) + "%") : ""
 
@@ -1617,6 +1617,7 @@ export function QuestionMeanTimeStatistics({question, children, style}){
         ctx.clearRect(0,0,width,height*1.1)
 
         const {TotalPlay, TotalPlaySuccess} = spectrum
+        if(!TotalPlay) return;
 
         const successRate = TotalPlay ? ((100*(TotalPlaySuccess/TotalPlay)).toFixed(2) + "%") : ""
 
@@ -1715,7 +1716,7 @@ export function QuestionMeanTimeStatistics({question, children, style}){
                 {error && !loading && 
                 <ErrorComponent 
                     error={error}
-                    onReload={() => getQuestionMedianTime(question.Id)}
+                    onReload={() => getQuestionMedianTime(question)}
                 />}
 
                 {!(loading || error) && spectrum && renderSpectrum()}

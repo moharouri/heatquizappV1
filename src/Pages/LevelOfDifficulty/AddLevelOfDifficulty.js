@@ -1,8 +1,10 @@
-import {Button, ColorPicker, Drawer, Form, Input, Space} from "antd";
+import {Button, ColorPicker, Drawer, Form, Input, Space, message} from "antd";
 import React from "react";
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import { useState } from "react";
 import { useEffect } from "react";
+import { handleResponse } from "../../services/Auxillary";
+import { useLevelsOfDifficulty } from "../../contexts/LevelOfDifficultyContext";
 
 export function AddLevelOfDifficulty({open, onClose, reloadData}){
 
@@ -16,6 +18,10 @@ export function AddLevelOfDifficulty({open, onClose, reloadData}){
     const [name, setName] = useState('')
     const [color, setColor] = useState('green')
 
+    const [api, contextHolder] = message.useMessage()
+
+    const { isLoadingAddLOD, addLOD} = useLevelsOfDifficulty()
+
     return(
         <Drawer
         title="Add level of difficulty"
@@ -26,6 +32,7 @@ export function AddLevelOfDifficulty({open, onClose, reloadData}){
         closeIcon={<ArrowLeftOutlined />}
         maskClosable={false}
         >
+          {contextHolder}
           <Form>
             <Form.Item>
               <small className="default-gray">Name</small>
@@ -65,9 +72,18 @@ export function AddLevelOfDifficulty({open, onClose, reloadData}){
             type="primary" 
             size="small"
             onClick={() => {
-             
+              const VM = ({
+                Name: name,
+                HexColor: color
+              })
+
+              addLOD(VM)
+              .then(r => handleResponse(r, api, 'Added successfully', 1, () => {
+                reloadData()
+                onClose()
+              }))
             }}
-            loading = {false}
+            loading = {isLoadingAddLOD}
             >
               Add
           </Button>

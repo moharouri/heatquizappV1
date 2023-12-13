@@ -57,7 +57,7 @@ export function CourseView(){
             {!loadingCourse && Course && 
             <div>
                 <img 
-                    src={Course.URL}
+                    src={Course.ImageURL}
                     className="course-img"
                     alt={Course.Name}
                 />

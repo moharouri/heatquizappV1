@@ -20,7 +20,8 @@ export function QuestionInformationList(){
     
     const {
         isLoadinginformationList, informationList, errorGetAllQuestionInformation, getAllQuestionInformation,
-        removeQuestionInformationDocument
+        removeQuestionInformationDocument,
+        removeQuestionInformation,
     } = useAssistanceObjects()
 
     const [api, contextHolder] = message.useMessage()
@@ -118,7 +119,7 @@ export function QuestionInformationList(){
             title="Remove list"
             description="Are you sure to delete this list?"
                     onConfirm={() => {
-
+                        removeQuestionInformation(l).then(r => handleResponse(r, api, 'Removed', () => getAllQuestionInformation()))
                     }}
             onCancel={() => {}}
             okText="Yes"

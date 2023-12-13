@@ -26,9 +26,9 @@ function useAsyncInternal(func, dependencies, initialLoading = false) {
 
     return func(...params)
       .then(res => {
-        console.log(res)
         const isError = (res instanceof AxiosError)
-
+        console.log(res)
+        console.log(isError)
         if(isError){
           setValue(null)
 
@@ -37,16 +37,22 @@ function useAsyncInternal(func, dependencies, initialLoading = false) {
           if(res.response){
             const {data} = res.response
 
-            setError(data)
+            var isNotString = (typeof data) !== "string"
 
-            msg = data
+            if(isNotString){
+              setError("Error")
+              msg = "error"
+            }
+            else{
+              setError(data)     
+              msg = data
+            }
           }
           else{
             const {message} = res
             setError(message)
 
             msg = message
-
           }
           
           return ({error: msg})

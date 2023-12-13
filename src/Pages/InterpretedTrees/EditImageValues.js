@@ -154,7 +154,7 @@ export function EditImageValues({open, onClose, node, reloadData}){
                         }
                        
                         let data = new FormData()
-                        data.append('ImageId', node.Id)
+                        data.append('Id', node.Id)
 
                         data.append('LeftId', selectedLeft.Id)
                         data.append('RightId', selectedRight.Id)

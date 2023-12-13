@@ -23,9 +23,9 @@ export function EditCourseNameThumbnail({open, onClose, selectedCourse, reloadDa
   const [api, contextHolder] = message.useMessage()
 
   useEffect(() => {
-    const {URL, Name, Code} = selectedCourse
+    const {ImageURL, Name, Code} = selectedCourse
 
-    setNewImageURL(URL)
+    setNewImageURL(ImageURL)
     setNewName(Name)
     setNewCode(Code)
 

@@ -22,9 +22,9 @@ import { QuestionMeanTimeStatistics } from "../../../Components/QuestionMeanTime
 
 export function QuestionEditView(){
     const {
-        clickableQuestionPlay, errorGetClickableQuestionPlay, isLoadingClickableQuestionPlay, getClickableQuestionPlay,
+        clickableQuestionViewEdit, errorGetClickableQuestionViewEdit, isLoadingClickableQuestionViewEdit, getClickableQuestionViewEdit,
         keyboardQuestionPlay, errorGetKeyboardQuestionPlay, isLoadingKeyboardQuestionPlay, getKeyboardQuestionPlay,
-        multipleChoiceQuestionPlay, errorGetMultipleChoiceQuestionPlay, isLoadingMultipleChoiceQuestionPlay, getMultipleChoiceQuestionPlay,
+        multipleChoiceQuestionViewEdit, errorGetMultipleChoiceQuestionViewEdit, isLoadingMultipleChoiceQuestionViewEdit, getMultipleChoiceQuestionViewEdit,
 
         questionStatistics, errorGetQuestionStatistics, isLoadingGetQuestionStatistics, getQuestionStatistics,
 
@@ -45,7 +45,7 @@ export function QuestionEditView(){
     const getQueryFunction = () => {
         switch (Number(type)) {
             case CLICKABLE_QUESTION_PARAMETER:{
-                return getClickableQuestionPlay
+                return getClickableQuestionViewEdit
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
@@ -53,7 +53,7 @@ export function QuestionEditView(){
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
-                return getMultipleChoiceQuestionPlay
+                return getMultipleChoiceQuestionViewEdit
             }
 
             default:{
@@ -65,15 +65,15 @@ export function QuestionEditView(){
     const getQuestionBody = () => {
         switch (Number(type)) {
             case CLICKABLE_QUESTION_PARAMETER:{
-                return <ClickableQuestionEditView reloadQuestion={() => getQueryFunction()(id)}/>
+                return <ClickableQuestionEditView reloadQuestion={() => getQueryFunction()({Id:id})}/>
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
-                return <KeyboardQuestionEditView reloadQuestion={() => getQueryFunction()(id)}/>
+                return <KeyboardQuestionEditView reloadQuestion={() => getQueryFunction()({Id:id})}/>
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
-                return <MultipleChoiceQuestionEditView reloadQuestion={() => getQueryFunction()(id)}/>
+                return <MultipleChoiceQuestionEditView reloadQuestion={() => getQueryFunction()({Id:id})}/>
             }
 
             default:{
@@ -85,10 +85,9 @@ export function QuestionEditView(){
     useEffect(() => {
 
         const questionLoader = getQueryFunction()
+        questionLoader({Id:id})
 
-        questionLoader(id)
-
-        getQuestionStatistics(id)
+        getQuestionStatistics({Id:id})
 
         setShowPlayQuestionModal(false)
         setShowViewFeedbackListModal(false)
@@ -100,7 +99,7 @@ export function QuestionEditView(){
     
         switch (Number(type)) {
             case CLICKABLE_QUESTION_PARAMETER:{
-                return isLoadingClickableQuestionPlay
+                return isLoadingClickableQuestionViewEdit
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
@@ -108,7 +107,7 @@ export function QuestionEditView(){
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
-                return isLoadingMultipleChoiceQuestionPlay
+                return isLoadingMultipleChoiceQuestionViewEdit
             }
 
             default:{
@@ -120,7 +119,7 @@ export function QuestionEditView(){
     const calculateError = () => {
         switch (Number(type)) {
             case CLICKABLE_QUESTION_PARAMETER:{
-                return errorGetClickableQuestionPlay
+                return errorGetClickableQuestionViewEdit
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
@@ -128,7 +127,7 @@ export function QuestionEditView(){
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
-                return errorGetMultipleChoiceQuestionPlay
+                return errorGetMultipleChoiceQuestionViewEdit
             }
 
             default:{
@@ -140,7 +139,7 @@ export function QuestionEditView(){
     const calculateQuestion = () => {
         switch (Number(type)) {
             case CLICKABLE_QUESTION_PARAMETER:{
-                return clickableQuestionPlay
+                return clickableQuestionViewEdit
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
@@ -148,7 +147,7 @@ export function QuestionEditView(){
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
-                return multipleChoiceQuestionPlay
+                return multipleChoiceQuestionViewEdit
             }
 
             default:{
@@ -172,7 +171,7 @@ export function QuestionEditView(){
             )
         }
 
-        const {TotalPlay, CorrectPlay, MedianPlayTime, MedianPlayTimeCorrect, MedianPlayTimeWrong, TotalPDFViews, TotalPDFViewsWrong} = questionStatistics
+        const {TotalPlay, CorrectPlay, MedianPlayTime, TotalPDFViews, TotalPDFViewsWrong} = questionStatistics
         
         const correctPerc = (CorrectPlay ? (100*(CorrectPlay/TotalPlay)).toFixed(0) : 0) + '%'
         const wrongPDFPerc = (TotalPDFViewsWrong ? (100*(TotalPDFViewsWrong/TotalPDFViews)).toFixed(0) : 0) + '%'
@@ -213,7 +212,7 @@ export function QuestionEditView(){
 
                 <Statistic 
                     title='PDF views'
-                    value={beautifyNumber(TotalPDFViews)}
+                    value={beautifyNumber(TotalPDFViews || 0)}
                     valueStyle={{fontSize:'medium', color:'gray'}}
                     suffix = {
                         <Tooltip
@@ -260,7 +259,7 @@ export function QuestionEditView(){
                                 api,
                                 'Removed successfully',
                                 1,
-                                () => getQueryFunction()(id)))
+                                () => getQueryFunction()({id})))
                         }}
                 onCancel={() => {}}
                 okText="Yes"
@@ -373,7 +372,7 @@ export function QuestionEditView(){
             {loadError && !isLoading && 
                 <ErrorComponent 
                     error={loadError}
-                    onReload={() => getQueryFunction()(id)}
+                    onReload={() => getQueryFunction()({Id: id})}
                 />
             }
 
@@ -385,7 +384,6 @@ export function QuestionEditView(){
 
                     Id={question.Id}
                     Type={question.Type}
-                    deadLoad={true}
                 />
 
                 <ViewFeedbackList
@@ -411,7 +409,7 @@ export function QuestionEditView(){
                     onClose={()=> setShowEditBasicInfoModal(false)}
                     question={question}
 
-                    reloadQuestion={() => getQueryFunction()(id)}
+                    reloadQuestion={() => getQueryFunction()({id})}
                 />
 
                 <QuestionEditSupplementaryMaterial 
@@ -419,7 +417,7 @@ export function QuestionEditView(){
                     onClose={()=> setShowEditSolutionModal(false)}
                     question={question}
 
-                    reloadQuestion={() => getQueryFunction()(id)}
+                    reloadQuestion={() => getQueryFunction()({id})}
                 />
             </div>)} 
             

@@ -130,7 +130,7 @@ export function QuestionList(){
 
                                 <img 
                                     className="question-list-item-img"
-                                    src={q.Base_ImageURL}
+                                    src={q.ImageURL}
                                     alt={q.Code}
                                 />
 

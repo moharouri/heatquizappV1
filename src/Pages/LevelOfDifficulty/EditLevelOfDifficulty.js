@@ -1,8 +1,10 @@
-import {Button, ColorPicker, Drawer, Form, Input, Space} from "antd";
+import {Button, ColorPicker, Drawer, Form, Input, Space, message} from "antd";
 import React from "react";
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import { useState } from "react";
 import { useEffect } from "react";
+import { useLevelsOfDifficulty } from "../../contexts/LevelOfDifficultyContext";
+import { handleResponse } from "../../services/Auxillary";
 
 export function EditLevelOfDifficulty({open, onClose, LOD, reloadData}){
 
@@ -17,6 +19,10 @@ export function EditLevelOfDifficulty({open, onClose, LOD, reloadData}){
     const [name, setName] = useState('')
     const [color, setColor] = useState('')
 
+    const [api, contextHolder] = message.useMessage()
+
+    const { isLoadingEditLOD, editLOD} = useLevelsOfDifficulty()
+
     return(
         <Drawer
         title="Edit level of difficulty"
@@ -29,6 +35,7 @@ export function EditLevelOfDifficulty({open, onClose, LOD, reloadData}){
         closeIcon={<ArrowLeftOutlined />}
         maskClosable={false}
         >
+          {contextHolder}
           <Form>
             <Form.Item>
               <small className="default-gray">Name</small>
@@ -68,9 +75,21 @@ export function EditLevelOfDifficulty({open, onClose, LOD, reloadData}){
             type="primary" 
             size="small"
             onClick={() => {
-             
+              
+              const VM = ({
+                Id: LOD.Id,
+                Name: name,
+                HexColor: color
+              })
+
+              editLOD(VM).then(r => handleResponse(r, api, 'Updated', 1, () => {
+                reloadData()
+                onClose()
+              }))
+              
+
             }}
-            loading = {false}
+            loading = {isLoadingEditLOD}
             >
               Update
           </Button>

@@ -2,8 +2,8 @@ import React from "react";
 import { PagesWrapper } from "../../PagesWrapper"
 import { useDatapools } from "../../contexts/DatapoolsContext";
 import { useEffect } from "react";
-import { Button, Col, Divider, Dropdown, Empty, Row, Skeleton, Space } from "antd";
-import {EditOutlined, DeleteOutlined, ClusterOutlined, PlusOutlined} from '@ant-design/icons';
+import { Button, Col, Divider, Dropdown, Empty, Row, Skeleton, Space, message } from "antd";
+import {EditOutlined, ClusterOutlined, PlusOutlined, EyeOutlined} from '@ant-design/icons';
 
 import './Datapools.css'
 import { AddDatapool } from "./AddDatapool";
@@ -11,14 +11,19 @@ import { useState } from "react";
 import { EditDatapool } from "./EditDatapool";
 import { EditUserDatapoolAccess } from "./EditUserDatapoolAccess";
 import { ErrorComponent } from "../../Components/ErrorComponent";
+import { handleResponse } from "../../services/Auxillary";
 
 export function Datapools(){
 
-    const {datapoolsAdmin, errorGetDatapoolsAdmin, isLoadingDatapoolsAdmin, getAllDatapoolsAdmin} = useDatapools()
+    const {datapoolsAdmin, errorGetDatapoolsAdmin, isLoadingDatapoolsAdmin, getAllDatapoolsAdmin,
+        HideUnhideDatapool,
+    } = useDatapools()
     const [showAddDPModal, setShowAddDPModal] = useState(false)
     const [showEditDPModal, setShowEditDPModal] = useState(false)
     const [showEditDPAccessModal, setShowEditDPAccessModal] = useState(false)
     const [selectedDP, setSelectedDP] = useState(null)
+
+    const [api, contextHolder] = message.useMessage()
 
     useEffect(() => {
         getAllDatapoolsAdmin()
@@ -44,10 +49,10 @@ export function Datapools(){
         }
     },
     {
-        key: 'delete_dp',
-        label: 'Delete',
-        icon: <DeleteOutlined/> ,
-        onClick: () => {}
+        key: 'hide_unhide_dp',
+        label: (d.IsHidden ? 'Unhide' : 'Hide') + ' datapool',
+        icon: <EyeOutlined />,
+        onClick: () => {HideUnhideDatapool({...d, IsHidden: !d.IsHidden}).then(r => handleResponse(r, api, 'Updated', 1, () => getAllDatapoolsAdmin()))}
     }]
 
     const renderDatapools = () => {
@@ -91,7 +96,8 @@ export function Datapools(){
                                                 
                                             </Dropdown>
 
-                                            <small className="datapools-edit-view-element-red">{IsHidden && 'Hidden'}</small>
+                                            
+                                            <small className="datapools-edit-view-element-red">{IsHidden  && 'Hidden'}</small>
                                         </Space>
                                         <Space
                                             className="datapools-edit-view-element-header"
@@ -114,6 +120,7 @@ export function Datapools(){
 
     return(
         <PagesWrapper>
+            {contextHolder}
             <Divider orientation="left">
                 <Space>
                     <p>Datapools</p>

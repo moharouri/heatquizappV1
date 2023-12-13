@@ -22,12 +22,12 @@ const UserDrawer = () => {
   useEffect(() => {
     if(isStudent) return;
 
-    getUnreadComments()
+    //getUnreadComments()
     setShowUnseenComments(false)
 
     //Set a 1 minute interval timer
     const timer = setInterval(() => {
-      getUnreadComments()
+      //getUnreadComments()
     }, 60*1000);
 
     return () => clearInterval(timer)

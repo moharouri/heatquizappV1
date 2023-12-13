@@ -1,7 +1,7 @@
 import React, { useContext} from "react"
 
 import { useAsyncFn } from "../hooks/useAsync"
-import { addLODRequest, getLODQuestionsRequest, getLODs, getLODsExtended } from "../services/LevelOfDiffulty"
+import { addLODRequest, deleteLODRequest, editLODRequest, getLODQuestionsRequest, getLODs, getLODsExtended } from "../services/LevelOfDiffulty"
 
 const Context = React.createContext()
 
@@ -16,7 +16,9 @@ export function LevelsOfDifficultyProvider ({children}){
     const {value: LODsExtended, errorGetLODsExtended, loading:isLoadingLODsExtended, execute: getAllLODsExtended} = useAsyncFn(() => getLODsExtended()) 
     const {value: LODQuestions, errorGetLODQuestions, loading:isLoadingLODQuestions, execute: getLODQuestions} = useAsyncFn((Id) => getLODQuestionsRequest(Id)) 
 
-    const {value: addLODResult, errorAddLOD, loading:isLoadingAddLOD, execute: addLOD} = useAsyncFn(() => addLODRequest()) 
+    const {value: addLODResult, errorAddLOD, loading:isLoadingAddLOD, execute: addLOD} = useAsyncFn((l) => addLODRequest(l)) 
+    const {value: editLODResult, errorEditLOD, loading:isLoadingEditLOD, execute: editLOD} = useAsyncFn((l) => editLODRequest(l)) 
+    const {value: deleteLODResult, errorDeleteLOD, loading:isLoadingDeleteLOD, execute: deleteLOD} = useAsyncFn((l) => deleteLODRequest(l)) 
 
     return(
         <Context.Provider value = {{
@@ -38,7 +40,17 @@ export function LevelsOfDifficultyProvider ({children}){
             isLoadingAddLOD,
             addLODResult,
             errorAddLOD,
-            addLOD
+            addLOD,
+
+            editLODResult,
+            errorEditLOD,
+            isLoadingEditLOD,
+            editLOD,
+
+            deleteLODResult,
+            errorDeleteLOD,
+            isLoadingDeleteLOD,
+            deleteLOD
         }}>
             {children}
         </Context.Provider>

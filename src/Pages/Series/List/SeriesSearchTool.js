@@ -15,7 +15,7 @@ export function SeriesSearchTool({onSetFirstIndex}){
 
 
     const [seriesCode, setSeriesCode] = useState('')
-    const [selectedAdder, setSelectedAdder] = useState(null)
+    const [selectedAdder, setSelectedAdder] = useState("")
 
     const [selectedPerPage, setSelectedPerPage] = useState(50)
     const [selectedPage, setSelectedPage] = useState(1)
@@ -30,7 +30,7 @@ export function SeriesSearchTool({onSetFirstIndex}){
 
     useEffect(() => {
         getSeriesAdders()
-        setSelectedAdder(null)
+        setSelectedAdder("")
     }, [selectedDatapool])
 
 
@@ -39,7 +39,7 @@ export function SeriesSearchTool({onSetFirstIndex}){
             Code:seriesCode.trim(),
             Page:0,
             QperPage:selectedPerPage,
-            Adder: (selectedAdder === 'Any') ? null : selectedAdder,
+            Adder: (selectedAdder === 'Any') ? "" : selectedAdder,
             Used: !getUnusedSeries
         })
 
@@ -54,7 +54,7 @@ export function SeriesSearchTool({onSetFirstIndex}){
             Code: "",
             Page:0,
             QperPage:selectedPerPage,
-            Adder: null,
+            Adder: "",
             Used: true
         })
 
@@ -65,9 +65,8 @@ export function SeriesSearchTool({onSetFirstIndex}){
     }
 
     const renderPagesCols = () => {
-        const {Codes, NumberOfSeries, SeriesIds} = SeriesQuery
-        const pageCols = GetPagesArray(NumberOfSeries, selectedPerPage, Codes)
-        console.log(selectedPage)
+        const {Codes, NumberOfObjects, ObjectsIds} = SeriesQuery
+        const pageCols = GetPagesArray(NumberOfObjects, selectedPerPage, Codes)
         return(
             <div>
                 <Row
@@ -84,9 +83,9 @@ export function SeriesSearchTool({onSetFirstIndex}){
                             setSelectedPage(ci+1)
                             onSetFirstIndex(ci*selectedPerPage)
 
-                            const Ids = SeriesIds.slice(ci*selectedPerPage, (ci + 1)*selectedPerPage)
+                            const Ids = ObjectsIds.slice(ci*selectedPerPage, (ci + 1)*selectedPerPage)
 
-                            const VM = ({Ids, Codes, NumberOfSeries, SeriesIds})
+                            const VM = ({Ids, Codes, NumberOfObjects, ObjectsIds})
 
                             searchSeries(VM, true)
                         }}
@@ -95,7 +94,7 @@ export function SeriesSearchTool({onSetFirstIndex}){
                     </Col>
                 )}
                 </Row>
-                <small className="search-result"> {NumberOfSeries} series</small>
+                <small className="search-result"> {NumberOfObjects} series</small>
             </div>
         )
     }

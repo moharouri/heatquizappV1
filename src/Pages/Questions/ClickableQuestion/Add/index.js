@@ -268,7 +268,7 @@ export function AddClickableQuestion(){
                                                 <img    
                                                     alt="answer"
                                                     className="hq-img"
-                                                    src={answer.URL}
+                                                    src={answer.ImageURL}
                                                 />}
                                             </div>
                                         </Tooltip>
@@ -395,7 +395,7 @@ export function AddClickableQuestion(){
         //Click images
         let ClickImages = newParts.filter(a => a.type === CLICKABLE_IMAGE)
             .map(ci => ({
-                        X : Number.parseInt(+ci.x + leftOffset),
+                        X : Number.parseInt(+ci.x),
                         Y : Number.parseInt(+ci.y),
 
                         Width : Math.trunc(ci.width),

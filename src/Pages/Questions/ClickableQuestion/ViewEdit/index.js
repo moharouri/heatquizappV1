@@ -13,7 +13,7 @@ import { EditQuestionExplanation } from "./EditQuestionExplanation";
 
 export function ClickableQuestionEditView({reloadQuestion}){
 
-    const {clickableQuestionPlay: question, 
+    const {clickableQuestionViewEdit: question, 
         deleteClickableQuestionPart,
         isLoadingAddClickableQuestionParts, addClickableQuestionParts
     } = useQuestions()
@@ -69,7 +69,7 @@ export function ClickableQuestionEditView({reloadQuestion}){
     })
 
     const renderQuestionImage = () => {
-        const {Code, Base_ImageURL, BackgroundImageHeight, BackgroundImageWidth, ClickImages, ClickCharts} = question.Question
+        const {Code, ImageURL, ImageHeight, ImageWidth, ClickImages, ClickCharts} = question.Question
 
         const backgroundImageStyle = ({
             backgroundPosition:'center',
@@ -95,11 +95,11 @@ export function ClickableQuestionEditView({reloadQuestion}){
                 <img
                 style = {{
                     ...backgroundImageStyle,
-                    height:BackgroundImageHeight,
-                    width:BackgroundImageWidth,
+                    height:ImageHeight,
+                    width:ImageWidth,
                 }} 
 
-                src = {Base_ImageURL}
+                src = {ImageURL}
                 alt={Code}
 
                 ref={imageRef2}
@@ -178,9 +178,9 @@ export function ClickableQuestionEditView({reloadQuestion}){
                 }}
                 />
                 {ClickImages.map((p, pi) => {
-                    const itemPositionStyle = getItemPositionStyle(BackgroundImageWidth, BackgroundImageWidth, p)
+                    const itemPositionStyle = getItemPositionStyle(ImageWidth, ImageWidth, p)
                     const {Answer} = p
-                    const {URL} = Answer
+                    const {ImageURL} = Answer
 
                     return (
                         <span 
@@ -203,7 +203,7 @@ export function ClickableQuestionEditView({reloadQuestion}){
                                 <p className="default-title highlighted">{pi+1}</p>
 
                                 <img 
-                                    src={URL}
+                                    src={ImageURL}
                                     alt="Answer"
                                     className="clickable-element-img"
                                 />
@@ -213,9 +213,9 @@ export function ClickableQuestionEditView({reloadQuestion}){
                 })}
 
                 {ClickCharts.map((p, pi) => {
-                    const itemPositionStyle = getItemPositionStyle(BackgroundImageWidth, BackgroundImageWidth, p)
+                    const itemPositionStyle = getItemPositionStyle(ImageWidth, ImageWidth, p)
                     const {Answer} = p
-                    const {URL} = Answer
+                    const {ImageURL} = Answer
 
                     return (
                         <span         
@@ -238,7 +238,7 @@ export function ClickableQuestionEditView({reloadQuestion}){
                             <p className="default-title highlighted">{ClickImages.length + pi+1}</p>
 
                                 <img 
-                                    src={URL}
+                                    src={ImageURL}
                                     alt="Answer"
                                     className="clickable-element-img"
                                 />
@@ -309,7 +309,7 @@ export function ClickableQuestionEditView({reloadQuestion}){
                                                 <img    
                                                     alt="answer"
                                                     className="hq-img"
-                                                    src={answer.URL}
+                                                    src={answer.ImageURL}
                                                 />}
                                             </div>
                                         </Tooltip>
@@ -429,13 +429,13 @@ export function ClickableQuestionEditView({reloadQuestion}){
                                     return
                                 }
                                 
-                                const {Code} = question.Question
+                                const {Id} = question.Question
 
 
                                 //Click images
                                 let ClickImages = newParts.filter(a => a.type === CLICKABLE_IMAGE)
                                 .map(ci => ({
-                                    X : Number.parseInt(+ci.x + leftOffset),
+                                    X : Number.parseInt(+ci.x),
                                     Y : Number.parseInt(+ci.y),
 
                                     Width : Math.trunc(ci.width),
@@ -457,7 +457,7 @@ export function ClickableQuestionEditView({reloadQuestion}){
                                             
                                 const data = new FormData()
 
-                                data.append('Code', Code)
+                                data.append('Id', Id)
 
                                 data.append('ClickParts', JSON.stringify({
                                     ClickImages:ClickImages,
@@ -485,7 +485,7 @@ export function ClickableQuestionEditView({reloadQuestion}){
                     dataSource={ClickImages}
                     renderItem={(c, ci) => {
                         const {Id, Answer} = c
-                        const {URL} = Answer
+                        const {ImageURL} = Answer
                         return(
                             <div
                                 key={Id}
@@ -545,7 +545,7 @@ export function ClickableQuestionEditView({reloadQuestion}){
                                     <img 
                                         className="clickable-question-edit-view-part-img"
                                         alt={"part-"+ci}
-                                        src={URL}
+                                        src={ImageURL}
                                     />
                                 </Space>
                                 </Tooltip>
@@ -559,7 +559,7 @@ export function ClickableQuestionEditView({reloadQuestion}){
                     dataSource={ClickCharts}
                     renderItem={(c, ci) => {
                         const {Id, Answer} = c
-                        const {URL} = Answer
+                        const {ImageURL} = Answer
                         return(
                             <div
                                 key={Id}
@@ -615,11 +615,11 @@ export function ClickableQuestionEditView({reloadQuestion}){
                                     }
                                 >
                                 <Space>
-                                    <p>{ci + 1}</p>
+                                    <p>{ci + 1 + ClickImages.length}</p>
                                     <img 
                                         className="clickable-question-edit-view-part-img"
                                         alt={"part-"+ci}
-                                        src={URL}
+                                        src={ImageURL}
                                     />
                                 </Space>
                                 </Tooltip>

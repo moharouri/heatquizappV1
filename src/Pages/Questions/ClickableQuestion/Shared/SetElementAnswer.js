@@ -68,7 +68,7 @@ export function SetElementAnswer({open, onClose, elementIndex, onSelect}){
                         dataSource={selectedTree.Images}
 
                         renderItem={(img) => {
-                            const {Id, URL, Name, Leafs} = img
+                            const {Id, ImageURL, Name, Leafs} = img
 
                             return(
                                 <div 
@@ -88,7 +88,7 @@ export function SetElementAnswer({open, onClose, elementIndex, onSelect}){
                                 >
                                     <img 
                                         alt="node"
-                                        src={URL}
+                                        src={ImageURL}
                                         className="hq-img-size-1"
                                     />
                                     <small className="default-gray">{Name}</small>
@@ -103,7 +103,7 @@ export function SetElementAnswer({open, onClose, elementIndex, onSelect}){
                         dataSource={selectedNode.Leafs}
 
                         renderItem={(img) => {
-                            const {Id, URL, Name} = img
+                            const {Id, ImageURL, Name} = img
 
                             return(
                                 <div 
@@ -116,7 +116,7 @@ export function SetElementAnswer({open, onClose, elementIndex, onSelect}){
                                 >
                                     <img 
                                         alt="node"
-                                        src={URL}
+                                        src={ImageURL}
                                         className="hq-img-size-1"
                                     />
                                     <small className="default-gray">{Name}</small>
@@ -170,7 +170,7 @@ export function SetElementAnswer({open, onClose, elementIndex, onSelect}){
                         dataSource={selectedTree.Images}
 
                         renderItem={(img) => {
-                            const {Id, URL, Name} = img
+                            const {Id, ImageURL, Name} = img
 
                             return(
                                 <div 
@@ -183,7 +183,7 @@ export function SetElementAnswer({open, onClose, elementIndex, onSelect}){
                                 >
                                     <img 
                                         alt="node"
-                                        src={URL}
+                                        src={ImageURL}
                                         className="hq-img-size-1"
                                     />
                                     <small className="default-gray">{Name}</small>

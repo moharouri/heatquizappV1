@@ -10,7 +10,7 @@ export function EditClickableQuestionImage({open, onClose, question, reloadQuest
 
     if(!open) return <div/>;
 
-    const { isLoadingEditClickableQuestionImage, editClickableQuestionImage} = useQuestions()
+    const { isLoadingEditQuestionImage, editQuestionImage} = useQuestions()
 
     const [newImage, setNewImage] = useState(null)
     const [newImageURL, setNewImageURL] = useState(null)
@@ -27,7 +27,7 @@ export function EditClickableQuestionImage({open, onClose, question, reloadQuest
                 size="small"
                 type="primary"
 
-                loading={isLoadingEditClickableQuestionImage}
+                loading={isLoadingEditQuestionImage}
 
                 onClick={() => {
                     if(!newImage){
@@ -40,7 +40,7 @@ export function EditClickableQuestionImage({open, onClose, question, reloadQuest
                     data.append("QuestionId", question.Id)
                     data.append("Picture", newImage)
 
-                    editClickableQuestionImage(data).then(r => handleResponse(r, api, 'Updated successfully', 1, () => {
+                    editQuestionImage(data).then(r => handleResponse(r, api, 'Updated successfully', 1, () => {
                         reloadQuestion()
                         onClose()
                     }))

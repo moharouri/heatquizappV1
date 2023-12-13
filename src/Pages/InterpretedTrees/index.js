@@ -215,7 +215,7 @@ export function InterpretedTrees(){
                                 <small className="default-gray">{ img.ClickCharts.length ? img.ClickCharts.length + ' usage times' : ''} </small>
                                 <Space size={'large'}>
                                 <img 
-                                    src={img.URL}
+                                    src={img.ImageURL}
                                     className="interpreted-tree-head-img"
                                     alt={img.Name}
                                 />

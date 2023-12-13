@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useAssistanceObjects } from "../../../contexts/AssistanceObjectsContext";
 import { useEffect } from "react";
 import { ErrorComponent } from "../../../Components/ErrorComponent";
-import { beautifyDate } from "../../../services/Auxillary";
+import { beautifyDate, handleResponse } from "../../../services/Auxillary";
 import { useDatapools } from "../../../contexts/DatapoolsContext";
 import { AddNewList } from "./AddNewList";
 
@@ -16,7 +16,7 @@ import { EditImageMapClickImagesList } from "./EditImageMapClickImagesList";
 
 export function MapClickImagesList(){
     
-    const {mapClickImageLists: lists, isLoadingMapClickImageLists, errorGetMapClickImageLists, getAllMapClickImageLists} = useAssistanceObjects()
+    const {mapClickImageLists: lists, isLoadingMapClickImageLists, errorGetMapClickImageLists, getAllMapClickImageLists, deleteMapClickImageList} = useAssistanceObjects()
 
     const [api, contextHolder] = message.useMessage()
 
@@ -60,7 +60,7 @@ export function MapClickImagesList(){
             title="Remove list"
             description="Are you sure to delete this list?"
                     onConfirm={() => {
-
+                        deleteMapClickImageList(l).then(r => handleResponse(r, api, 'Removed', 1, () => getAllMapClickImageLists()))
                     }}
             onCancel={() => {}}
             okText="Yes"

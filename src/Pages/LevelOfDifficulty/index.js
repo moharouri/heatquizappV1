@@ -2,18 +2,19 @@ import React, { useState } from "react";
 import { PagesWrapper } from "../../PagesWrapper"
 import { useLevelsOfDifficulty } from "../../contexts/LevelOfDifficultyContext";
 import { useEffect } from "react";
-import { Button, Col, Divider, Dropdown, Empty,  Row, Skeleton, Space, Tooltip, message } from "antd";
+import { Button, Col, Divider, Dropdown, Empty,  Popconfirm,  Row, Skeleton, Space, Tooltip, message } from "antd";
 import {EditOutlined, DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 
 import { AddLevelOfDifficulty } from "./AddLevelOfDifficulty";
 import { EditLevelOfDifficulty } from "./EditLevelOfDifficulty";
 import { ViewLevelOfDifficultyQuestions } from "./ViewLevelOfDifficultyQuestions";
 import { ErrorComponent } from "../../Components/ErrorComponent";
+import { handleResponse } from "../../services/Auxillary";
 
 export function LevelOfDifficulty(){
     
     const {isLoadingLODsExtended, errorGetLODsExtended, LODsExtended, getAllLODsExtended,
-        
+        deleteLOD
     } = useLevelsOfDifficulty()
 
     const [messageApi, contextHolder] = message.useMessage()
@@ -45,7 +46,22 @@ export function LevelOfDifficulty(){
     },
     {
         key: 'delete_lod',
-        label: 'Delete',
+        label: 
+        <Popconfirm
+        title="Remove level of difficulty"
+        description="Are you sure to delete this LOD?"
+                onConfirm={() => {
+                    deleteLOD(lod)
+                    .then(r => handleResponse(r, message, 'Removed', 1, () => getAllLODsExtended()))
+                }}
+        onCancel={() => {}}
+        okText="Yes"
+        cancelText="No"
+        placement="right"
+    >
+    
+        Delete
+    </Popconfirm>,
         icon: <DeleteOutlined/> ,
         onClick: () => {}
     }]

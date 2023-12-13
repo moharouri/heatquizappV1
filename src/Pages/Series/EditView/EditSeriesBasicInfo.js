@@ -99,6 +99,7 @@ export function EditSeriesBasicInfo({open, onClose, Series, reloadSeries}){
                         (r) => 
                         handleResponse(r, messageApi, 'Series info updated successfully', 1, () => {
                             navigate('/series_edit_view/'+code)
+                            window.location.reload()
                             onClose()
                         }))
                         

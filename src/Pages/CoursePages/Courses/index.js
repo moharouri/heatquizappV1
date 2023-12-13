@@ -23,20 +23,12 @@ export function Courses(){
         courses,
         getCoursesError,
         getCourses, 
-
-        loadingMyCourses,
-        myCourses,
-        getMyCoursesError,
-        getOwnedCourses
     } = useCourses()
 
     const {selectedDatapool} = useDatapools()
 
-    const [showAllCourses, setShowAllCourses] = useState(true)
-
     const loadData = () => {
-        if(showAllCourses) getCourses()
-        else getOwnedCourses()
+        getCourses()
     }
 
     useEffect(() => {
@@ -46,9 +38,9 @@ export function Courses(){
 
     const naviagate = useNavigate()
 
-    const isLoading = (loadingCourses || loadingMyCourses)
-    const loadingError = (getCoursesError || getMyCoursesError)
-    const coursesList = (showAllCourses ? courses : myCourses)
+    const isLoading = (loadingCourses)
+    const loadingError = (getCoursesError )
+    const coursesList = (courses )
 
     const actionsDropdownList = (c) => {
         return[
@@ -76,25 +68,8 @@ export function Courses(){
                 <span
                 className="page-title"
                 >Courses</span>
-                <Button
-                    type={showAllCourses ? 'primary' : 'default'}
-                    onClick={() => {
-                        getCourses()
-                        setShowAllCourses(true)
-                    }}
-                >
-                    Get all courses
-                </Button>
-
-                <Button
-                    type={!showAllCourses ? 'primary' : 'default'}
-                    onClick={() => {
-                        getOwnedCourses()
-                        setShowAllCourses(false)
-                    }}
-                >
-                    Get my courses
-                </Button>
+                
+               
                 <Button
                     type={'default'}
                     onClick={() => {
@@ -154,7 +129,7 @@ export function Courses(){
                             </Space>
                         </div>
                         <img 
-                            src={c.URL}
+                            src={c.ImageURL}
                             alt="course logo"
                             className="course-logo"
                             onClick={() => naviagate('/viewcourse/'+c.Id)}

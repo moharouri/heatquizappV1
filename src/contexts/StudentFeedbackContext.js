@@ -13,8 +13,6 @@ export function StudentFeedbackProvider ({children}){
     //Fetch feedback from API
     const {loading: loadingStudentFeedback, value: studentFeedback, error: getStudentFeedbackError, execute: getStudentFeedback} = useAsyncFn((q) => getStudentFeedbackQuery(q))
     const {loading: loadingQuestionFeedback, value: questionFeedback, error: getQuestionFeedbackError, execute: getQuestionFeedback} = useAsyncFn((q) => getQuestionFeedbackQuery(q))
-    const {loading: loadingDebugCodeDecryption, value: debugCodeDecryption, error: decryptDebugCodeError, execute: decryptDebugCode} = useAsyncFn((q) => getFeedbackDebugCodeQuery(q))
-    const {loading: loadingReferenceQuestion, value: referenceQuestionResult, error: referenceQuestionError, execute: referenceQuestion} = useAsyncFn((q) => getQuestionFeedbackReferenceQuery(q))
     const {loading: loadingAddFeedback, value: addFeedbackResult, error: addFeedbackError, execute: addFeedback} = useAsyncFn((f) => addQuestionFeedbackRequest(f))
    
     return(
@@ -28,16 +26,6 @@ export function StudentFeedbackProvider ({children}){
             questionFeedback,
             getQuestionFeedbackError,
             getQuestionFeedback,
-
-            loadingDebugCodeDecryption,
-            debugCodeDecryption,
-            decryptDebugCodeError,
-            decryptDebugCode,
-
-            loadingReferenceQuestion,
-            referenceQuestionResult,
-            referenceQuestionError,
-            referenceQuestion,
 
             loadingAddFeedback,
             addFeedbackResult,

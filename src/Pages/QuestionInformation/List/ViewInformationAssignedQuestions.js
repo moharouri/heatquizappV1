@@ -63,7 +63,7 @@ export function ViewInformationAssignedQuestions({open, onClose, info, reloadDat
                <List 
                     dataSource={questions}
                     renderItem={(q, qi) => {
-                        const {Id, Type, Code, Base_ImageURL, Subtopic, LevelOfDifficulty} = q
+                        const {Id, Type, Code, ImageURL, Subtopic, LevelOfDifficulty} = q
 
                         const qType = QUESTION_TYPES_SEARCH_NAMES.filter(a => a.value === Type)[0].label
                         const qTopic = Subtopic.Topic.Name
@@ -114,7 +114,7 @@ export function ViewInformationAssignedQuestions({open, onClose, info, reloadDat
                                     <Space direction="vertical" align="center" className="hq-full-width">
                                         <img
                                             alt={Code}
-                                            src={Base_ImageURL}
+                                            src={ImageURL}
                                             className="hq-img-size-1"
                                         />
                                     </Space>
@@ -138,7 +138,6 @@ export function ViewInformationAssignedQuestions({open, onClose, info, reloadDat
     }
 
     const renderAssignedQuestions = () => {
-
         return(
             <div className="hq-full-width">
                 {isLoadinggQuestionsAssignedInformation && <Skeleton/>}

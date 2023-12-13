@@ -16,7 +16,7 @@ export function EditImageMapClickImagesList({open, onClose, list, reloadData}){
 
     const [messageApi, contextHolder] = message.useMessage();
 
-    const [newImage, setPlayImage] = useState({})
+    const [newImage, setImage] = useState({})
 
     const [selectedType, setSelectedType] = useState('Play')
 
@@ -38,7 +38,7 @@ export function EditImageMapClickImagesList({open, onClose, list, reloadData}){
             <Drawer
                 title={
                     <Space size={"large"}>
-                        <p>Add list</p>
+                        <p className="hq-normal-font-weight">Edit an image in list <strong className="default-title">{list.Code}</strong></p>
 
                         <Button 
                             type="primary"
@@ -51,8 +51,8 @@ export function EditImageMapClickImagesList({open, onClose, list, reloadData}){
                                     return
                                 }
 
-                                const Type = mapNameTypeValue()
-                             
+                                const Type = mapNameTypeValue(selectedType)
+                                
                                 const data = new FormData()
                                 data.append('Id', list.Id)
                                 data.append('Picture', newImage.Image)
@@ -90,7 +90,7 @@ export function EditImageMapClickImagesList({open, onClose, list, reloadData}){
                             <small className="default-gray"> Image</small>
                             <UploadImage 
                                 onSetImage={(url, img) => {
-                                setPlayImage({
+                                setImage({
                                     ImageURL: url,
                                     Image: img 
                                 })
