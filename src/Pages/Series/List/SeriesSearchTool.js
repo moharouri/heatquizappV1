@@ -67,6 +67,10 @@ export function SeriesSearchTool({onSetFirstIndex}){
     const renderPagesCols = () => {
         const {Codes, NumberOfObjects, ObjectsIds} = SeriesQuery
         const pageCols = GetPagesArray(NumberOfObjects, selectedPerPage, Codes)
+
+        console.log(SeriesQuery)
+        console.log(NumberOfObjects)
+        console.log(Codes)
         return(
             <div>
                 <Row

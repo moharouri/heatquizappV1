@@ -24,9 +24,9 @@ export function KeyboardQuestionEditView({reloadQuestion}){
 
     const [api, contextHolder] = message.useMessage()
 
-    const {keyboardQuestionPlay: question, isLoadingRemoveKeyboardQuestionAnswer, removeKeyboardQuestionAnswer} = useQuestions()
+    const {keyboardQuestionViewEdit: question, isLoadingRemoveKeyboardQuestionAnswer, removeKeyboardQuestionAnswer} = useQuestions()
 
-    const {Base_ImageURL, Code, Latex, Keyboard, Answers, IsEnergyBalance, DisableDevision} = question
+    const {ImageURL, Code, Latex, Keyboard, Answers, IsEnergyBalance, DisableDevision} = question
     const {Name: keyboardName} = Keyboard
 
     return(
@@ -39,7 +39,7 @@ export function KeyboardQuestionEditView({reloadQuestion}){
                     xs={4}
                 >
                     <img 
-                        src={Base_ImageURL}
+                        src={ImageURL}
                         alt={Code}
                         className="keyboard-question-edit-view-img"
                     />

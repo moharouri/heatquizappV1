@@ -1,22 +1,22 @@
-import { ADD_REQUEST_FILE_API, GET_REQUEST_API, GET_REQUEST_BODY_API } from "./APIRequests";
+import { ADD_REQUEST_BODY_API, ADD_REQUEST_FILE_API, GET_REQUEST_BODY_API } from "./APIRequests";
 
 
 export function getQuestionCommentsQuery(q){
-    return GET_REQUEST_API('QuestionComments/GetQuestionComments', q.Id, false)
+    return GET_REQUEST_BODY_API('QuestionComments/GetQuestionComments', q, true, true)
 }
 
 export function searchUserCommentsQuery(b){
-    return GET_REQUEST_BODY_API('QuestionComments/GetComments2', b)
+    return GET_REQUEST_BODY_API('QuestionComments/GetComments', b, true, true)
 }
 
 export function getUnreadCommentsQuery(){
-    return GET_REQUEST_API('QuestionComments/GetUnseenCommentsNumber')
+    return GET_REQUEST_BODY_API('QuestionComments/GetUnseenComments', {}, true, true)
 }
 
 export function addQuestionCommentRequest(b){
-    return ADD_REQUEST_FILE_API('QuestionComments/AddQuestionComment', b, false)
+    return ADD_REQUEST_FILE_API('QuestionComments/AddQuestionComment', b, true, true)
 }
 
 export function registerCommentViewRequest(v){
-    return GET_REQUEST_API('QuestionComments/RegisterSeenNotification', v)
+    return ADD_REQUEST_BODY_API('QuestionComments/RegisterSeenNotification', v, true, true)
 }

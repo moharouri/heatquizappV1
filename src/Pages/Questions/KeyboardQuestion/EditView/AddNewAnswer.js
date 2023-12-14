@@ -57,7 +57,7 @@ export function AddNewAnswer({open, onClose, question, reloadQuestion}){
             <Space size={'large'} align="start">
                 <div>
                     <img
-                        src = {question.Base_ImageURL}
+                        src = {question.ImageURL}
                         alt="question"
                         className="question-feedback-image"
                         
@@ -103,6 +103,7 @@ export function AddNewAnswer({open, onClose, question, reloadQuestion}){
                                 {
                                     NumericKeyId: e.NumericKeyId,
                                     ImageId: e.ImageId,
+                                    VariationId: e.ImageId,
                                     Value:e.char,
                                     Order: i
                                 }

@@ -36,6 +36,10 @@ export function getMultipleChoiceQuestionPlayRequest(Id){
     return GET_REQUEST_API('Students/GetMultipleChoiceQuestion', Id)
 }
 
+export function getKeyboardQuestionPlayRequest(Id){
+    return GET_REQUEST_API('Students/GetKeyboardQuestion', Id)
+}
+
 
 //Mutliple choice question edit functions
 
@@ -69,32 +73,24 @@ export function removeMultipleChoiceQuestionChoiceRequest(b){
 }
 
 //Keyboard question edit functions
-export function getKeyboardQuestionPlayRequest(Id){
-    return GET_REQUEST_API('KeyboardQuestion/GetQuestion_PORTAL', Id)
+export function getKeyboardQuestionViewEditRequest(Id){
+    return GET_REQUEST_BODY_API('KeyboardQuestion/GetQuestion', Id, true, true)
 }
 
 export function addKeyboardQuestionRequest(b){
-    return ADD_REQUEST_FILE_API('KeyboardQuestion/AddQuestionSingleStep', b, true)
+    return ADD_REQUEST_FILE_API('KeyboardQuestion/AddQuestionSingleStep', b, true, true)
 }
 
 export function addKeyboardQuestionAnswerRequest(b){
-    return EDIT_REQUEST_BODY_API('KeyboardQuestion/AddQuestionAnswer', b)
+    return ADD_REQUEST_BODY_API('KeyboardQuestion/AddQuestionAnswer', b, true, true)
 }
 
 export function removeKeyboardQuestionAnswerRequest(b){
-    return EDIT_REQUEST_BODY_API('KeyboardQuestion/RemoveQuestionAnswer', b)
-}
-
-export function editKeyboardQuestionLatexRequest(b){
-    return EDIT_REQUEST_BODY_API('KeyboardQuestion/EditQuestionLatex', b)
-}
-
-export function editKeyboardQuestionImageRequest(b){
-    return EDIT_REQUEST_FILE_API('KeyboardQuestion/AddEditQuestionImage', b)
+    return EDIT_REQUEST_BODY_API('KeyboardQuestion/RemoveQuestionAnswer', b, true, true)
 }
 
 export function getKeyboardQuestionWrongAnswersRequest(b){
-    return GET_REQUEST_API('KeyboardQuestion/GetKeyboardQuestionWrongAnswers_PORTAL', b)
+    return GET_REQUEST_BODY_API('KeyboardQuestion/GetKeyboardQuestionWrongAnswers', b, true, true)
 }
 
 //Clickable question edit functions

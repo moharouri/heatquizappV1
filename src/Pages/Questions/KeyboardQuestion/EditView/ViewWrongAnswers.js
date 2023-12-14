@@ -14,9 +14,8 @@ export function ViewWrongAnswers({open, onClose, question}){
     
     useEffect(() => {
        if(open){
-        const {Id} = question
 
-        getKeyboardQuestionWrongAnswers(Id)
+        getKeyboardQuestionWrongAnswers(question)
        }
     }, [open])
 

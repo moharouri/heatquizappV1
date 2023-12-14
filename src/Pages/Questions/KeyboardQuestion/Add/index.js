@@ -40,7 +40,6 @@ export function AddKeyboardQuestion(){
     const [selectedDefaultImage, setSelectedDefaultImage] = useState(null)
 
     const [newLatex, setNewLatex] = useState('-question-text-')
-    const [additionalInfo, setAdditionalInfo] = useState('')
 
     const [showSelectKeyboard, setShowSelectKeyboard] = useState(false)
     const [selectedKeyboard, setSelectKeyboard] = useState(null)
@@ -179,15 +178,6 @@ export function AddKeyboardQuestion(){
 
                             <LatexRenderer latex={newLatex} />
 
-                            <br/>
-
-                            <p>Additional info</p>
-                            <Input 
-                                type="text"
-                                placeholder="...."
-                                value={additionalInfo}
-                                onChange={(v) => setAdditionalInfo(v.target.value)}
-                            />
                     </Col>
                     <Col xs = {1}/>
                     <Col xs = {7}>
@@ -366,16 +356,13 @@ export function AddKeyboardQuestion(){
         data.append('SubtopicId',  questionInfo.selectedSubtopic.Id)
         data.append('LODId', questionInfo.selectedLOD.Id)
 
-        data.append('Public', false)
-        data.append('Attributes', "")
-
         data.append('AnswerForLatex', newLatex)
-        data.append('AdditionalInfo', additionalInfo)
 
         data.append('KeyboardId', selectedKeyboard.Id)
 
         data.append('IsEnergyBalance', isEnergyBalance)
         data.append('DisableDevision', disableDivision)
+        
         data.append('AnswersString', JSON.stringify({
             Answers: answers.map((a) =>(
                 {
@@ -383,6 +370,7 @@ export function AddKeyboardQuestion(){
                     {
                         NumericKeyId: e.NumericKeyId,
                         ImageId: e.VariableImageId,
+                        VariationId: e.VariableImageId,
                         Value:e.char,
                         Order: i
                     }

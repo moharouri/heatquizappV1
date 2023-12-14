@@ -51,8 +51,8 @@ export function KeyboardsSearchTool({onSetFirstIndex}){
     }
 
     const renderPagesCols = () => {
-        const {Codes, NumberOfKeyboards, Ids: KIds} = keyboards
-        const pageCols = GetPagesArray(NumberOfKeyboards, selectedPerPage, Codes)
+        const {Codes, NumberOfObjects, ObjectsIds: KIds} = keyboards
+        const pageCols = GetPagesArray(NumberOfObjects, selectedPerPage, Codes)
 
         return(
             <div>
@@ -71,7 +71,7 @@ export function KeyboardsSearchTool({onSetFirstIndex}){
 
                             const Ids = KIds.slice(ci*selectedPerPage, (ci + 1)*selectedPerPage)
 
-                            const VM = ({Ids, NumberOfKeyboards, Codes, KeyboardIds: KIds})
+                            const VM = ({Ids, NumberOfObjects, Codes, KeyboardIds: KIds})
 
                             searchKeyboards(VM, true)
                         }}
@@ -80,7 +80,7 @@ export function KeyboardsSearchTool({onSetFirstIndex}){
                     </Col>
                 )}
                 </Row>
-                <small className="search-result"> {NumberOfKeyboards} keyboards</small>
+                <small className="search-result"> {NumberOfObjects} keyboards</small>
             </div>
         )
     } 

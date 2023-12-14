@@ -23,7 +23,7 @@ export function ViewKeyboardAssignedQuestions({open, onClose, keyboard}){
 
     useEffect(() => {
         if(open){
-            getKeyboardQuestions(keyboard.Id)
+            getKeyboardQuestions(keyboard)
         }
     }, [open])
 

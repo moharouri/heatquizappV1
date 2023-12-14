@@ -1,7 +1,7 @@
 import React, { useContext} from "react"
 
 import { useAsyncFn } from "../hooks/useAsync"
-import {addKeyListRequest, addKeyVariantRequest, addKeyboardRequest, addNumericKeyRequest, addVariableKeyRequest, editKeyListCodeRequest, editKeyboardNameRequest, getAllKeyListsRequest, getKeyConnectedQuestionsRequest, getKeyListAssignedKeysRequest, getKeyboardQuestionsRequest, getKeyboardRequest, reassignKeysToListRequest, removeKeyListRequest, searchKeyboardsByIdsRequest, searchKeyboardsRequest, searchKeysByIdsRequest, searchKeysRequest, swabKeyboardKeysRequest } from "../services/Keyboard"
+import {addKeyListRequest, addKeyVariantRequest, addKeyboardRequest, addNumericKeyRequest, addVariableKeyRequest, assignKeysToKeyboardRequest, editKeyListCodeRequest, editKeyboardNameRequest, getAllKeyListsRequest, getKeyConnectedQuestionsRequest, getKeyListAssignedKeysRequest, getKeyboardQuestionsRequest, getKeyboardRequest, reassignKeysToListRequest, removeKeyFromKeyboardRequest, removeKeyListRequest, searchKeyboardsByIdsRequest, searchKeyboardsRequest, searchKeysByIdsRequest, searchKeysRequest, swabKeyboardKeysRequest } from "../services/Keyboard"
 
 const Context = React.createContext()
 
@@ -32,6 +32,7 @@ export function KeyboardProvider ({children}){
     const {value: Keyboard, error:errorGetKeyboard, loading:isLoadingKeyboard, execute: getKeyboard} = useAsyncFn((Id) => getKeyboardRequest(Id)) 
     const {value: keyboardQuestions, error:errorGetKeyboardQuestions, loading:isLoadingKeyboardQuestions, execute: getKeyboardQuestions} = useAsyncFn((Id) => getKeyboardQuestionsRequest(Id)) 
 
+    //Key lists
     const {value: keyLists, error:errorGetKeyLists, loading:isLoadingKeyLists, execute: getAllKeyLists} = useAsyncFn((Id) => getAllKeyListsRequest(Id)) 
     const {value: getKeyListAssignedKeysResult, error:errorGetKeyListAssignedKeys, loading:isLoadingGetKeyListAssignedKeys, execute: getKeyListAssignedKeys} = useAsyncFn((b) => getKeyListAssignedKeysRequest(b)) 
 
@@ -53,6 +54,8 @@ export function KeyboardProvider ({children}){
     
     const {value: addKeyboardResult, error:errorAddKeyboard, loading:isLoadingAddKeyboard, execute: addKeyboard} = useAsyncFn((b) => addKeyboardRequest(b)) 
     const {value: editKeyboardNameResult, error:errorEditKeyboardName, loading:isLoadingEditKeyboardName, execute: editKeyboardName} = useAsyncFn((b) => editKeyboardNameRequest(b)) 
+    const {value: assignKeysToKeyboardResult, error:errorAssignKeysToKeyboard, loading:isLoadingAssignKeysToKeyboard, execute: assignKeysToKeyboard} = useAsyncFn((b) => assignKeysToKeyboardRequest(b)) 
+    const {value: removeKeyFromKeyboardResult, error:errorRemoveKeyFromKeyboard, loading:isLoadingRemoveKeyFromKeyboard, execute: removeKeyFromKeyboard} = useAsyncFn((b) => removeKeyFromKeyboardRequest(b)) 
     const {value: swabKeyboardKeysResult, error:errorSwabKeyboardKeys, loading:isLoadingSwabKeyboardKeys, execute: swabKeyboardKeys} = useAsyncFn((b) => swabKeyboardKeysRequest(b)) 
 
     const {value: getKeyConnectedQuestionsResult, error:errorGetKeyConnectedQuestions, loading:isLoadingKeyConnectedQuestions, execute: getKeyConnectedQuestions} = useAsyncFn((Id) => getKeyConnectedQuestionsRequest(Id)) 
@@ -130,6 +133,16 @@ export function KeyboardProvider ({children}){
             errorEditKeyboardName,
             isLoadingEditKeyboardName,
             editKeyboardName,
+
+            assignKeysToKeyboardResult,
+            errorAssignKeysToKeyboard,
+            isLoadingAssignKeysToKeyboard,
+            assignKeysToKeyboard,
+            
+            removeKeyFromKeyboardResult,
+            errorRemoveKeyFromKeyboard,
+            isLoadingRemoveKeyFromKeyboard,
+            removeKeyFromKeyboard,
 
             isLoadingKeyConnectedQuestions,
             getKeyConnectedQuestionsResult,

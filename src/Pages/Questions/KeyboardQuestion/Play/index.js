@@ -12,7 +12,6 @@ import { NextButton } from "../../../../Components/NextButton";
 import { ImageModal } from "../../../../Components/ImageModal";
 
 export function KeyboardQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements, showSolution, nextAction, mapKey}){
-    console.log(mapKey)
     const {keyboardQuestionPlay, errorGetKeyboardQuestionPlay, isLoadingKeyboardQuestionPlay, getKeyboardQuestionPlay, postQuestionStatistic} = useQuestions()
 
     const [answerList, setAnswerList] = useState({
@@ -65,7 +64,7 @@ export function KeyboardQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements, 
     }
 
     const renderQuestion = () => {
-        const {Base_ImageURL, Code, Latex, Keyboard: keyboard, DisableDevision, IsEnergyBalance, Answers, PDFURL} = keyboardQuestionPlay
+        const {ImageURL, Code, Latex, Keyboard: keyboard, DisableDevision, IsEnergyBalance, Answers, PDFURL} = keyboardQuestionPlay
 
         const reducedLatex = answerList.List.reduce((a,b) => a += ' ' + (b.code === '*' ? '\\cdot': b.code), '') || '-'
 
@@ -76,11 +75,11 @@ export function KeyboardQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements, 
                 className="keyboard-question-play-info-row"
                 size={'large'}>
                     <ImageModal
-                        URL={Base_ImageURL}
+                        URL={ImageURL}
                     >
                         <img 
                             alt={Code}
-                            src={Base_ImageURL}
+                            src={ImageURL}
                             className="keyboard-question-play-img"
                         />
                     </ImageModal>
@@ -142,6 +141,10 @@ export function KeyboardQuestionPlay({Id, deadLoad, onUpdateSeriesPlayElements, 
                         
                                     Score: score
                                 })
+
+                                if(!isCorrect){
+                                    statsVM.Latex = answerList.List.reduce((a,b) => a += ' ' + (b.code == '*' ? '\\cdot': b.code), '')
+                                }
                         
                                 postQuestionStatistic(statsVM)
                             }}

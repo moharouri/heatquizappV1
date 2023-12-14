@@ -15,7 +15,7 @@ export function UsersProvider ({children}){
 
     //Fetch users from API
     const {loading: loadingUsers, value: users, error: getUserError, execute: getUsers} = useAsyncFn(() => getAllUsers())
-    const {loading: loadingAddNewUser, value: addNewUserResult, error: addNewUserError, execute: addNewUser} = useAsyncFn(() => addNewUserRequest())
+    const {loading: loadingAddNewUser, value: addNewUserResult, error: addNewUserError, execute: addNewUser} = useAsyncFn((b) => addNewUserRequest(b))
 
     //Edit name email
     const {loading: loadingEditNameEmail, error: getEditNameEmailError, execute: updateUserNameEmail} = useAsyncFn((b) => editUserNameEmail(b))

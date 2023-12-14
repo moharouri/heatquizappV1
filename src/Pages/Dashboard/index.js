@@ -35,9 +35,6 @@ export function Dashboard(){
         loadRecentlyVisitedMaps()
     }, [])
 
-    console.log(loadingRecentlyVistedMaps)
-    console.log(recentlyVistedMaps)
-    console.log(getRecentlyVistedMapsError)
 
     const renderRecentlyVisitedMaps = () => {
 

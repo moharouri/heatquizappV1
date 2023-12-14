@@ -22,12 +22,12 @@ const UserDrawer = () => {
   useEffect(() => {
     if(isStudent) return;
 
-    //getUnreadComments()
+    getUnreadComments()
     setShowUnseenComments(false)
 
     //Set a 1 minute interval timer
     const timer = setInterval(() => {
-      //getUnreadComments()
+      getUnreadComments()
     }, 60*1000);
 
     return () => clearInterval(timer)
@@ -97,7 +97,7 @@ const UserDrawer = () => {
                 const {AddedByName, Text, CommentSection, AddedByProfilePicture, DateCreated} = n
 
                 const {Question} = CommentSection
-                const {Code, Id, Type, Base_ImageURL} = Question
+                const {Code, Id, Type, ImageURL} = Question
 
                 const shortenedName = getShortenedName(AddedByName)
 
@@ -113,7 +113,7 @@ const UserDrawer = () => {
 
                     goToQuestionViewEditSamePage(navigate, ({Id, Type}))
                     setShowUnseenComments(false)
-                    registerCommentView(CommentSection.Id)
+                    registerCommentView(CommentSection)
                   }}
                   className='hoverable hq-full-width'>
                   <Row
@@ -173,7 +173,7 @@ const UserDrawer = () => {
                         <img 
                           alt={Code}
                           className='notification-question-img'
-                          src={Base_ImageURL}
+                          src={ImageURL}
                         />
                       </Space>
                     </Col>                        

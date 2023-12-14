@@ -14,7 +14,7 @@ export function EditQuestionLatex({open, onClose, question, reloadQuestion}){
 
     if(!open) return <div/>;
 
-    const {isLoadingEditKeyboardQuestionLatex, editKeyboardQuestionLatex} = useQuestions()
+    const {isLoadingEditQuestionLatex, editQuestionLatex} = useQuestions()
 
     const [newLatex, setNewLatex] = useState('')
 
@@ -44,7 +44,7 @@ export function EditQuestionLatex({open, onClose, question, reloadQuestion}){
             <Space size={'large'} align="start">
                 <div>
                     <img
-                        src = {question.Base_ImageURL}
+                        src = {question.ImageURL}
                         alt="question"
                         className="question-feedback-image"
                         
@@ -91,7 +91,7 @@ export function EditQuestionLatex({open, onClose, question, reloadQuestion}){
                     Latex: newLatex
                 })
 
-                editKeyboardQuestionLatex(VM)
+                editQuestionLatex(VM)
                 .then((r) => handleResponse(r, api, 'Updated successfully', 1, () => {
                     onClose()
                     reloadQuestion()
@@ -99,7 +99,7 @@ export function EditQuestionLatex({open, onClose, question, reloadQuestion}){
                 
             }}
 
-            loading={isLoadingEditKeyboardQuestionLatex}
+            loading={isLoadingEditQuestionLatex}
         >
             Update
         </Button>

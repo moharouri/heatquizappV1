@@ -1,30 +1,33 @@
 import React from "react";
 import { PagesWrapper } from "../../../PagesWrapper";
-import { Col, Divider, Dropdown, Row, Skeleton, Space, Spin, Tooltip, message } from "antd";
+import { Col, Divider, Dropdown, Popconfirm, Row, Skeleton, Space, Spin, Tooltip, message } from "antd";
 import { useParams } from "react-router-dom";
 import { ErrorComponent } from "../../../Components/ErrorComponent";
 import { useKeyboard } from "../../../contexts/KeyboardContext";
 import { useEffect } from "react";
 import { beautifyDate, handleResponse } from "../../../services/Auxillary";
 import { ViewKeyboardAssignedQuestions } from "../List/ViewKeyboardAssignedQuestions";
-import { EditOutlined, EyeOutlined, DeleteOutlined  } from '@ant-design/icons';
+import { EditOutlined, EyeOutlined, DeleteOutlined, PlusOutlined  } from '@ant-design/icons';
 import { useState } from "react";
 import { LatexRenderer } from "../../../Components/LatexRenderer";
 import { NUMERIC_KEY, VARIABLE_KEY } from "../../../Components/Keyboard/constants";
 import { EditKeyboardName } from "./EditKeyboardName";
 import { ViewKeyConnectedQuestions } from "./ViewKeyConnectedQuestions";
+import { AddKeysToKeyboard } from "./AddKeysToKeyboard";
 
 export function KeyboardEditView(){
 
     const { 
         isLoadingKeyboard, errorGetKeyboard, Keyboard, getKeyboard,
-        isLoadingSwabKeyboardKeys, swabKeyboardKeys
+        isLoadingSwabKeyboardKeys, swabKeyboardKeys,
+        removeKeyFromKeyboard,
     } = useKeyboard()
 
     const [api, contextHolder] = message.useMessage()
 
     const [showKeyboardAssignedQuestions, setShowKeyboardAssignedQuestions] = useState(false)
     const [showEditKeyboardName, setShowEditKeyboardName] = useState(false)
+    const [showAddKeys, setShowAddKeys] = useState(false)
 
     const [showKeyQuestions, setShowKeyQuestions] = useState(false)
     const [selectedKey, setSelectedKey] = useState(null)
@@ -49,8 +52,14 @@ export function KeyboardEditView(){
                             {
                                 key:'edit_keyboard_name',
                                 label:'Update name',
-                                icon: <EditOutlined />,
+                                icon: <EditOutlined/>,
                                 onClick: () => setShowEditKeyboardName(true)
+                            },
+                            {
+                                key:'add_keys',
+                                label:'Add new keys',
+                                icon: <PlusOutlined  style={{color:'green'}}/>,
+                                onClick: () => setShowAddKeys(true)
                             },
                             {
                                 key:'view_keyboard_questions',
@@ -105,8 +114,8 @@ export function KeyboardEditView(){
 
                             const latexFormula = (k.NumericKey || k.VariableKey).TextPresentation
 
-                            const isSelectedForMove = ((selectedKey || {}).Id === Id)
-                            const isSelectedForMoveSecond = ((selectedKeySecond || {}).Id === Id)
+                            const isSelectedForMove = selectedKey && (selectedKey.Id === Id && selectedKey.Type === Type)
+                            const isSelectedForMoveSecond = selectedKeySecond && (selectedKeySecond.Id === Id && selectedKeySecond.Type === Type)
 
                             const isBeingMoved = (isSelectedForMove || isSelectedForMoveSecond)
 
@@ -137,17 +146,37 @@ export function KeyboardEditView(){
                                                         }
                                                     },{
                                                     key:'remove_key',
-                                                    label:'Remove key',
+                                                    label:
+                                                    <Popconfirm
+                                                        title="Remove topic"
+                                                        description="Are you sure to delete this topic?"
+                                                                onConfirm={() => {
+                                                                    const VM = ({
+                                                                        KeyboardId: Keyboard.Id,
+                                                                        RelationId: Id,
+                                                                        KeyType: Type
+                                                                    })
+            
+                                                                    removeKeyFromKeyboard(VM).then(r => handleResponse(r, api, 'Removed', 1, () => {
+                                                                        getKeyboard(id)
+                                                                    }))
+                                                                }}
+                                                        onCancel={() => {}}
+                                                        okText="Yes"
+                                                        cancelText="No"
+                                                        placement="right"
+                                                    >
+                                                        Remove key
+                                                    </Popconfirm>,
                                                     icon: <DeleteOutlined />,
-                                                    onClick: () => {
-
-                                                    }
+                                                    onClick: () => {}
                                                 }]
                                             }}
                                         >
                                             <div 
                                                 onClick={() => {
-                                                    if(selectedKey && selectedKey.Id !== Id){
+
+                                                    if(selectedKey && !(selectedKey.Id === Id && selectedKey.Type === Type)){
                                                         setSelectedKeySecond(k)
 
                                                         const VM = ({
@@ -164,7 +193,7 @@ export function KeyboardEditView(){
                                                             setSelectedKeySecond(null)
                                                         }))
                                                     }
-                                                    else if (selectedKey && selectedKey.Id === Id){
+                                                    else if (selectedKey && (selectedKey.Id === Id && selectedKey.Type === Type)){
                                                         setSelectedKey(null)
                                                     }
                                                     else{
@@ -241,6 +270,16 @@ export function KeyboardEditView(){
                 keyboard={Keyboard} 
                 
                 reloadData={() => getKeyboard(id)}
+            />
+
+            <AddKeysToKeyboard 
+                open={showAddKeys}
+                onClose={() => setShowAddKeys(false)}
+
+                keyboard={Keyboard}
+
+                reloadData={() => getKeyboard(id)}
+
             />
         </PagesWrapper>
     )

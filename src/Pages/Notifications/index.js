@@ -102,7 +102,7 @@ export function NotificationsList(){
                  const {Text, CommentSection, NumberOfComments} = f
 
                  const {Question} = CommentSection
-                 const {Code, Base_ImageURL} = Question
+                 const {Code, ImageURL} = Question
  
                     
                  return(
@@ -119,7 +119,7 @@ export function NotificationsList(){
                                         <p className="hoverable hoverable-plus">{Code}</p>
                                     </Dropdown>
                                     <img
-                                        src = {Base_ImageURL}
+                                        src = {ImageURL}
                                         alt="question"
                                         className="question-feedback-image"
                                     />

@@ -23,12 +23,11 @@ export function ViewKeyConnectedQuestions({open, onClose, selectedKey}){
     const navigate = useNavigate()
 
     const loadData = () => {
-        const {KeyboardId, Type, Id} = selectedKey
+        const {Type, Id} = selectedKey
 
         const VM = ({
-            KeyboardId: KeyboardId,
-            IsNumericKey: Type === NUMERIC_KEY,
-            KeyRelationId: Id,
+            KeyType: Type ,
+            RelationId: Id,
         })
 
         getKeyConnectedQuestions(VM)

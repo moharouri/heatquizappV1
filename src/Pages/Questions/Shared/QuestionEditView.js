@@ -23,7 +23,7 @@ import { QuestionMeanTimeStatistics } from "../../../Components/QuestionMeanTime
 export function QuestionEditView(){
     const {
         clickableQuestionViewEdit, errorGetClickableQuestionViewEdit, isLoadingClickableQuestionViewEdit, getClickableQuestionViewEdit,
-        keyboardQuestionPlay, errorGetKeyboardQuestionPlay, isLoadingKeyboardQuestionPlay, getKeyboardQuestionPlay,
+        keyboardQuestionViewEdit, errorGetKeyboardQuestionViewEdit, isLoadingKeyboardQuestionViewEdit, getKeyboardQuestionViewEdit,
         multipleChoiceQuestionViewEdit, errorGetMultipleChoiceQuestionViewEdit, isLoadingMultipleChoiceQuestionViewEdit, getMultipleChoiceQuestionViewEdit,
 
         questionStatistics, errorGetQuestionStatistics, isLoadingGetQuestionStatistics, getQuestionStatistics,
@@ -49,7 +49,7 @@ export function QuestionEditView(){
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
-                return getKeyboardQuestionPlay
+                return getKeyboardQuestionViewEdit
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
@@ -103,7 +103,7 @@ export function QuestionEditView(){
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
-                return isLoadingKeyboardQuestionPlay
+                return isLoadingKeyboardQuestionViewEdit
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
@@ -123,7 +123,7 @@ export function QuestionEditView(){
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
-                return errorGetKeyboardQuestionPlay
+                return errorGetKeyboardQuestionViewEdit
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
@@ -143,7 +143,7 @@ export function QuestionEditView(){
             }
 
             case KEYBOARD_QUESTION_PARAMETER: {
-                return keyboardQuestionPlay
+                return keyboardQuestionViewEdit
             }
 
             case MULTIPLE_CHOICE_QUESTION_PARAMETER: {
@@ -303,6 +303,7 @@ export function QuestionEditView(){
         },].filter(a => a)
 
     const renderQuestionHeader = () => {
+        console.log(question)
         let {Code, DateCreated, AddedByName, LevelOfDifficulty, Subtopic} = question
 
         if(!Code) {
@@ -359,7 +360,9 @@ export function QuestionEditView(){
     }
 
     const renderQuestionBody = () => getQuestionBody()
-    
+
+
+    console.log(question)
     return(
         <PagesWrapper>
             {contextHolder}

@@ -1,7 +1,7 @@
 import React, { useContext} from "react"
 
 import { useAsyncFn } from "../hooks/useAsync"
-import { GetQuestionStatisticsRequest, addClickableQuestionPartsRequest, addClickableQuestionRequest, addKeyboardQuestionAnswerRequest, addKeyboardQuestionRequest, addMultipleChoiceQuestionChoiceRequest, addMultipleChoiceQuestionRequest, addQuestionPDFStatisticRequest, addQuestionSolutionRequest, addQuestionStatisticRequest, copyQuestionRequest, deleteClickableQuestionPartRequest, editClickableQuestionAnswerRequest, editKeyboardQuestionImageRequest, editKeyboardQuestionLatexRequest, editMultipleChoiceQuestionChoiceRequest, editQuestionBasicInfoRequest, editQuestionImageRequest, editQuestionLatexRequest, getClickableQuestionPlayRequest, getClickableQuestionViewEditRequest, getKeyboardQuestionPlayRequest, getKeyboardQuestionWrongAnswersRequest, getMultipleChoiceQuestionPlayRequest, getMultipleChoiceQuestionViewEditRequest, getQuestionMedianTimeRequest, getQuestionRelationsRequest, removeKeyboardQuestionAnswerRequest, removeMultipleChoiceQuestionChoiceImageRequest, removeMultipleChoiceQuestionChoiceLatexRequest, removeMultipleChoiceQuestionChoiceRequest, removeQuestionSolutionRequest, searchQuestionsByIdsRequest, searchQuestionsRequest } from "../services/Questions"
+import { GetQuestionStatisticsRequest, addClickableQuestionPartsRequest, addClickableQuestionRequest, addKeyboardQuestionAnswerRequest, addKeyboardQuestionRequest, addMultipleChoiceQuestionChoiceRequest, addMultipleChoiceQuestionRequest, addQuestionPDFStatisticRequest, addQuestionSolutionRequest, addQuestionStatisticRequest, copyQuestionRequest, deleteClickableQuestionPartRequest, editClickableQuestionAnswerRequest, editMultipleChoiceQuestionChoiceRequest, editQuestionBasicInfoRequest, editQuestionImageRequest, editQuestionLatexRequest, getClickableQuestionPlayRequest, getClickableQuestionViewEditRequest, getKeyboardQuestionPlayRequest, getKeyboardQuestionViewEditRequest, getKeyboardQuestionWrongAnswersRequest, getMultipleChoiceQuestionPlayRequest, getMultipleChoiceQuestionViewEditRequest, getQuestionMedianTimeRequest, getQuestionRelationsRequest, removeKeyboardQuestionAnswerRequest, removeMultipleChoiceQuestionChoiceImageRequest, removeMultipleChoiceQuestionChoiceLatexRequest, removeMultipleChoiceQuestionChoiceRequest, removeQuestionSolutionRequest, searchQuestionsByIdsRequest, searchQuestionsRequest } from "../services/Questions"
 
 const Context = React.createContext()
 
@@ -30,6 +30,7 @@ export function QuestionsProvider ({children}){
     
     //Keyboard question 
     const {value: keyboardQuestionPlay, error:errorGetKeyboardQuestionPlay, loading:isLoadingKeyboardQuestionPlay, execute:getKeyboardQuestionPlay} = useAsyncFn((Id) => getKeyboardQuestionPlayRequest(Id)) 
+    const {value: keyboardQuestionViewEdit, error:errorGetKeyboardQuestionViewEdit, loading:isLoadingKeyboardQuestionViewEdit, execute:getKeyboardQuestionViewEdit} = useAsyncFn((Id) => getKeyboardQuestionViewEditRequest(Id)) 
 
     //Question relations 
     const {value: questionRelations, error:errorGetQuestionRelations, loading:isLoadingGetQuestionRelations, execute:getQuestionRelations} = useAsyncFn((b) => getQuestionRelationsRequest(b)) 
@@ -68,8 +69,6 @@ export function QuestionsProvider ({children}){
     //Keyboard question edit actions
     const {value: addKeyboardQuestionAnswerResult, error:errorAddKeyboardQuestionAnswer, loading:isLoadingAddKeyboardQuestionAnswer, execute:addKeyboardQuestionAnswer} = useAsyncFn((b) => addKeyboardQuestionAnswerRequest(b)) 
     const {value: removeKeyboardQuestionAnswerResult, error:errorRemoveKeyboardQuestionAnswer, loading:isLoadingRemoveKeyboardQuestionAnswer, execute:removeKeyboardQuestionAnswer} = useAsyncFn((b) => removeKeyboardQuestionAnswerRequest(b)) 
-    const {value: editKeyboardQuestionLatexResult, error:errorEditKeyboardQuestionLatex, loading:isLoadingEditKeyboardQuestionLatex, execute:editKeyboardQuestionLatex} = useAsyncFn((b) => editKeyboardQuestionLatexRequest(b)) 
-    const {value: editKeyboardQuestionImageResult, error:errorEditKeyboardQuestionImage, loading:isLoadingEditKeyboardQuestionImage, execute:editKeyboardQuestionImage} = useAsyncFn((b) => editKeyboardQuestionImageRequest(b)) 
     const {value: getKeyboardQuestionWrongAnswersResult, error:errorGetKeyboardQuestionWrongAnswers, loading:isLoadingKeyboardQuestionWrongAnswers, execute:getKeyboardQuestionWrongAnswers} = useAsyncFn((b) => getKeyboardQuestionWrongAnswersRequest(b)) 
 
     const {value: addKeyboardQuestionResult, error:errorAddKeyboardQuestion, loading:isLoadingAddKeyboardQuestion, execute:addKeyboardQuestion} = useAsyncFn((b) => addKeyboardQuestionRequest(b)) 
@@ -115,6 +114,11 @@ export function QuestionsProvider ({children}){
             errorGetKeyboardQuestionPlay,
             isLoadingKeyboardQuestionPlay,
             getKeyboardQuestionPlay,
+
+            keyboardQuestionViewEdit,
+            errorGetKeyboardQuestionViewEdit,
+            isLoadingKeyboardQuestionViewEdit,
+            getKeyboardQuestionViewEdit,
 
             addQuestionStatisticResult,
             errorAddQuestionStatistic,
@@ -194,16 +198,6 @@ export function QuestionsProvider ({children}){
             isLoadingAddKeyboardQuestion,
             errorAddKeyboardQuestion,
             addKeyboardQuestion,
-
-            editKeyboardQuestionLatexResult, 
-            errorEditKeyboardQuestionLatex,
-            isLoadingEditKeyboardQuestionLatex,
-            editKeyboardQuestionLatex,
-
-            editKeyboardQuestionImageResult,
-            errorEditKeyboardQuestionImage,
-            isLoadingEditKeyboardQuestionImage,
-            editKeyboardQuestionImage,
 
             getKeyboardQuestionWrongAnswersResult,
             errorGetKeyboardQuestionWrongAnswers,

@@ -33,8 +33,8 @@ export function KeysSearchTool({onSetFirstIndex}){
     }, [selectedDatapool])
 
     const renderPagesCols = () => {
-        const {Codes, NumberOfKeys, Ids: KIds} = keys
-        const pageCols = GetPagesArray(NumberOfKeys, selectedPerPage, Codes)
+        const {Codes, NumberOfObjects, ObjectsIds: KIds} = keys
+        const pageCols = GetPagesArray(NumberOfObjects, selectedPerPage, Codes)
 
         return(
             <div>
@@ -53,7 +53,7 @@ export function KeysSearchTool({onSetFirstIndex}){
 
                             const Ids = KIds.slice(ci*selectedPerPage, (ci + 1)*selectedPerPage)
 
-                            const VM = ({Ids, NumberOfKeys, Codes, KeyIds: KIds, Type:((searchType === NUMERIC_KEY_NAME) ? NUMERIC_KEY : VARIABLE_KEY)})
+                            const VM = ({Ids, NumberOfObjects, Codes, KeyIds: KIds, Type:((searchType === NUMERIC_KEY_NAME) ? NUMERIC_KEY : VARIABLE_KEY)})
                             
                             console.log(VM)
                             console.log(KIds)
@@ -66,7 +66,7 @@ export function KeysSearchTool({onSetFirstIndex}){
                     </Col>
                 )}
                 </Row>
-                <small className="search-result"> {NumberOfKeys} keys</small>
+                <small className="search-result"> {NumberOfObjects} keys</small>
             </div>
         )
     } 

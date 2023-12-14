@@ -270,15 +270,17 @@ export function ViewQuestionComments({open, onClose, question}){
     
         {loadingQuestionComments && <Skeleton />}
 
+       
+
+        {(!loadingQuestionComments) && renderAddComment()}
+        {(!loadingQuestionComments && questionComments) && renderComments()}
+
         {getQuestionCommentsError && !loadingQuestionComments && 
             <ErrorComponent
                 error={getQuestionCommentsError}
                 onReload={() => {getQuestionComments(question)}}
             />
         }
-
-        {(!loadingQuestionComments) && renderAddComment()}
-        {(!loadingQuestionComments && questionComments) && renderComments()}
          
     </Drawer>
     )

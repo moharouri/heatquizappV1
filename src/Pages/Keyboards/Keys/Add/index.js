@@ -288,6 +288,8 @@ export function AddNewKey(){
                         type="primary"
                         onClick={() => {
                             if(keyValidation){
+                                api.destroy()
+                                api.warning("Please add valid data")
                                 return
                             }
 
@@ -295,9 +297,8 @@ export function AddNewKey(){
                                 const VM = ({
                                     Code: newCode,
                                     TextPresentation: newLatex,
-                                    VariablesChars: [],
                                     KeysListId: selectedList.Id,
-                                    Images: variableKeyVariants.map(a => a.latex)
+                                    Variations: variableKeyVariants.map(a => a.latex)
                                 })
 
                                 addKey(VM, true).then(r => handleResponse(r, api, 'Key added successfully', 1))

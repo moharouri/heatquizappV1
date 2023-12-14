@@ -62,11 +62,13 @@ export function Keyboard({Id, enableDivision, isEnergyBalance, List, onEnterKey}
             list = addDot(list)
         }
 
-        const selectedImage = Keyboard.VariableKeyImages.filter((im) => im.ImageId === k.Id)[0]
+        const selectedImage = Keyboard.VariableKeyImages.filter((im) => im.VariationId === k.Id)[0]
+
+        console.log(selectedImage)
 
         list.List.push({
             ImageId:k.Id,
-            code: selectedImage.Image.TextPresentation,
+            code: selectedImage.Variation.TextPresentation,
             char: selectedImage.ReplacementCharacter,
 
             IsKey: true,
@@ -394,13 +396,15 @@ export function Keyboard({Id, enableDivision, isEnergyBalance, List, onEnterKey}
 
                         const latexFormula = (k.NumericKey || k.VariableKey).TextPresentation
 
+                        console.log(k)
+
                         return(
                             <Col
                                 key={ki}
                                 className="keyboard-key-item"
                                 onClick={() => {
                                     if(k.Type === VARIABLE_KEY){
-                                        setVariableKeyElements(k.VariableKey.VImages)
+                                        setVariableKeyElements(k.VariableKey.Variations)
                                     }
                                     else{
                                         setVariableKeyElements([])

@@ -25,7 +25,7 @@ export function SelectKeyList({onSelect, existingKeys}){
     }, [selectedKeys])
 
     const filterOutExistingKeys = (k) => {
-        const exists = existingKeys.filter(a => a.Id === k.Id && a.Type === k.Type)
+        const exists = existingKeys.find(a => a.Id === k.Id && a.Type === k.Type)
 
         return !exists
     }
@@ -43,7 +43,7 @@ export function SelectKeyList({onSelect, existingKeys}){
                 gutter={24}
             >
                 {keys.Keys
-                //.filter(filterOutExistingKeys)
+                .filter(filterOutExistingKeys)
                 .map((k, ki) => {
                     const {Id, Type, Code, TextPresentation, List, VarKeys} = k
 
