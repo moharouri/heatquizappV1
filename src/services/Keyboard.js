@@ -70,6 +70,11 @@ export function addKeyboardRequest(b){
     return ADD_REQUEST_BODY_API('Keyboard/AddKeyboard', b, true, true)
 }
 
+export function removeKeyboardRequest(b){
+    return EDIT_REQUEST_BODY_API('Keyboard/RemoveKeyboard', b, true, true)
+}
+
+
 export function editKeyboardNameRequest(b){
     return EDIT_REQUEST_BODY_API('Keyboard/EditKeyboardName', b, true, true)
 }

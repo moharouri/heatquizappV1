@@ -1,20 +1,24 @@
-import {Button, Drawer, Space, message, Form, Select, Skeleton, List} from "antd";
+import {Button, Drawer, Space, message, Form, Select, Input,} from "antd";
 import React, { useState } from "react";
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import { useMaps } from "../../../../contexts/MapsContext";
 import { useCourses } from "../../../../contexts/CoursesContext";
 import { useEffect } from "react";
 import { handleResponse } from "../../../../services/Auxillary";
+import { MAX_MAP_NAME } from "./Constants";
 
-export function ReassignMap({open, onClose, map, reloadMap}){
+export function CopyMap({open, onClose, Map, reloadData}){
     
     if(!open) return <div/>;
 
-    const {loadingReassignMapToCourse, reassignMapToCourse} = useMaps()
+    const {loadingCopyMap, copyMap,} = useMaps()
+
 
     const {courses} = useCourses()
 
     const [selectedCourse, setSelectedCourse] = useState(null)
+
+    const [name, setName] = useState('')
 
     const [api, contextHolder] = message.useMessage()
 
@@ -30,32 +34,39 @@ export function ReassignMap({open, onClose, map, reloadMap}){
             <Drawer
             title={
             <Space>
-                <p>Reassign map {' '}{map.Title}</p>
 
                 <Button
                     size="small"
                     type="primary"
-                    loading={loadingReassignMapToCourse}
+                    loading={loadingCopyMap}
                     onClick={() => {
                         if(!selectedCourse){
                             api.destroy()
-                            api.warning('Please select a course')
-
+                            api.warning("Please select a course")
                             return
                         }
 
-                        const data = new FormData()
+                        if(!name.trim()){
+                            api.destroy()
+                            api.warning("Please add new map name")
+                            return
+                        }
 
-                        data.append('MapId', map.Id)
-                        data.append('CourseId', selectedCourse.Id)
+                        const VM = ({
+                            MapId: Map.Id,
+                            CourseId: selectedCourse.Id, 
+                            Title: name
+                        })
 
-                        reassignMapToCourse(data).then(r => handleResponse(r, api, 'Reassigned successfully', 1, () => {
-                            reloadMap()
+                        copyMap(VM)
+                        .then(r => handleResponse(r, api, 'Copied successfully', 1, () => {
                             onClose()
+
+                            if(reloadData) reloadData()
                         }))
                     }}
                 >
-                    Assign
+                    Copy
                 </Button>
             </Space>}
             width={'40%'}
@@ -84,14 +95,22 @@ export function ReassignMap({open, onClose, map, reloadMap}){
                         }))}
                     />
                 </Form.Item>
-            </Form>   
-            {selectedCourse && 
-                <img 
-                    className="hq-img-size-1"
-                    alt="course"
-                    src={selectedCourse.ImageURL}
-                />
-            }         
+            </Form>
+
+            <Form>
+                <small className="default-gray">Title</small>
+                <Form.Item>
+                    <Input 
+                            className="map-meta-data-input"
+                            placeholder="Unique map name"
+                            value={name}
+                            onChange={(v) => setName(v.target.value)}
+                            maxLength={MAX_MAP_NAME}
+                            showCount
+                        />
+                </Form.Item>
+            </Form>
+
             </Drawer>
         </div>
     )

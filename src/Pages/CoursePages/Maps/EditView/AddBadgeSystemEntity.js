@@ -15,7 +15,7 @@ export function AddBadgeSystemEntity({open, onClose, system, reloadMap}){
 
     const [loadingImage, setLoadingImage] = useState(false);
     const [newImage, setNewImage] = useState(null);
-    const [newImageURL, setNewImageURL] = useState(null);
+    const [newImageImageHeight, setNewImageImageHeight] = useState(null);
 
     const [api, contextHolder] = message.useMessage()
 
@@ -27,9 +27,9 @@ export function AddBadgeSystemEntity({open, onClose, system, reloadMap}){
     
         if (info.file.status === 'done') {
     
-          getBase64(info.file.originFileObj, (url) => {
+          getBase64(info.file.originFileObj, (ImageHeight) => {
             setLoadingImage(false);
-            setNewImageURL(url);
+            setNewImageImageHeight(ImageHeight);
             setNewImage(info.file.originFileObj);
           });
         }
@@ -54,8 +54,7 @@ export function AddBadgeSystemEntity({open, onClose, system, reloadMap}){
                             }
 
                             const data = new FormData()
-                            data.append("MapId", system.Id)
-                            data.append("Title", system.Title) 
+                            data.append("Id", system.Id) 
                             data.append('Pictures', newImage);
                             data.append('ProgressList', newPercentage)
                             
@@ -118,16 +117,16 @@ export function AddBadgeSystemEntity({open, onClose, system, reloadMap}){
                         onChange={handleChange}
                         showUploadList={false}
                     >
-                        {!newImageURL && <>
+                        {!newImageImageHeight && <>
                         <p className="ant-upload-drag-icon">
                         <InboxOutlined />
                         </p>
                         <p className="ant-upload-text">Click or drag file to this area to upload</p>
                         </>}
                         {loadingImage && <Spin size="small"/>}
-                        {newImageURL && 
+                        {newImageImageHeight && 
                         <img 
-                            src={newImageURL}
+                            src={newImageImageHeight}
                             className="new-course-photo"
                             alt="course"
                         />}

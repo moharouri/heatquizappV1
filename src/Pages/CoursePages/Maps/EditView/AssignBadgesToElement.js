@@ -93,7 +93,7 @@ export function AssignBadgesToElement({open, onClose, system, map, reloadMap}){
                 {selectedElement ? 
                 <Row gutter={12}>
                     {Entities.map((e) => {
-                        const {Id, URL, Progress} = e
+                        const {Id, ImageURL, Progress} = e
                         const isSelected = selectedBadges.map(a => a.Id).includes(Id)
                         const selectable = !Badges.filter(b => b.Progress === Progress).length
 
@@ -123,7 +123,7 @@ export function AssignBadgesToElement({open, onClose, system, map, reloadMap}){
                                 >
                                     <img 
                                         alt="badge"
-                                        src={URL}
+                                        src={ImageURL}
                                         className="assign-badges-element-badge-img"
                                     />
                                     <p className="default-gray default-smaller">{Progress}%</p>

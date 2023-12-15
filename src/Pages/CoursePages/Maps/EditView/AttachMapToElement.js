@@ -111,7 +111,7 @@ export function AttachMapToElement({open, onClose, element, reloadMap}){
                 renderItem={(m, mi) => {
                     const isSelected = selectedMap && (selectedMap.Id === m.Id)
 
-                    const {Title, LargeMapURL} = m
+                    const {Title, ImageURL} = m
                     return(
                         <div 
                         onClick={() => setSelectedMap(m)}
@@ -123,7 +123,7 @@ export function AttachMapToElement({open, onClose, element, reloadMap}){
 
                             <img 
                                 alt={Title}
-                                src={LargeMapURL}
+                                src={ImageURL}
                                 className="attach-map-to-element-img"
                             />
                         </div>

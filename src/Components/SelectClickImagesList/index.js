@@ -23,6 +23,7 @@ export function SelectClickImagesList({open, onClose, onSelect}){
             <Space>
                 <Row 
                     gutter={24}
+                    className="hq-full-width"
                 >
                     {ClickImagesLists.map((c, i) => {
                         const {Id, Code, Play, PDF, Link} = c
@@ -30,14 +31,14 @@ export function SelectClickImagesList({open, onClose, onSelect}){
                         return(
                             <Col 
                             key={Id}
-                            xs ={6}>
+                            xs ={24}>
                                 <div
                                     className="hoverable-plus hq-element-container"
                                     onClick={() => {
                                         onSelect(c)
                                     }}
                                 >
-                                     <Space>
+                                    <Space>
                                         <p>{(i+1) + ' ' + Code} </p>
                                     </Space>
 
@@ -48,10 +49,10 @@ export function SelectClickImagesList({open, onClose, onSelect}){
                                     >
                                     {Play &&
                                     <Col
-                                        xs={4}
+                                        xs={8}
                                     >
                                         <img 
-                                            className="hq-img"
+                                            className="map-pop-up-icon"
                                             alt="Play"
                                             src={Play}
                                         />
@@ -60,10 +61,10 @@ export function SelectClickImagesList({open, onClose, onSelect}){
                                     {PDF &&
                                     
                                     <Col
-                                        xs={4}
+                                        xs={8}
                                     >
                                         <img 
-                                            className="hq-img"
+                                            className="map-pop-up-icon"
                                             alt="PDF"
                                             src={PDF}
                                         />
@@ -72,16 +73,15 @@ export function SelectClickImagesList({open, onClose, onSelect}){
 
                                     {Link &&
                                     <Col
-                                        xs={4}
+                                        xs={8}
                                     >
                                         <img 
-                                            className="hq-img"
+                                            className="map-pop-up-icon"
                                             alt="Link"
                                             src={Link}
                                         />
                                    </Col>}
                                     </Row>
-                                   
                                 </div>
                             </Col>
                         )

@@ -42,6 +42,6 @@ export function removeBackgroundImageRequest(b){
 }
 
 export function getClickImagesListsRequest(){
-    return GET_REQUEST_API('CourseMapElementImages/GetAllImages', null, true)
+    return GET_REQUEST_BODY_API('CourseMapElementImages/GetAllImages', {}, true, true)
 }
 

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PagesWrapper } from "../../../PagesWrapper";
 import { useCourses } from "../../../contexts/CoursesContext";
-import {Divider, Dropdown, List, Space, Spin } from "antd";
+import {Divider, Dropdown, List, Popconfirm, Space, Spin, message } from "antd";
 import {EditOutlined, PlusOutlined, DeleteOutlined, TrophyOutlined} from '@ant-design/icons';
 
 import './CourseView.css'
 import { EditCourseNameThumbnail } from "../Shared/EditCourseNameThumbnail";
 import { ErrorComponent } from "../../../Components/ErrorComponent";
+import { useMaps } from "../../../contexts/MapsContext";
+import { handleResponse } from "../../../services/Auxillary";
 
 export function CourseView(){
     const { id } = useParams()
@@ -16,6 +18,10 @@ export function CourseView(){
     const navigate = useNavigate()
 
     const { loadingCourse, Course, getCourseView, getCourseError} = useCourses()
+
+    const {removeMap} = useMaps()
+
+    const [api, contextHolder] = message.useMessage()
 
     useEffect(() => {
         getCourseView(id)
@@ -40,6 +46,8 @@ export function CourseView(){
 
     return(
         <PagesWrapper>
+            {contextHolder}
+
             {loadingCourse && 
             <Spin tip=". . . loading course . . ." size="large">
                 <div className="loading-section"/>
@@ -117,7 +125,29 @@ export function CourseView(){
                         },
                         {
                             key: 'delete_map',
-                            label: 'Delete map',
+                            label: 
+                            <Popconfirm
+                                title="Remove map"
+                                description="Are you sure to delete this map?"
+                                        onConfirm={() => {
+                                            console.log(m)
+                                            
+                                            removeMap(m)
+                                            .then(r => handleResponse(
+                                                r,
+                                                api,
+                                                'Removed',
+                                                1,
+                                                () => getCourseView(id)))
+                                        }}
+                                onCancel={() => {}}
+                                okText="Yes"
+                                cancelText="No"
+                                placement="right"
+                            >
+                            
+                                Delete map
+                            </Popconfirm>,
                             icon: <DeleteOutlined style={{color:'red'}}/>,
                             onClick: () => {}
                         }]
@@ -143,7 +173,7 @@ export function CourseView(){
                                         <p>{m.DateCreated.substring(0,10)}</p>
                                     </Space>
                                     <img 
-                                        src={m.LargeMapURL}
+                                        src={m.ImageURL}
                                         alt={m.Title}
                                         className="course-view-map-img"
                                         onClick={() => navigate('/playcoursemap/'+m.Id)}

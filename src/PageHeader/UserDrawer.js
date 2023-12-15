@@ -194,7 +194,7 @@ const UserDrawer = () => {
             renderItem={(n, ni) => {
               const {Player, Question, DateCreated, FeedbackContent, New} = n
 
-              const {Code, Id, Type, Base_ImageURL} = Question
+              const {Code, Id, Type, ImageURL} = Question
 
               const shortenedName = getShortenedName(Player)
 
@@ -238,7 +238,7 @@ const UserDrawer = () => {
                       <img 
                         alt={Code}
                         className='notification-question-img'
-                        src={Base_ImageURL}
+                        src={ImageURL}
                       />
                     </Space>
                   </Col>

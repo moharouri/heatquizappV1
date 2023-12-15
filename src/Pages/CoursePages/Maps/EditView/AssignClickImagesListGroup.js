@@ -41,6 +41,7 @@ export function AssignClickImagesListGroup({open, onClose, map, reloadMap}){
                 <Space>
                 <Row 
                     gutter={24}
+                    className="hq-full-width"
                 >
                     {ClickImagesLists.map((c, i) => {
                         const {Id, Code, Play, PDF, Link} = c
@@ -50,7 +51,7 @@ export function AssignClickImagesListGroup({open, onClose, map, reloadMap}){
                         return(
                             <Col
                             key={Id}
-                            xs ={6}>
+                            xs ={24}>
                                 <div
                                     className={"hoverable-plus hq-element-container" + (isSelected ? " highlighted" : "")}
                                     onClick={() => setSelectedList(c)}
@@ -66,10 +67,10 @@ export function AssignClickImagesListGroup({open, onClose, map, reloadMap}){
                                     >
                                     {Play &&
                                     <Col
-                                        xs={4}
+                                        xs={8}
                                     >
                                         <img 
-                                            className="hq-img"
+                                            className="map-pop-up-icon"
                                             alt="Play"
                                             src={Play}
                                         />
@@ -78,10 +79,10 @@ export function AssignClickImagesListGroup({open, onClose, map, reloadMap}){
                                     {PDF &&
                                     
                                     <Col
-                                        xs={4}
+                                        xs={8}
                                     >
                                         <img 
-                                            className="hq-img"
+                                            className="map-pop-up-icon"
                                             alt="PDF"
                                             src={PDF}
                                         />
@@ -90,10 +91,10 @@ export function AssignClickImagesListGroup({open, onClose, map, reloadMap}){
 
                                     {Link &&
                                     <Col
-                                        xs={4}
+                                        xs={8}
                                     >
                                         <img 
-                                            className="hq-img"
+                                            className="map-pop-up-icon"
                                             alt="Link"
                                             src={Link}
                                         />

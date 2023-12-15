@@ -1,7 +1,7 @@
 import React, { useContext} from "react"
 
 import { useAsyncFn } from "../hooks/useAsync"
-import {addKeyListRequest, addKeyVariantRequest, addKeyboardRequest, addNumericKeyRequest, addVariableKeyRequest, assignKeysToKeyboardRequest, editKeyListCodeRequest, editKeyboardNameRequest, getAllKeyListsRequest, getKeyConnectedQuestionsRequest, getKeyListAssignedKeysRequest, getKeyboardQuestionsRequest, getKeyboardRequest, reassignKeysToListRequest, removeKeyFromKeyboardRequest, removeKeyListRequest, searchKeyboardsByIdsRequest, searchKeyboardsRequest, searchKeysByIdsRequest, searchKeysRequest, swabKeyboardKeysRequest } from "../services/Keyboard"
+import {addKeyListRequest, addKeyVariantRequest, addKeyboardRequest, addNumericKeyRequest, addVariableKeyRequest, assignKeysToKeyboardRequest, editKeyListCodeRequest, editKeyboardNameRequest, getAllKeyListsRequest, getKeyConnectedQuestionsRequest, getKeyListAssignedKeysRequest, getKeyboardQuestionsRequest, getKeyboardRequest, reassignKeysToListRequest, removeKeyFromKeyboardRequest, removeKeyListRequest, removeKeyboardRequest, searchKeyboardsByIdsRequest, searchKeyboardsRequest, searchKeysByIdsRequest, searchKeysRequest, swabKeyboardKeysRequest } from "../services/Keyboard"
 
 const Context = React.createContext()
 
@@ -53,6 +53,9 @@ export function KeyboardProvider ({children}){
     const {value: addKeyVariantResult, error:errorAddKeyVariant, loading:isLoadingAddKeyVariant, execute: addKeyVariant} = useAsyncFn((b) => addKeyVariantRequest(b)) 
     
     const {value: addKeyboardResult, error:errorAddKeyboard, loading:isLoadingAddKeyboard, execute: addKeyboard} = useAsyncFn((b) => addKeyboardRequest(b)) 
+
+    const {value: removeKeyboardResult, error:errorRemoveKeyboard, loading:isLoadingRemoveKeyboard, execute: removeKeyboard} = useAsyncFn((b) => removeKeyboardRequest(b)) 
+
     const {value: editKeyboardNameResult, error:errorEditKeyboardName, loading:isLoadingEditKeyboardName, execute: editKeyboardName} = useAsyncFn((b) => editKeyboardNameRequest(b)) 
     const {value: assignKeysToKeyboardResult, error:errorAssignKeysToKeyboard, loading:isLoadingAssignKeysToKeyboard, execute: assignKeysToKeyboard} = useAsyncFn((b) => assignKeysToKeyboardRequest(b)) 
     const {value: removeKeyFromKeyboardResult, error:errorRemoveKeyFromKeyboard, loading:isLoadingRemoveKeyFromKeyboard, execute: removeKeyFromKeyboard} = useAsyncFn((b) => removeKeyFromKeyboardRequest(b)) 
@@ -128,6 +131,11 @@ export function KeyboardProvider ({children}){
             isLoadingAddKeyboard,
             errorAddKeyboard,
             addKeyboard,
+
+            removeKeyboardResult,
+            isLoadingRemoveKeyboard,
+            errorRemoveKeyboard,
+            removeKeyboard,
 
             editKeyboardNameResult,
             errorEditKeyboardName,

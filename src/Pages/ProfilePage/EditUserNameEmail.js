@@ -65,8 +65,6 @@ export function EditUserNameEmail({user, open, onClose, reloadData}){
                         }
 
                         const VM = ({
-                            NewUsername: user.Username,
-                            Username: user.Username,
                             Name: newName,
                             Email: newEmail
                         })

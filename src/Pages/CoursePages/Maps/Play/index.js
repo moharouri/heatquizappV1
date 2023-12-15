@@ -54,8 +54,6 @@ export function MapPlay(){
         
         //Get map play statistics on this device
         const result = getMapPlayStatisticsRequest_LS(id) 
-
-        console.log("result", result)
         
         setPlayStats(result)
 
@@ -103,10 +101,10 @@ export function MapPlay(){
     })
 
     const getBadgePositionStyle = (imageWidth, BackgroundImageWidth, p) => ({
-        width: ((imageWidth)/BackgroundImageWidth)* p.Badge_Width,
-        height: ((imageWidth)/BackgroundImageWidth)*p.Badge_Length ,
-        left: ((imageWidth)/BackgroundImageWidth)*p.Badge_X,
-        top:  ((imageWidth)/BackgroundImageWidth)*p.Badge_Y + topOffset,
+        width: ((imageWidth)/BackgroundImageWidth)* p.BadgeWidth,
+        height: ((imageWidth)/BackgroundImageWidth)*p.BadgeLength ,
+        left: ((imageWidth)/BackgroundImageWidth)*p.BadgeX,
+        top:  ((imageWidth)/BackgroundImageWidth)*p.BadgeY + topOffset,
     })
 
     const playSeriesActivate = (s, e) => {
@@ -161,26 +159,21 @@ export function MapPlay(){
         const {QuestionSeries, PDFURL, ExternalVideoLink, VideoURL, RequiredElement, Threshold, MapAttachment} = e
 
         if(RequiredElement){
-            console.log(RequiredElement)
-            console.log(playStats)
-            console.log(playStats.ElementsProgress)
-            console.log(playStats.ElementsProgress[existingElementIndex])
-            console.log(progress, Threshold)
 
-            let existingElementIndex = playStats.ElementsProgress.map((a, ai) => a.Id === e.Id ? (ai) : null)[0]
+            let existingElementIndex = playStats.ElementsProgress.map((a, ai) => a.Id === RequiredElement.Id ? (ai) : null)[0]
 
             const progress = playStats.ElementsProgress[existingElementIndex]
-
+            
             if(!progress){
 
                 renderRequiredElement(e)
 
                 return
             }
-        
-            const finalProgress = evaluateElementProgress(QuestionSeries, progress)
-            console.log(QuestionSeries, progress)
-            console.log(finalProgress)
+            
+            const {QuestionSeries: RQ } = RequiredElement
+
+            const finalProgress = evaluateElementProgress(RQ, progress)
 
             if(finalProgress < Threshold){
                 renderRequiredElement(e)
@@ -284,7 +277,7 @@ export function MapPlay(){
                         <img 
                             alt="map"
                             className="map-element-modal-img"
-                            src={MapAttachment.Map.LargeMapURL}
+                            src={MapAttachment.Map.ImageURL}
                             onClick={() => goToMapPlay(MapAttachment.Map)}
                         />
                         <small className="default-gray">{MapAttachment.Map.Title}</small>
@@ -301,31 +294,24 @@ export function MapPlay(){
     }
 
     const getBadgeForElement = (badges, element) => {
-        console.log(badges, element, playStats)
 
         if(!playStats) return null;
 
         const {QuestionSeries} = element
-        let existingElementIndex = playStats.ElementsProgress.map((a, ai) => a.Id === element.Id ? (ai) : null).filter(a => a)[0]
-        console.log(existingElementIndex)
+        let existingElementIndex = playStats.ElementsProgress.map((a, ai) => a.Id === element.Id ? (ai) : null).filter(a => a !== null)[0]
 
         if([null, undefined].includes(existingElementIndex)) return null;
 
         const progress = playStats.ElementsProgress[existingElementIndex]
-        console.log(playStats.ElementsProgress[existingElementIndex])
-        console.log(progress)
 
         const finalProgress = evaluateElementProgress(QuestionSeries, progress)
-        console.log(finalProgress)
 
         const findBadge = badges.filter(a => a.Progress <= finalProgress).sort((a, b) => b.Progress - a.Progress)[0]
-        console.log(findBadge)
 
         return findBadge
     }
 
     const evaluateElementProgress = (targetSeries, progress) => {
-
         const targetSeriesQuestions = targetSeries.Elements.map(e => e.QuestionId)
 
         const questionsPlayedCorrectlyInsideSeries = progress.Progress.filter(a => a.Correct).filter(a => targetSeriesQuestions.includes(a.QuestionId))
@@ -340,12 +326,12 @@ export function MapPlay(){
     }
 
     const renderElement = (e) => {
-        const {BackgroundImage, Badges, QuestionSeries} = e
-        const {LargeMapWidth, ShowBorder} = map
+        const {Badges, QuestionSeries} = e
+        const {ImageWidth, ShowBorder} = map
 
-        let toBeDrawBadge = Badges.length && !(e.Badge_X && e.Badge_Y) && QuestionSeries ? getBadgeForElement(Badges, e) : null
+        let toBeDrawBadge = Badges.length && !(e.BadgeX && e.BadgeY) && QuestionSeries ? getBadgeForElement(Badges, e) : null
 
-        const positionStyle = getElementPositionStyle(imageBaseWidth, LargeMapWidth, e)
+        const positionStyle = getElementPositionStyle(imageBaseWidth, ImageWidth, e)
 
         const elementStyle = ({
             alignItems:'center',
@@ -354,8 +340,6 @@ export function MapPlay(){
             flexDirection:'column',
             cursor:'pointer',
             position: 'absolute',
-
-            [BackgroundImage ? "backgroundImage" : ""]:  "url(" + FixURL(BackgroundImage) + ")",
 
             border:ShowBorder ? 1 : 0, 
             borderColor: 'gray',
@@ -377,7 +361,7 @@ export function MapPlay(){
                     alt="badge"
                     className="hq-img"
                     style={positionStyle}
-                    src={toBeDrawBadge.URL}
+                    src={toBeDrawBadge.ImageURL}
                 />}
                 
             </span>
@@ -385,15 +369,14 @@ export function MapPlay(){
     }
 
     const renderBadge = (e) => {
-        
         const {Badges} = e
-        const {LargeMapWidth, ShowBorder} = map
+        const {ImageWidth, ShowBorder} = map
 
         let toBeDrawBadge = getBadgeForElement(Badges, e)
 
         if(!toBeDrawBadge) return <span/>;
 
-        const positionStyle = getBadgePositionStyle(imageBaseWidth, LargeMapWidth, e)
+        const positionStyle = getBadgePositionStyle(imageBaseWidth, ImageWidth, e)
 
         const elementStyle = ({
             alignItems:'center',
@@ -416,7 +399,7 @@ export function MapPlay(){
             }}
         >
              <img 
-                src = {toBeDrawBadge.URL}
+                src = {toBeDrawBadge.ImageURL}
                 alt="badge"
                 style = {{
                     width: '100%',
@@ -428,21 +411,21 @@ export function MapPlay(){
     }
 
     const renderMap = () => {
-        const {LargeMapURL, LargeMapWidth, LargeMapLength, Title, Elements} = map
+        const {ImageURL, ImageWidth, ImageHeight, Title, Elements} = map
 
         const imageWidth = imageBaseWidth 
-        const imageHeight = (LargeMapLength/LargeMapWidth) * imageWidth
+        const imageHeight = (ImageHeight/ImageWidth) * imageWidth
 
         return(
             <div style={{width: imageWidth, height: imageHeight}}>
                 <img 
-                    src={LargeMapURL}
+                    src={ImageURL}
                     alt={Title}
                     style={{width: imageWidth, height: imageHeight}}
                 />
 
                 {Elements.map((e) => renderElement(e))}
-                {Elements.filter(e => e.Badge_X && e.Badge_Y && e.Badges.length).map((e) => renderBadge(e))}
+                {Elements.filter(e => e.BadgeX && e.BadgeY && e.Badges.length).map((e) => renderBadge(e))}
 
                 
             </div>

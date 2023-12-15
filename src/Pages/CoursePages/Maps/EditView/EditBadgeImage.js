@@ -35,7 +35,7 @@ export function EditBadgeImage({open, onClose, badge, nonElementBadge, reloadMap
       };
 
 
-    const {URL, Progress} = badge
+    const {ImageURL, Progress} = badge
 
     return(
         <div>
@@ -101,7 +101,7 @@ export function EditBadgeImage({open, onClose, badge, nonElementBadge, reloadMap
                     </Button>
                 </Space>
                 <img 
-                    src={URL}
+                    src={ImageURL}
                     alt={"Badge " + Progress}
                     className="map-badge-small-img"
                 />

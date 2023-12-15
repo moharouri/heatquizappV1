@@ -4,8 +4,8 @@ import { PagesWrapper } from "../../../../PagesWrapper";
 import { useMaps } from "../../../../contexts/MapsContext";
 import { useEffect } from "react";
 import { Alert, Button, Col, Collapse, Divider, Dropdown, Input, List, Modal, Popconfirm, Row, Skeleton, Space, Spin, Tabs, Tooltip, message } from "antd";
-import { FixURL, beautifyDate, beautifyNumber, handleResponse } from "../../../../services/Auxillary";
-import { FilePdfOutlined, LinkOutlined, PlusOutlined, AimOutlined, SelectOutlined, TrophyOutlined, EyeOutlined, ClockCircleOutlined, DashboardOutlined, CaretRightOutlined, EditOutlined, BlockOutlined, NodeExpandOutlined , DeleteOutlined, NodeIndexOutlined} from '@ant-design/icons';
+import {beautifyDate, beautifyNumber, handleResponse } from "../../../../services/Auxillary";
+import { CloseCircleFilled, TrophyFilled, FilePdfOutlined, LinkOutlined, PlusOutlined, AimOutlined, SelectOutlined, TrophyOutlined, EyeOutlined, ClockCircleOutlined, DashboardOutlined, CaretRightOutlined, EditOutlined, BlockOutlined, NodeExpandOutlined , DeleteOutlined, NodeIndexOutlined} from '@ant-design/icons';
 
 import './index.css'
 import { useState } from "react";
@@ -23,15 +23,18 @@ import { AssignBadgesToElement } from "./AssignBadgesToElement";
 import { AttachMapToElement } from "./AttachMapToElement";
 import { AssignClickImagesListGroup } from "./AssignClickImagesListGroup";
 import { ReassignMap } from "./ReassignMap";
+import { ErrorComponent } from "../../../../Components/ErrorComponent";
+import { CopyMap } from "./CopyMap";
 
 export function MapEditView(){
+    const imageRef = React.createRef()
 
     const {id} = useParams()
 
     const navigate = useNavigate()
 
     const {
-        loadingMapExtended, mapExtended, getMapExtended,
+        loadingMapExtended, mapExtended, getMapExtended, getMapExtendedError,
         
         mapElementStatistics, getMapElementStatistics,
 
@@ -63,12 +66,15 @@ export function MapEditView(){
 
         deleteMapElement,
 
-        loadingDeattachMapToElement, deattachMapToElement
+        loadingDeattachMapToElement, deattachMapToElement,
+
+        loadingAddMapElements, addMapElements,
     } = useMaps()
 
     const [showEditMapModal, setShowEditMapModal] = useState(false)
     const [showAddBadgeSystemModal, setShowAddBadgeSystemModal] = useState(false)
     const [showReassignMapModal, setShowReassignMapModal] = useState(false)
+    const [showCopyMapModal, setShowCopyMapModal] = useState(false)
 
     const [showPlaySeriesModal, setShowPlaySeriesModal] = useState(false)
     const [selectedSeries, setSelectedSeries] = useState({Code:''})
@@ -103,6 +109,15 @@ export function MapEditView(){
     const [selectedBadgeSystem, setSelectedBadgeSystem] = useState(null)
     const [showAddBadgeEntity, setShowAddBadgeEntity] = useState(false)
     const [showAssignBadgesElement, setShowAssignBadgesElement] = useState(false)
+
+
+    const [isAddingElement, setIsAddingElement] = useState(false)
+    const [isAddingElementSecond, setIsAddingElementSecond] = useState(false)
+    const [newParts, setNewParts] = useState([])
+
+    const [selectedElementIndex, setSelectedElementIndex] = useState(null)
+    const [showSelectSeriesAddedElement, setShowSelectSeriesAddedElement] = useState(false)
+
 
 
     const [api, contextHolder] = message.useMessage()
@@ -149,7 +164,7 @@ export function MapEditView(){
                                     key:'copy_map',
                                     label:'Copy map',
                                     icon: <BlockOutlined  /> ,
-                                    onClick: () => {}
+                                    onClick: () => {setShowCopyMapModal(true)}
                                 },
                                 {
                                     key:'reassign_map',
@@ -175,7 +190,7 @@ export function MapEditView(){
                                     key:'add_element',
                                     label:'Add new element',
                                     icon: <PlusOutlined style={{color:'green'}}/> ,
-                                    onClick: () => {}
+                                    onClick: () => setIsAddingElement(true)
                                 },
                                 {
                                     key:'assign_click_list_elements',
@@ -360,7 +375,7 @@ export function MapEditView(){
     const editElementBadgePercentage = () => {
         if(!selectedBadge) return <div/>;
 
-        const {Progress, URL} = selectedBadge
+        const {Progress, ImageURL} = selectedBadge
         return(
             <Modal 
                 open={showEditElementBadgePercentage}
@@ -445,7 +460,7 @@ export function MapEditView(){
 
                     <Space direction="vertical" align="center"> 
                         <img 
-                            src={URL}
+                            src={ImageURL}
                             alt={"Badge " + Progress}
                             className="map-badge-small-img"
                         />
@@ -984,7 +999,7 @@ export function MapEditView(){
                                             gutter={12}
                                         >
                                             {Badges.sort((a,b) => a.Progress > b.Progress ? +1 : -1).map((b) => {
-                                                const {Id, URL, Progress} = b
+                                                const {Id, ImageURL, Progress} = b
                                                 return(
                                                    <Tooltip
                                                     key={Id}
@@ -1058,7 +1073,7 @@ export function MapEditView(){
                                                             >
                                                                 <img 
                                                                     alt="badge"
-                                                                    src={URL}
+                                                                    src={ImageURL}
                                                                 />
                                                                 <small className="default-gray default-smaller">{Progress}%</small>
                                                             </div>
@@ -1090,11 +1105,8 @@ export function MapEditView(){
                                                     icon: <DeleteOutlined />,
                                                     onClick: () => {
                                                         setSelectedElement(e)
-                                                        
-                                                        const data = new FormData()
-                                                        data.append('ElementId', e.Id)
-
-                                                        deassignClickListToMapElement(data)
+                                                   
+                                                        deassignClickListToMapElement(e)
                                                         .then((r) => handleResponse(
                                                             r,
                                                             api,
@@ -1257,7 +1269,7 @@ export function MapEditView(){
                             
                             <Row gutter={12}>
                             {Entities.sort((a, b) => a.Progress - b.Progress).map((e) => {
-                                const {Id, Progress, URL} = e
+                                const {Id, Progress, ImageURL} = e
                                 return(
                                     <Tooltip
                                         key={Id}
@@ -1329,7 +1341,7 @@ export function MapEditView(){
                                     >
                                         <Space direction="vertical" align="center">
                                             <img 
-                                                src={URL}
+                                                src={ImageURL}
                                                 alt={"Badge " + Progress}
                                                 className="map-badge-small-img"
                                             />
@@ -1351,7 +1363,7 @@ export function MapEditView(){
     }
 
     const renderMapBody = () => {
-        const {LargeMapURL, LargeMapWidth, LargeMapLength, Title, Elements} = mapExtended
+        const {ImageURL, ImageWidth, ImageHeight, Title, Elements} = mapExtended
 
           const items = [
             {
@@ -1379,8 +1391,6 @@ export function MapEditView(){
             cursor:'pointer',
             position: 'absolute',
 
-            [e.BackgroundImage ? "backgroundImage" : ""]:  "url(" + FixURL(e.BackgroundImage) + ")",
-
             border:1, 
             borderColor: 'red',
             borderStyle: 'solid',
@@ -1392,11 +1402,68 @@ export function MapEditView(){
                 <Col>
                     <img 
                         alt={Title}
-                        style={{width:LargeMapWidth, height:LargeMapLength, cursor:'crosshair'}}
-                        src={LargeMapURL}
+                        style={{width:ImageWidth, height:ImageHeight, cursor:'crosshair'}}
+                        src={ImageURL}
+
+                        ref={imageRef}
+
+                        onClick={(e) => {
+                            if(!isAddingElement) return;
+
+                            e.persist()
+
+                            const {pageX, pageY} = e
+
+                            const imgRef = imageRef.current
+                            const parentNode = imgRef.parentNode.parentNode
+                            const styles = window.getComputedStyle(parentNode)
+                            const offset = Number(styles.getPropertyValue('padding-right').replace('px', ''))
+                            
+                            const {top, left} = imgRef.getBoundingClientRect()
+
+                            
+                            if(!isAddingElementSecond){
+
+                                let newPart = ({
+                                    title:'',
+                                    x: pageX - left + offset,
+                                    offsetX:offset,
+                                    y: pageY - top,
+                                    width: 1,
+                                    height: 1
+                                })
+
+
+                                setNewParts(prev => [...prev, newPart])
+                                setIsAddingElementSecond(true)
+
+                                return
+                            }
+
+                            if(isAddingElementSecond){
+                                let parts = [...newParts]
+
+                                const newX = pageX - left + offset
+                                const newY = pageY - top
+
+                                let Last =  parts[parts.length-1]
+                               
+                                Last.width = Math.abs(Last.x - newX)
+                                Last.height = Math.abs(Last.y - newY)
+    
+                                Last.x = Math.min(Last.x,newX)
+                                Last.y = Math.min(Last.y, newY)
+
+                                setNewParts(parts)
+
+                                setIsAddingElement(false)
+                                setIsAddingElementSecond(false)
+                                return
+                            }
+                        }}
                     />
                     {Elements.map((e, ei) => {
-                        const positionStyle = getElementPositionStyle(LargeMapWidth, LargeMapWidth, e)
+                        const positionStyle = getElementPositionStyle(ImageWidth, ImageWidth, e)
                         return(
                             <span
                                 key={e.Id}
@@ -1422,11 +1489,160 @@ export function MapEditView(){
                             </span>)
 
                     })}
+
+                    {newParts.map((p, pi) => {
+                        const {x, y, width, height} = p
+
+                        return( 
+                            <div
+                                key={pi}
+                                style={{position:'absolute', left:x, top:y, width: width, height: height}}
+                                className="map-add-element"
+                            >
+                               
+                            </div>
+                        )
+                    })}
                 </Col>
                 <Col xs={1}/>
+                {(newParts.length) ? 
+                <Col xs={10}>
+                    {newParts.length ? 
+                    <Space direction="vertical">
+<List
+                        dataSource={newParts}
+                        renderItem={(p, pi) => {
+                        
+                        const {title, externalLink, series} = p
+
+
+                        return(
+                            <div
+                                key={pi}
+                                className={"add-map-element-container"}
+                            >
+                                <Space
+                                    size={'small'}
+                                    align="center"
+                                >
+                                    
+                                    <p className="default-gray">{pi+1}</p>
+                                    <Input 
+                                        placeholder="Element title"
+                                        className="add-map-element-title-input"
+                                        value={title}
+                                        onChange={(v) => {
+                                                const value = v.target.value
+
+                                                let parts = [...newParts]
+
+                                                parts[pi].title = value
+
+                                                setNewParts(parts)
+                                            }}
+                                    />
+                                    <Tooltip
+                                        color="white"
+                                        placement="top"
+                                        title={<p>Delete element</p>}
+                                    >
+                                        <CloseCircleFilled 
+                                            onClick={() => {
+                                                setNewParts([])
+                                                setIsAddingElement(false)
+                                                setIsAddingElementSecond(false)
+                                            }}
+                                            style={{color:'red', cursor:'pointer'}}
+                                        />
+                                    </Tooltip>
+                                </Space>
+
+                                <Space
+                                    className="add-map-element-margin"
+                                >
+                                    
+                                    <p className="default-white">{pi+1}</p>
+                                    <Input 
+                                        placeholder="External link"
+                                        className="add-map-element-title-input"
+                                        value={externalLink}
+                                        onChange={(v) => {
+                                                const value = v.target.value
+
+                                                let parts = [...newParts]
+
+                                                parts[pi].externalLink = value
+
+                                                setNewParts(parts)
+                                            }}
+                                    />
+                                </Space>
+
+                                <Space
+                                    className="add-map-element-margin"
+                                >
+                                    <p className="default-white">{pi+1}</p>
+                                    <div 
+                                        className="please-select-area" 
+                                        onClick={() => {
+                                            setSelectedElementIndex(pi)
+                                            setShowSelectSeriesAddedElement(true)
+                                        }}
+                                    >
+                                        {!series ? 
+                                        <Space>
+                                            <TrophyFilled />
+                                            <small>Click to select a series</small>
+                                        </Space> : 
+                                        <Space>
+                                            <TrophyFilled />
+                                            <p> {series.Code} </p>
+                                        </Space>}
+                                    </div>
+                                </Space> 
+                                <Divider/>
+                            </div>)
+                        }}
+                    /> 
+                    <Button
+                        size="small"
+                        loading={false}
+
+                        onClick={() => {
+                            const elementsHaveNoTitle = newParts.filter(a => !a.title.trim()).length
+
+                            if(elementsHaveNoTitle){
+                                api.destroy()
+                                api.warning("All elements must have a title")
+                            }
+
+                            const data = new FormData()
+
+                            data.append('Id', mapExtended.Id)
+                            data.append('ElementsString', JSON.stringify(newParts.map(e => ({
+                                Title: e.title,
+                                ExternalVideoLink: e.externalLink,
+                                QuestionSeriesId: e.series ? e.series.Id : undefined ,
+                                X: Math.floor(e.x - e.offsetX),
+                                Y:  Math.floor(e.y),
+                                Width:  Math.floor(e.width),
+                                Length:  Math.floor(e.height),
+                            }))))
+
+                            addMapElements(data).then(r => handleResponse(r, api, 'Added successfully', 1, () => {
+                                loadData()
+                                setNewParts()
+                            }))
+                        }}
+                    >
+                        Add new elements
+                    </Button>
+                    </Space>: <div/>}
+                </Col>
+                : 
                 <Col xs={10}>
                     <Tabs defaultActiveKey="1" items={items} />
-                </Col>
+                </Col>}
             </Row>
         )
     }
@@ -1442,6 +1658,15 @@ export function MapEditView(){
                 {renderMapHeader()}
                 {renderMapBody()}
             </div>}
+
+            {getMapExtendedError && !loadingMapExtended && 
+                <ErrorComponent 
+                    error={getMapExtendedError}
+                    onReload={() => {
+                        loadData()
+                    }}
+                />
+            }
 
             <EditMapBasicInfo 
                 open={showEditMapModal}
@@ -1585,6 +1810,27 @@ export function MapEditView(){
 
                 map={mapExtended}
                 reloadMap={() => loadData()}
+            />
+
+            <CopyMap 
+                open={showCopyMapModal}
+                onClose={() => setShowCopyMapModal(false)}
+                Map={mapExtended}
+                reloadData={() => {}}
+            />
+
+            <SelectSeries
+                open={showSelectSeriesAddedElement}
+                onClose={() => setShowSelectSeriesAddedElement(false)}
+
+                onSelect={(s) => {
+                    let parts = [...newParts]
+                    parts[selectedElementIndex].series = s
+
+                    setNewParts(parts)
+                    setSelectedElement(null)
+                    setShowSelectSeriesAddedElement(false)
+                }}
             />
 
             {editTitleModal()}

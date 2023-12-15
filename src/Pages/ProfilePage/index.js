@@ -20,7 +20,7 @@ export function ProfilePage(){
 
     const [api, contextHolder] = message.useMessage()
     
-    const {username, currentPlayerKey} = useAuth()
+    const {userfullname, currentPlayerKey} = useAuth()
     
     const [searchCode, setSearchCode] = useState('')
     const [currentUser, setCurrentUser] = useState('')
@@ -41,7 +41,7 @@ export function ProfilePage(){
 
     useEffect(() => {
         if(users && users.length){
-            const currentUser = users.filter((u) => u.Username === username)[0]
+            const currentUser = users.filter((u) => u.Name === userfullname)[0]
 
             if(currentUser){
                 const {Name, Email, ProfilePicture} = currentUser
@@ -77,7 +77,6 @@ export function ProfilePage(){
                 <EditProfilePicture 
                     open={showEditProfilePictureModal}
                     onClose={() => setShowEditProfilePictureModal(false)}
-                    username={currentUser.Username}
                     reloadData={() => getUsers()}
                 />
 
@@ -237,16 +236,16 @@ export function ProfilePage(){
             className="hq-full-width"
             columns={columns}
             dataSource={users ? users.filter((u) => {
-                if(u.Username === username) return false
+                if(u.Name === userfullname) return false
 
                 if(!searchCode.trim()) return true
 
-                if(u.Username.includes(searchCode.trim()) || u.Email.includes(searchCode.trim())) return true
+                if(u.Name.includes(searchCode.trim()) || u.Email.includes(searchCode.trim())) return true
 
                 return false
 
             }) : []}
-            rowKey={(record) => record.username}
+            rowKey={(record) => record.Name}
             loading={loadingUsers}
             pagination={{position:['topLeft']}}
             /> : 

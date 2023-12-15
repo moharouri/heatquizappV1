@@ -30,6 +30,10 @@ export function addSeriesRequest(b){
     return ADD_REQUEST_BODY_API('QuestionSeries/AddSeries', b, true, true)
 }
 
+export function removeSeriesRequest(b){
+    return EDIT_REQUEST_BODY_API('QuestionSeries/RemoveSeries', b, true, true)
+}
+
 export function addQuestionsToSeriesRequest(b){
     return ADD_REQUEST_BODY_API('QuestionSeries/AddSeriesElements', b, true, true)
 }

@@ -21,14 +21,12 @@ export function Dashboard(){
     const loadRecentlyVisitedMaps = () => {
         const mapIds = getMapVisit_LS() || []
 
-        const data = new FormData()
-
-        for(let Id of mapIds){
-            data.append('Ids', Id)
-        }
+        const VM = ({
+            Ids: mapIds
+        })
 
 
-        getRecentlyVistedMaps(data)
+        getRecentlyVistedMaps(VM)
     }
 
     useEffect(() => {

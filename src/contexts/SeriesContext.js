@@ -1,7 +1,7 @@
 import React, { useContext} from "react"
 
 import { useAsyncFn } from "../hooks/useAsync"
-import { addQuestionsToSeriesRequest, addSeriesRequest, addSeriesStatisticRequest, assignQuestionsToPoolRequest, decreasePoolsNumberSeriesRequest, deselectQuestionFromSeriesRequest, editQuestionsInfoRequest, getSeriesAddersRequest, getSeriesMedianTimeSpectrumRequest, getSeriesRequest, getSeriesStatisticsRequest, getSeriesViewEditRequest, increasePoolsNumberSeriesRequest, rearrangeSeriesRequest, searchSeriesByIdsRequest, searchSeriesRequest } from "../services/Series"
+import { addQuestionsToSeriesRequest, addSeriesRequest, addSeriesStatisticRequest, assignQuestionsToPoolRequest, decreasePoolsNumberSeriesRequest, deselectQuestionFromSeriesRequest, editQuestionsInfoRequest, getSeriesAddersRequest, getSeriesMedianTimeSpectrumRequest, getSeriesRequest, getSeriesStatisticsRequest, getSeriesViewEditRequest, increasePoolsNumberSeriesRequest, rearrangeSeriesRequest, removeSeriesRequest, searchSeriesByIdsRequest, searchSeriesRequest } from "../services/Series"
 
 const Context = React.createContext()
 
@@ -22,6 +22,7 @@ export function SeriesProvider ({children}){
     const {value: addSeriesStatisticResult, error:errorAddSeriesStatistic, loading:isLoadingAddSeriesStatistic, execute: postSeriesStatistic} = useAsyncFn((b) => addSeriesStatisticRequest(b)) 
    
     const {value: addSeriesResult, error:errorAddSeries, loading:isLoadingAddSeries, execute: addSeries} = useAsyncFn((b) => addSeriesRequest(b)) 
+    const {value: removeSeriesResult, error:errorRemoveSeries, loading:isLoadingRemoveSeries, execute: removeSeries} = useAsyncFn((b) => removeSeriesRequest(b)) 
     
     const {value: editQuestionsInfoResult, error:errorEditQuestionsInfo, loading:isLoadingEditQuestionsInfo, execute: editQuestionsInfo} = useAsyncFn((b) => editQuestionsInfoRequest(b)) 
     const {value: addQuestionsToSeriesResult, error:errorAddQuestionsToSeries, loading:isLoadingAddQuestionsToSeries, execute: addQuestionsToSeries} = useAsyncFn((b) => addQuestionsToSeriesRequest(b)) 
@@ -76,6 +77,11 @@ export function SeriesProvider ({children}){
             errorAddSeries,
             isLoadingAddSeries,
             addSeries,
+
+            removeSeriesResult,
+            errorRemoveSeries,
+            isLoadingRemoveSeries,
+            removeSeries,
 
             addQuestionsToSeriesResult,
             isLoadingAddQuestionsToSeries,

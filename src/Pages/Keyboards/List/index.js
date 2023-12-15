@@ -1,12 +1,12 @@
 import React from "react"
 import { PagesWrapper } from "../../../PagesWrapper"
-import {Col, Divider, Dropdown, List, Row, Skeleton, Space} from "antd"
+import {Col, Divider, Dropdown, List, message, Popconfirm, Row, Skeleton, Space} from "antd"
 import { useState } from "react"
 
 import { KeyboardsSearchTool } from "../Shared/KeyboardsSearchTool"
 import { useKeyboard } from "../../../contexts/KeyboardContext"
 import { ErrorComponent } from "../../../Components/ErrorComponent"
-import { beautifyDate } from "../../../services/Auxillary"
+import { beautifyDate, handleResponse } from "../../../services/Auxillary"
 import { LatexRenderer } from "../../../Components/LatexRenderer"
 import { EditOutlined, EyeOutlined, DeleteOutlined  } from '@ant-design/icons';
 
@@ -15,12 +15,16 @@ import { ViewKeyboardAssignedQuestions } from "./ViewKeyboardAssignedQuestions"
 import { useNavigate } from "react-router-dom"
 
 export function KeyboardsList(){
-    const { isLoadingKeyboards, keyboards, errorGetKeyboards} = useKeyboard()
+    const { isLoadingKeyboards, keyboards, errorGetKeyboards,
+        removeKeyboard
+    } = useKeyboard()
 
     const [firstIndex, setFirstIndex] = useState(0)
 
     const [showKeyboardAssignedQuestions, setShowKeyboardAssignedQuestions] = useState(false)
     const [selectedKeyboard, setSelectedKeyboard] = useState(null)
+
+    const [api, contextHolder] = message.useMessage()
 
     const navigate = useNavigate()
 
@@ -72,7 +76,27 @@ export function KeyboardsList(){
     },
     {
         key:'remove_keyboard',
-        label:'Delete',
+        label:
+        <Popconfirm
+        title="Remove keyboard"
+        description="Are you sure to delete this keyboard?"
+                onConfirm={() => {
+                    removeKeyboard({Id: k.Id})
+                    .then(r => handleResponse(
+                        r,
+                        api,
+                        'Removed',
+                        1,
+                        () => window.location.reload()))
+                }}
+        onCancel={() => {}}
+        okText="Yes"
+        cancelText="No"
+        placement="right"
+    >
+    
+        Delete
+    </Popconfirm>,
         icon: <DeleteOutlined />,
         onClick: () => {
             
@@ -127,6 +151,7 @@ export function KeyboardsList(){
 
     return(
         <PagesWrapper>
+            {contextHolder}
             <Divider orientation="left">
                 Keyboards List
             </Divider>

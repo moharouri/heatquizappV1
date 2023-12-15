@@ -1,9 +1,9 @@
 import React from "react"
 import { PagesWrapper } from "../../../PagesWrapper"
-import { Col, Divider, Dropdown, Empty, List, Row, Skeleton, Space, Tooltip } from "antd"
+import { Col, Divider, Dropdown, Empty, List, Popconfirm, Row, Skeleton, Space, Tooltip, message } from "antd"
 import { SeriesSearchTool } from "./SeriesSearchTool"
 import { useSeries } from "../../../contexts/SeriesContext"
-import { beautifyDatetime } from "../../../services/Auxillary"
+import { beautifyDatetime, handleResponse } from "../../../services/Auxillary"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import {EditOutlined, TrophyOutlined, DeleteOutlined} from '@ant-design/icons';
@@ -11,12 +11,16 @@ import { SeriesPlayPocket } from "../Play/SeriesPlayPocket"
 import { ErrorComponent } from "../../../Components/ErrorComponent"
 
 export function SeriesList(){
-    const {isLoadingSeriesQuery, errorGetSeriesQuery, SeriesQuery,} = useSeries() 
+    const {isLoadingSeriesQuery, errorGetSeriesQuery, SeriesQuery, 
+        removeSeries
+    } = useSeries() 
 
     const [firstIndex, setFirstIndex] = useState(0)
 
     const [showPlaySeriesModal, setShowPlaySeriesModal] = useState(false)
     const [selectedSeries, setSelectedSeries] = useState({Code:''})
+
+    const [api, contextHolder] = message.useMessage()
 
     const naviagate = useNavigate()
 
@@ -43,7 +47,27 @@ export function SeriesList(){
     },
     {
         key: 'delete_series',
-        label: 'Delete',
+        label: 
+        <Popconfirm
+        title="Remove series"
+        description="Are you sure to delete this series?"
+                onConfirm={() => {
+                    removeSeries({Id: s.Id})
+                    .then(r => handleResponse(
+                        r,
+                        api,
+                        'Removed',
+                        1,
+                        () => window.location.reload()))
+                }}
+        onCancel={() => {}}
+        okText="Yes"
+        cancelText="No"
+        placement="right"
+    >
+    
+        Delete
+    </Popconfirm>,
         icon: <DeleteOutlined/> ,
         onClick: () => {}
     }]
@@ -60,6 +84,16 @@ export function SeriesList(){
                 {series.map((q, qi) => {
 
                 const {Id, Code, AddedByName, DateCreated, IsRandom, Elements, MapElements} = q
+
+                let linkedMaps = []
+
+                if(MapElements.length){
+                    for(let me of MapElements){
+                        if(!linkedMaps.map(a => a.Id).includes(me.Map.Id)){
+                            linkedMaps.push(me.Map)
+                        }
+                    }
+                }
 
                 return(
                     <Col
@@ -91,10 +125,10 @@ export function SeriesList(){
                                 <p className="series-list-item-code-adder-date-stats">{Elements.length} elements</p>
                                 {IsRandom && <p className="series-list-item-random-series">Random series</p>}
                                 <br/>
-                                {MapElements.length
+                                {linkedMaps.length
                                 ?
                                 <List 
-                                    dataSource={MapElements}
+                                    dataSource={linkedMaps}
                                     renderItem={(me, mei) => (
                                         <div 
                                             key={mei}
@@ -103,14 +137,14 @@ export function SeriesList(){
                                                 <Tooltip 
                                                         color="white"
                                                         title={<img 
-                                                            src={me.Map.LargeMapURL}
+                                                            src={me.ImageURL}
                                                             alt={me.Title}
                                                             className="hq-img hq-clickable"
-                                                            onClick={() => naviagate('/playcoursemap/'+me.Map.Id)}
+                                                            onClick={() => naviagate('/playcoursemap/'+me.Id)}
                                                         />}
                                                         
                                                     > 
-                                                        <p className="series-list-item-map">{me.Map.Title}</p>
+                                                        <p className="series-list-item-map">{me.Title}</p>
                                                     </Tooltip>
                                             </div>
                                         )}
@@ -127,10 +161,10 @@ export function SeriesList(){
         )
     }
 
-    console.log(errorGetSeriesQuery)
 
     return(
         <PagesWrapper>
+            {contextHolder}
             <Divider orientation="left">
                 Series List
             </Divider>
