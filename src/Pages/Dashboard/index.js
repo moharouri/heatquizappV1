@@ -52,7 +52,7 @@ export function Dashboard(){
                     <Row>
                         
                         {recentlyVistedMaps.map((m) => {
-                            const {Id, Title, LargeMapURL} = m
+                            const {Id, Title, ImageURL} = m
 
                             return(
                             <Col 
@@ -67,7 +67,7 @@ export function Dashboard(){
                                 >
                                 <img 
                                     alt={Title}
-                                    src={LargeMapURL}
+                                    src={ImageURL}
                                     className="recently-visited-maps-img"
                                 />
                                 <small className="default-gray">{Title}</small>
