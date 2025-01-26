@@ -40,6 +40,8 @@ export function AuthProvider ({children}){
     
                     setRoles(roles)
                     setUserRoles_LS(roles)
+
+                    setIsStudent(false)
                 }
             })
     
@@ -53,6 +55,7 @@ export function AuthProvider ({children}){
             setIsStudent(true)
             setUsername('student')
             setUserfullname('student')
+            setRoles(['student'])
             setProfilePicture(null)
             setCurrentPlayerKey(playerKey)
             return

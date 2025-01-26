@@ -31,7 +31,7 @@ const UserDrawer = () => {
     }, 60*1000);
 
     return () => clearInterval(timer)
-  }, [])
+  }, [isStudent])
 
   const navigate = useNavigate()
 

@@ -27,7 +27,7 @@ export function CoursesProvider ({children}){
         if(!isStudent){
             getCourses()
         }
-    }, [selectedDatapool])
+    }, [selectedDatapool, isStudent])
 
     return(
         <Context.Provider value = {{

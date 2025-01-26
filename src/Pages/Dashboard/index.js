@@ -19,7 +19,11 @@ export function Dashboard(){
     const navigate = useNavigate()
 
     const loadRecentlyVisitedMaps = () => {
-        const mapIds = getMapVisit_LS() || []
+        let mapIds = getMapVisit_LS() || []
+        
+        mapIds = mapIds.filter(a => a)
+
+        if(!mapIds.length) return;
 
         const VM = ({
             Ids: mapIds
